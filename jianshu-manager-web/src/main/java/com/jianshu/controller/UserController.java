@@ -17,4 +17,8 @@ public class UserController {
             service.saveUser(nickName,userName ,pwd ,sex ,phone ,mail );
         return "ok";
     }
+    @RequestMapping("/register")
+    public String register(){
+        return "register";
+    }
 }

@@ -24,6 +24,13 @@
          #{sex,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{mail,jdbcType=VARCHAR},
          #{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
     </insert>
+   <!-- <update id="update" parameterType="com.jianshu.pojo.User">
+        UPDATE user  SET
+        nickname=#{nickName,jdbcType=VARCHAR},username=#{userName,jdbcType=VARCHAR},pwd=#{pwd,jdbcType=VARCHAR},
+        sex=#{sex,jdbcType=VARCHAR},phone=#{phone,jdbcType=VARCHAR},mail=#{mail,jdbcType=VARCHAR},user_desc=#{userDesc,jdbcType=VARCHAR},
+        fans_nums=#{fansNums,jdbcType=INTEGER},concern_nums=#{concernNums,jdbcType=INTEGER},update_time=#{updateTime,jdbcType=TIMESTAMP}
+        where id=#{id,jdbcType=INTEGER}
+    </update>-->
 
 
 </mapper>
