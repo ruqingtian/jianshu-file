@@ -1,14 +1,15 @@
 package com.jianshu.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Article {
+public class Article implements Serializable {
     private int id;
     private int userId;
     private int collectionId ;
     private  String title;
     private int readNums ;
-    private int liskeNums ;
+    private int likeNums ;
     private String image;
     private String content;
     private Date createTime ;
@@ -55,12 +56,12 @@ public class Article {
         this.readNums = readNums;
     }
 
-    public int getLiskeNums() {
-        return liskeNums;
+    public int getLikeNums() {
+        return likeNums;
     }
 
-    public void setLiskeNums(int liskeNums) {
-        this.liskeNums = liskeNums;
+    public void setLikeNums(int likeNums) {
+        this.likeNums = likeNums;
     }
 
     public String getImage() {

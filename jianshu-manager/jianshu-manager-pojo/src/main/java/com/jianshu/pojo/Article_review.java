@@ -1,8 +1,9 @@
 package com.jianshu.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Article_review {
+public class Article_review implements Serializable {
     private int articleId;
     private int userId ;
     private String content;

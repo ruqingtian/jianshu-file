@@ -1,9 +1,11 @@
 package com.jianshu.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class User implements Serializable {
     private int id;
+    private String img;
     private String nickName;
     private String userName;
     private String pwd;
@@ -15,6 +17,14 @@ public class User {
     private int concernNums;
     private Date createTime;
     private Date updateTime;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public int getId() {
         return id;

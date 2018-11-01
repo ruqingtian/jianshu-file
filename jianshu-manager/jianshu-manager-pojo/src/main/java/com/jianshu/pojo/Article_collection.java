@@ -1,8 +1,9 @@
 package com.jianshu.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Article_collection {
+public class Article_collection implements Serializable{
     private int id;
     private String name;
     private int userId;
