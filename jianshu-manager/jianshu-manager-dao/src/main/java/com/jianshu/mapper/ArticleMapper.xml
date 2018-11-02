@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jianshu.mapper.ArticleMapper" >
+    <resultMap id="BaseResultMap" type="com.jianshu.pojo.Article">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="collection_id" property="collectionId" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="read_nums" property="readNums" jdbcType="INTEGER"/>
+        <result column="like_nums" property="likeNums" jdbcType="INTEGER"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--根据文章集id 查询List.-->
+    <select id="selectArticleByCollectionId" parameterType="Integer" resultType="com.jianshu.pojo.Article">
+        SELECT id,user_id,collection_id,title,read_nums,like_nums,image,content,create_time,update_time,status
+        FROM article
+        WHERE collection_id=#{collectionId}
+    </select>
+</mapper>
