@@ -16,9 +16,15 @@
     </resultMap>
 
     <!--根据文章集id 查询List.-->
-    <select id="selectArticleByCollectionId" parameterType="Integer" resultType="com.jianshu.pojo.Article">
+    <select id="selectArticleByCollectionId" parameterType="Integer" resultMap="BaseResultMap">
         SELECT id,user_id,collection_id,title,read_nums,like_nums,image,content,create_time,update_time,status
         FROM article
         WHERE collection_id=#{collectionId}
+    </select>
+    <!--根据文章id 查询文章-->
+    <select id="selectArticleById" resultMap="BaseResultMap">
+       SELECT id,user_id,collection_id,title,read_nums,like_nums,image,content,create_time,update_time,status
+        FROM article
+        WHERE id=#{id}
     </select>
 </mapper>
