@@ -6,7 +6,10 @@ import com.jianshu.service.ArticleCollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ArticleCollectionServiceImpl implements ArticleCollectionService {
@@ -20,5 +23,17 @@ public class ArticleCollectionServiceImpl implements ArticleCollectionService {
         return mapper.selectUserIdByArticleCollection(userId);
 
 
+    }
+    //新建文集
+    @Override
+    public void insertCollection(int userId, String collectionName) {
+        //补全信息
+        Date crrateTime=new Date();
+        Map<String,Object> map=new HashMap<>();
+        map.put("name",collectionName );
+        map.put("userId",userId );
+        map.put("createTime",crrateTime );
+        map.put("updateTime",crrateTime );
+        mapper.insertColection(map);
     }
 }

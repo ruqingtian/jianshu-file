@@ -7,5 +7,7 @@ import java.util.List;
 public interface ArticleCollectionService {
     //根据userId 查询所有
     public List<Article_collection> selectArticleCollectionByUserId(int userId);
+    //新建文集
+    public void insertCollection(int userId,String collectionName);
 
 }

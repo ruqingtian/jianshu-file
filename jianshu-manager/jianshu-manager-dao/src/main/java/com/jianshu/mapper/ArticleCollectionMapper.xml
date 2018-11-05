@@ -14,4 +14,11 @@
         FROM article_collection
         WHERE user_id=#{userId}
     </select>
+
+    <!--创建新的文集-->
+    <insert id="insertColection" parameterType="map">
+        INSERT INTO article_collection(name,user_id,create_time,update_time)
+        VALUE (#{name},#{userId},#{createTime},#{updateTime})
+    </insert>
+
 </mapper>
