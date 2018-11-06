@@ -31,4 +31,13 @@
     <update id="updataArticleById" parameterType="map">
         UPDATE article set title=#{title},content=#{content},update_time=#{updateTime},status=#{status} WHERE id=#{id}
     </update>
+    <!--新建文章-->
+    <insert id="saveArticle" parameterType="map">
+        INSERT INTO article(user_id,collection_id,title,content,create_time,update_time)
+         VALUE(#{userId},#{collectionId},#{title},#{content},#{createTime},#{updateTime})
+    </insert>
+    <!--根据id 删除文章-->
+    <delete id="deleteArticle" parameterType="Integer">
+        DELETE FROM article WHERE id=#{id}
+    </delete>
 </mapper>

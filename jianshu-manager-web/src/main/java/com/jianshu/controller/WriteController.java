@@ -72,4 +72,18 @@ public class WriteController {
         collectionService.deleteCollectionById(id);
         return JianshuResult.ok();
     }
+
+    @RequestMapping(value ="/save/article",method = RequestMethod.POST)
+    @ResponseBody
+    public JianshuResult saveArticle(@RequestParam Integer userId,@RequestParam Integer collectionId){
+        articleService.saveArticle(userId,collectionId );
+        return JianshuResult.ok();
+    }
+
+    @RequestMapping(value = "/delete/article",method =RequestMethod.GET)
+    @ResponseBody
+    public JianshuResult deleteArticle(Integer id){
+        articleService.deleteArticle(id);
+        return JianshuResult.ok();
+    }
 }

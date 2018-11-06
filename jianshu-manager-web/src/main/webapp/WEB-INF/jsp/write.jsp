@@ -21,6 +21,9 @@
         .textNewName{
             display:inline !important;
         }
+        .deleteArticleShow{
+            display:inline !important;
+        }
     </style>
     <script type="text/javascript">
 
@@ -34,8 +37,8 @@
 
            var spanId=id;
 
+            $("#collectionName").attr('name',id);
             $("#collectionName").html("");
-
             $(".spanShow").removeClass("spanShow");
             $(".textNewName").removeClass("textNewName");
 
@@ -48,8 +51,7 @@
                 success:function (data) {
 
 
-                    var str="文章:<a href=''+>新建文章</a>";
-                    $("#collectionName").html(str);
+                   document.getElementById('newSaveArticle').style.display="";
                     for(var i=0;i<data.length;i++){
 
                         var sta="未发布";
@@ -57,7 +59,8 @@
                             sta="已发布";
                         }
                      var   content="<br/><input id="+data[i].id+" type='button' class='articleName' value="+data[i].title+" />("+sta+")";
-                        $("#collectionName").append(content);
+
+                        $("#collectionName").append(content+"<input id='deleteArticle' name="+data[i].collectionId+" style='display:none' type='button' value='删除'/>");
                     }
                     $("#collectionName").append("<hr/>");
 
@@ -72,6 +75,8 @@
         $('.articleName').live('click',function () {
 
           var aId=this.id;
+           $(".deleteArticleShow").removeClass("deleteArticleShow");
+          $(this).next().addClass("deleteArticleShow");
 
             $.ajax({
                 type:"POST",
@@ -153,13 +158,13 @@
         //删除文集的单击事件
         function deleteCollection(obj) {
             var id=$(obj).parent().attr("id");
-            console.log(id);
+
             $.ajax({
                 type:"GET",
                 url:"/delete/collection",
                 data:{id:id},
                 success:function (data) {
-                    console.log("delete");
+
                     location.reload(true);
                 },
                 dataType:"json"
@@ -171,23 +176,98 @@
             var id=$("#articleId").val();
             var ue = UE.getEditor('container');
             var content=ue.getContent();
-            console.log(title);
-            console.log(id);
-            console.log(content);
+
             $.ajax({
                 type:"POST",
                 url:"/write/saveArticle",
                 data:{articleId:id,title:title,content:content},
                 success:function (data) {
-                    console.log("成功返回");
+
                     alert("发布成功");
                 },
                 dataType:"json"
 
             })
         }
+        //新建文章
+        function saveArticle(obj) {
+            var userId=$(obj).attr('id');
+
+            var collectionId=$("#collectionName").attr("name");
 
 
+            $.ajax({
+                type:"POST",
+                url:"/save/article",
+                data:{userId:userId,collectionId:collectionId},
+                success:function (data) {
+                    $.ajax({
+                        async:false,
+                        type:"GET",
+                        url:"/write/article",
+                        data:{id:collectionId},
+                        dataType:"json",
+                        success:function (data) {
+
+                            $("#collectionName").html("");
+                            document.getElementById('newSaveArticle').style.display="";
+                            for(var i=0;i<data.length;i++){
+
+                                var sta="未发布";
+                                if(data[i].status===1){
+                                    sta="已发布";
+                                }
+                                var   content="<br/><input id="+data[i].id+" type='button' class='articleName' value="+data[i].title+" />("+sta+")";
+                                $("#collectionName").append(content+"<input id='deleteArticle' name="+collectionId+" style='display:none' type='button' value='删除'/>");
+                            }
+                            $("#collectionName").append("<hr/>");
+                        }
+
+                    })
+                },
+                dataType:"json"
+
+            })
+        }
+
+        //删除文章的单击事件
+        $("#deleteArticle").live('click',function () {
+            var articleId=$(this).prev().attr("id");
+            var collectionId=$(this).attr('name');
+
+            $.ajax({
+                type:"GET",
+                url:"/delete/article",
+                data:{id:articleId},
+                success:function (data) {
+
+                    $.ajax({
+                        async:false,
+                        type:"GET",
+                        url:"/write/article",
+                        data:{id:collectionId},
+                        dataType:"json",
+                        success:function (data) {
+
+                            $("#collectionName").html("");
+                            document.getElementById('newSaveArticle').style.display="";
+                            for(var i=0;i<data.length;i++){
+
+                                var sta="未发布";
+                                if(data[i].status===1){
+                                    sta="已发布";
+                                }
+                                var   content="<br/><input id="+data[i].id+" type='button' class='articleName' value="+data[i].title+" />("+sta+")";
+                                $("#collectionName").append(content+"<input id='deleteArticle' name="+collectionId+" style='display:none' type='button' value='删除'/>");
+                            }
+                            $("#collectionName").append("<hr/>");
+                        }
+
+                    })
+                },
+                dataType:"json"
+            })
+        })
 
     </script>
 </head>`
@@ -214,8 +294,9 @@
 
     </c:forEach>
 </div>
-<div id="collectionName">
-
+<div>
+    <p id="newSaveArticle"  style="display:none">文章:<a id="${userId}"   href="javascript:void(0)" onclick="saveArticle(this)">新建文章</a></p>
+    <div  id="collectionName"></div>
 </div>
 
 <div>

@@ -13,4 +13,8 @@ public interface ArticleMapper {
     public Article selectArticleById(int id);
     //根据文章id 修改文章
     public void updataArticleById(Map map);
+    //新建文章
+    public void saveArticle(Map map);
+    //根据id 删除文章
+    public void deleteArticle(int id);
 }

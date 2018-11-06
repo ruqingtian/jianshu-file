@@ -38,4 +38,24 @@ public class ArticleServiceImpl implements ArticleService {
         map.put("status",1);
         mapper.updataArticleById(map);
     }
+
+    @Override
+    public void saveArticle(int userId, int collectionId) {
+
+        //补全属性
+        Map<String,Object> map=new HashMap<>();
+        map.put("userId",userId );
+        map.put("collectionId",collectionId );
+        map.put("title","无标题文章" );
+        map.put("content","这是初始化内容" );
+        map.put("createTime",new Date() );
+        map.put("updateTime",new Date() );
+        mapper.saveArticle(map);
+
+    }
+
+    @Override
+    public void deleteArticle(int id) {
+        mapper.deleteArticle(id);
+    }
 }
