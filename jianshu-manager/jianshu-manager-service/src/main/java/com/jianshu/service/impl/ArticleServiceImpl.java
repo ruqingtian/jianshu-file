@@ -36,6 +36,6 @@ public class ArticleServiceImpl implements ArticleService {
         map.put("content",content );
         map.put("updateTime",updateTime );
         map.put("status",1);
-        mapper.updataArticleById(map );
+        mapper.updataArticleById(map);
     }
 }

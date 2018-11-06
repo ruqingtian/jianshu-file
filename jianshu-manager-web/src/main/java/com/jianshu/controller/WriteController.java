@@ -43,18 +43,33 @@ public class WriteController {
 
     @RequestMapping(value = "/write/saveArticle",method = RequestMethod.POST)
     @ResponseBody
-    public String saveArticle(@RequestParam String title,  @RequestParam Integer articleId, @RequestParam String content)  {
+    public JianshuResult saveArticle(@RequestParam String title,  @RequestParam Integer articleId, @RequestParam String content)  {
 
-        content=content.substring(3,content.length()-4 );
+        content=content.substring(3,content.length()-4);
         articleService.updateArticleById(articleId, title, content);
 
-       return "OK";
+       return JianshuResult.ok();
     }
 
     @RequestMapping(value = "/save/collection",method = RequestMethod.POST)
     @ResponseBody
     public JianshuResult saveCollection(@RequestParam Integer userId,@RequestParam String collectionName){
         collectionService.insertCollection(userId,collectionName );
+        return JianshuResult.ok() ;
+    }
+
+    @RequestMapping(value = "/update/collectionName",method = RequestMethod.POST)
+    @ResponseBody
+    public JianshuResult updateCollectionName(@RequestParam String newName,@RequestParam Integer articleId){
+        collectionService.updateCollectionName(articleId,newName );
+
+        return JianshuResult.ok();
+    }
+
+    @RequestMapping(value = "/delete/collection",method = RequestMethod.GET)
+    @ResponseBody
+    public JianshuResult deleteCollection(Integer id){
+        collectionService.deleteCollectionById(id);
         return JianshuResult.ok();
     }
 }

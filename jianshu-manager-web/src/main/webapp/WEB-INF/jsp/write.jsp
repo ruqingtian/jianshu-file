@@ -14,30 +14,44 @@
     <script type="text/javascript" src="/ueditor/ueditor.all.js"></script>
     <script type="text/javascript" src="/ueditor/lang/zh-cn/zh-cn.js"></script>
     <title>写文章</title>
+    <style type="text/css">
+        .spanShow{
+            display:inline !important;
+        }
+        .textNewName{
+            display:inline !important;
+        }
+    </style>
     <script type="text/javascript">
 
         // $(function () {
         //     alert("123");
         // });
         // 获取文章标题
-        function getCollection(id) {
+        function getCollection(obj) {
 
-           var id=id;
+           var id=obj.name;
+
+           var spanId=id;
+
             $("#collectionName").html("");
-            // console.log(id);
-            // var nextEle=$("#"+id+"").nextSibling();
-            // console.log(nextEle.className);
+
+            $(".spanShow").removeClass("spanShow");
+            $(".textNewName").removeClass("textNewName");
+
+            $("#"+spanId+"").addClass("spanShow");
+
             $.ajax({
                 type:"GET",
                 url:"/write/article",
                 data:{id:id},
                 success:function (data) {
 
-                    console.log(data);
+
                     var str="文章:<a href=''+>新建文章</a>";
                     $("#collectionName").html(str);
                     for(var i=0;i<data.length;i++){
-                        console.log(data[i].status);
+
                         var sta="未发布";
                         if(data[i].status===1){
                             sta="已发布";
@@ -53,14 +67,11 @@
             });
         }
 
-        console.log("waimian");
+
         //获取文章的内容
         $('.articleName').live('click',function () {
 
           var aId=this.id;
-            console.log(this.id);
-
-
 
             $.ajax({
                 type:"POST",
@@ -84,12 +95,12 @@
 
            document.getElementById('newCollectionName').style.display="";
             $("#newCollName").val("请输入文集名...");
-           // console.log(1111111111);
+
         }
         //新建文集button
         function updateDisplay() {
             document.getElementById('newCollectionName').style.display="none";
-            console.log(4444444);
+
         }
         //新建文集中    文集名重置
         function newCollNameReset() {
@@ -99,19 +110,81 @@
         function submitCollectionName() {
             var userId=$("#userId").val();
             var collectionName=$("#newCollName").val();
-            console.log(22222);
+
 
             $.ajax({
                 type:"POST",
                 url:"/save/collection",
                 data:{userId:userId,collectionName:collectionName},
                 success:function (data) {
-                    console.log(55555555);
+
                     location.reload(true);
 
                 },
                 dataType:"json"
             });
+        }
+         //修改collectionName
+        function updateCollectionName(obj) {
+            var id=$(obj).parent().attr('id');
+
+            $(obj).next().addClass("textNewName");
+
+        }
+
+        //失去焦点上传新name
+        function updateName(obj) {
+            var collectionName=$(obj).val();
+
+            var id=$(obj).parent().attr('id');
+
+
+            $.ajax({
+                type:"POST",
+                url:"/update/collectionName",
+                data:{articleId:id,newName:collectionName},
+                success:function (data) {
+                    location.reload(true);
+                },
+                dataType:"json"
+            })
+
+        }
+        //删除文集的单击事件
+        function deleteCollection(obj) {
+            var id=$(obj).parent().attr("id");
+            console.log(id);
+            $.ajax({
+                type:"GET",
+                url:"/delete/collection",
+                data:{id:id},
+                success:function (data) {
+                    console.log("delete");
+                    location.reload(true);
+                },
+                dataType:"json"
+            })
+        }
+        //提交文章
+        function submitArticle() {
+            var title=$("#articleTitle").val();
+            var id=$("#articleId").val();
+            var ue = UE.getEditor('container');
+            var content=ue.getContent();
+            console.log(title);
+            console.log(id);
+            console.log(content);
+            $.ajax({
+                type:"POST",
+                url:"/write/saveArticle",
+                data:{articleId:id,title:title,content:content},
+                success:function (data) {
+                    console.log("成功返回");
+                    alert("发布成功");
+                },
+                dataType:"json"
+
+            })
         }
 
 
@@ -131,16 +204,16 @@
 
     </div>
     <c:forEach items="${collectionList}" var="collection">
-        <input type="button" name="collectionName"  value=${collection.name} id=${collection.id}  onclick="getCollection(${collection.id})"/>
-       <%--<span style="display: none">--%>
-        <%--<input type="button" value="修改">--%>
-        <%--<input type="button" value="删除">--%>
-        <%--</span>--%>
+        <input type="button" name=${collection.id} value=${collection.name}   onclick="getCollection(this)"/>
+       <span  id=${collection.id} style="display:none">
+        <input type="button" onclick="updateCollectionName(this)" value="修改"/>
+           <input type="text" style="display:none" onblur="updateName(this)"/>
+        <input type="button" onclick="deleteCollection(this)" value="删除">
+        </span>
         <br/>
 
     </c:forEach>
 </div>
-<hr/>
 <div id="collectionName">
 
 </div>
@@ -150,19 +223,15 @@
         var ue=UE.getEditor("container");
     </script>
     <div >
-        <form action="/write/saveArticle" method="post">
+
         标题：<input style="width: 90%" type="text" name="title" value="无标题文章" id="articleTitle"/>
 
         <input type="hidden" id="articleId" name="articleId"  />
         <script type="text/plain" id="container" name="content" >
             这里是初始化内容
-
-
         </script>
+        <input type="button" onclick="submitArticle()" value="提交">
 
-
-        <input type="submit" value="提交">
-        </form>
     </div>
 
 </div>

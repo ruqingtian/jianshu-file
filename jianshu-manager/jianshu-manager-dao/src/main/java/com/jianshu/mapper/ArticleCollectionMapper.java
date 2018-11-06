@@ -10,4 +10,8 @@ public interface ArticleCollectionMapper {
     public List<Article_collection> selectUserIdByArticleCollection(int userId);
     //创建新的文集
     public void insertColection(Map map);
+    //修改文集的名称
+    public void updateCollectionName(Map map);
+    //根据id删除文集
+    public void deleteCollectionById(int id);
 }

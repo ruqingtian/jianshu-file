@@ -21,4 +21,12 @@
         VALUE (#{name},#{userId},#{createTime},#{updateTime})
     </insert>
 
+    <!--修改文集的名称-->
+    <update id="updateCollectionName" parameterType="map">
+        UPDATE article_collection SET name=#{name} , update_time=#{updateTime} WHERE id=#{id}
+    </update>
+    <!--根据id删除文集-->
+    <delete id="deleteCollectionById" parameterType="Integer">
+        DELETE FROM article_collection WHERE id=#{id}
+    </delete>
 </mapper>

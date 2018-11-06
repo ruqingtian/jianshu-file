@@ -36,4 +36,19 @@ public class ArticleCollectionServiceImpl implements ArticleCollectionService {
         map.put("updateTime",crrateTime );
         mapper.insertColection(map);
     }
+
+    @Override
+    public void updateCollectionName(int id, String collectionName) {
+        Date updateTime=new Date();
+        Map<String,Object> map=new HashMap<>();
+        map.put("id",id );
+        map.put("name",collectionName );
+        map.put("updateTime",updateTime );
+        mapper.updateCollectionName(map);
+    }
+
+    @Override
+    public void deleteCollectionById(int id) {
+        mapper.deleteCollectionById(id);
+    }
 }
