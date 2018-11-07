@@ -2,6 +2,7 @@ package com.jianshu.service.impl;
 
 import com.jianshu.mapper.UserMapper;
 import com.jianshu.otherpojo.JianshuResult;
+import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.HomeUser;
 import com.jianshu.pojo.User;
 import com.jianshu.service.UserService;
@@ -95,5 +96,27 @@ public class UserServiceImpl implements UserService {
             list.add(homeUser);
         }
         return list;
+    }
+
+    @Override
+    public PageBean selectPageUser(int currentPage,int index, int currentCount) {
+        PageBean<User> pageBean=new PageBean<>();
+        //设置当前页
+        pageBean.setCurrentPage(currentPage);
+        //设置当前显示条数
+        pageBean.setCurrentCount(currentCount);
+        //设置总条数
+        int totalCount= mapper.selectTotalCount();
+        pageBean.setTotalCount(totalCount);
+        //设置总页数
+        int totalPage=(int)Math.ceil(1.0*totalCount/currentCount);
+        pageBean.setTotalPage(totalPage);
+        //设置每页显示数据
+        List<User> users = mapper.selectPageUser(index, currentCount);
+        for(int i=0;i<users.size();i++){
+            users.get(i).setImg("../../image/"+ users.get(i).getImg());
+        }
+        pageBean.setShowList(users);
+        return pageBean;
     }
 }

@@ -1,6 +1,7 @@
 package com.jianshu.controller;
 
 import com.jianshu.otherpojo.JianshuResult;
+import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.HomeUser;
 import com.jianshu.service.UserService;
 
@@ -29,11 +30,16 @@ public class UserController {
         return JianshuResult.ok();
     }
 
-    //主页显示全部用户
+    //主页用户
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public String index(Model model){
-        List<HomeUser> list = service.selectHomeUser();
-        model.addAttribute("homeUserList", list);
+      /*  List<HomeUser> list = service.selectHomeUser();
+        model.addAttribute("homeUserList", list);*/
+       int currentPage=1;
+       int currentCount=2;
+       int index=(currentPage-1)*currentCount;
+        PageBean pageBean = service.selectPageUser(currentPage, index, currentCount);
+        model.addAttribute("pageBean", pageBean);
         return "index";
     }
 
@@ -57,7 +63,16 @@ public class UserController {
 
             return JianshuResult.ok("登入成功");
 
+    }
 
+    //分页查询用户
+    @RequestMapping(value = "/index/page",method = RequestMethod.GET)
+    @ResponseBody
+    public PageBean page(Integer currentPage){
+        int currentCount=2;
+        int index=(currentPage-1)*currentCount;
+        PageBean pageBean = service.selectPageUser(currentPage, index, currentCount);
+        return pageBean;
 
     }
 }

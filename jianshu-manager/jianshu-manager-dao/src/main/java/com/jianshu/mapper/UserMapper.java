@@ -2,6 +2,7 @@ package com.jianshu.mapper;
 
 import com.jianshu.pojo.HomeUser;
 import com.jianshu.pojo.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,6 +16,11 @@ public interface UserMapper {
     List<User> selectAllUser();
     //根据用户名查询
     String selectByUserName(String userName);
+
+    //分页查询主页显示用户
+    List<User> selectPageUser(@Param("index") int index,@Param("currentCount") int currentCount);
+    //查询总条数
+    int selectTotalCount();
 
 
     //根据id 修改用户

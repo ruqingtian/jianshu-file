@@ -38,6 +38,15 @@
         WHERE id=#{userId}
     </select>
 
+    <!--分页查询主页显示user-->
+    <select id="selectPageUser" resultMap="BaseResultMap">
+        select id,nickname,fans_nums,concern_nums,img
+        FROM user limit #{index},#{currentCount}
+    </select>
+    <!--查询总条数-->
+    <select id="selectTotalCount" resultType="Integer">
+        SELECT count(id) from user
+    </select>
    <!-- <update id="update" parameterType="com.jianshu.pojo.User">
         UPDATE user  SET
         nickname=#{nickName,jdbcType=VARCHAR},username=#{userName,jdbcType=VARCHAR},pwd=#{pwd,jdbcType=VARCHAR},

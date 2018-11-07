@@ -1,6 +1,7 @@
 package com.jianshu.service;
 
 import com.jianshu.otherpojo.JianshuResult;
+import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.HomeUser;
 import com.jianshu.pojo.User;
 
@@ -21,6 +22,8 @@ public interface UserService {
 
     //查询所有用户
     public List<HomeUser> selectHomeUser();
+    //分页查询用户
+    public PageBean selectPageUser(int currentPage,int index, int currentCount);
     //修改用户
 //    public void updateUser(User user);
 }
