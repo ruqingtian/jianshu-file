@@ -7,6 +7,7 @@ import com.jianshu.service.UserService;
 
 import com.jianshu.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,8 @@ public class UserController {
     @Autowired
     private UserService service;
 
+    @Value("${CURRENT_COUNT}")
+    private Integer CURRENT_COUNT;
     //注册用户
     @RequestMapping(value="/user/save",method= RequestMethod.POST)
     @ResponseBody
@@ -69,9 +72,9 @@ public class UserController {
     @RequestMapping(value = "/index/page",method = RequestMethod.GET)
     @ResponseBody
     public PageBean page(Integer currentPage){
-        int currentCount=2;
-        int index=(currentPage-1)*currentCount;
-        PageBean pageBean = service.selectPageUser(currentPage, index, currentCount);
+
+        int index=(currentPage-1)*CURRENT_COUNT;
+        PageBean pageBean = service.selectPageUser(currentPage, index, CURRENT_COUNT);
         return pageBean;
 
     }

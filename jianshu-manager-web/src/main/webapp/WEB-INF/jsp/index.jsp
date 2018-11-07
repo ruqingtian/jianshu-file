@@ -173,7 +173,7 @@
             }
         }
         function changePage(obj) {
-            var totalCount=$(obj).attr('name');
+            var totalCount=$(obj).attr('id');
             console.log(totalCount);
             var currentPage=parseInt(Math.random()*totalCount)+1;
             console.log(currentPage);
@@ -218,7 +218,7 @@
     </nav>
 </div>
 <div class="content">
-    推荐作者：    <a name="${pageBean.totalPage}" href="javascript:void(0)" onclick="changePage(this)">换一批</a><br/>
+    推荐作者：    <a id="${pageBean.totalPage}" href="javascript:void(0)" onclick="changePage(this)">换一批</a><br/>
     <div id="pageUser">
     <c:forEach items="${pageBean.showList}" var="user">
 
