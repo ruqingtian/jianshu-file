@@ -11,9 +11,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class UserController {
@@ -26,10 +31,31 @@ public class UserController {
     //注册用户
     @RequestMapping(value="/user/save",method= RequestMethod.POST)
     @ResponseBody
-    public JianshuResult dosave(String nickName,String userName,String pwd,String sex,String phone,String mail,String img){
+    public JianshuResult dosave(String nickName, String userName, String pwd, String sex, String phone, String mail, MultipartFile img, HttpServletRequest request){
 
+        String filePath="";
+        String uuid="";
+        String suffix="";
+        //判断文件是否为空
+        if(!img.isEmpty()){
+            //文件保存路径
+            try {
+                uuid= UUID.randomUUID().toString().replace("-","" );
+                //取后缀
+                String imgName=img.getOriginalFilename();
+                suffix =imgName.substring(imgName.lastIndexOf(".") );
 
-        service.saveUser(nickName,userName,pwd,sex,phone,mail,img);
+                filePath=request.getSession().getServletContext().getRealPath("/")+"upload/"+uuid+suffix;
+                //转存文件
+                img.transferTo(new File(filePath));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        String imgPath="/upload/"+uuid+suffix;
+
+        service.saveUser(nickName,userName,pwd,sex,phone,mail,imgPath);
         return JianshuResult.ok();
     }
 

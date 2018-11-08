@@ -96,7 +96,23 @@
     </style>
     <script type="text/javascript">
         window.onload=function () {
+            $.ajax({
+                type: "GET",
+                url: "/index/page",
+                data: {currentPage: 1},
+                success: function (data) {
 
+                    $("#pageUser").html("");
+                    for (var i = 0; i < data.showList.length; i++) {
+                        var count = " <img src=" + data.showList[i].img + "/>  " + data.showList[i].nickName + ": 写了0.0 " + data.showList[i].fansNums + " 喜欢 <a href=''>关注</a><br/>";
+                        $("#pageUser").append(count);
+
+                    }
+
+
+                },
+                dataType: "json"
+            });
            $("a[name='1']").addClass("currentPage");
         };
         function jumpPage(obj) {
@@ -149,7 +165,12 @@
             var currentPage=$(".currentPage").attr("name");
             currentPage=parseInt(currentPage)+1;
 
-            if(currentPage!=5) {
+            var totalPageStr=$("a[name=changeAll]").attr('id');
+            var totalPage=parseInt(totalPageStr)+1;
+            console.log(totalPage);
+
+
+            if(currentPage!=totalPage) {
                 $(".currentPage").removeClass("currentPage");
 
                 $("a[name=" + currentPage + '' + "]").addClass("currentPage");
@@ -218,13 +239,9 @@
     </nav>
 </div>
 <div class="content">
-    推荐作者：    <a id="${pageBean.totalPage}" href="javascript:void(0)" onclick="changePage(this)">换一批</a><br/>
+    推荐作者：    <a id="${pageBean.totalPage}" name="changeAll" href="javascript:void(0)" onclick="changePage(this)">换一批</a><br/>
     <div id="pageUser">
-    <c:forEach items="${pageBean.showList}" var="user">
 
-         <img src='${user.img}'/>  ${user.nickName}: 写了0.0 ${user.concernNums} 喜欢      <a href="/">关注</a><br/>
-
-    </c:forEach>
     </div>
     <ul class="pagination">
         <li><a href="javascript:void(0)" onclick="beforePage()" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>

@@ -120,7 +120,7 @@
             <a href="/register">注册</a>
         </div>
     </h3>
-<form action="/user/save" class="new_user" id="userRegFrom" method="post" onsubmit="return true"/>
+<form action="/user/save" class="new_user" id="userRegFrom" method="post" enctype="multipart/form-data" onsubmit="return true"/>
         昵称：<input type="text" name="nickName"><br/>
         头像：<input type="file" name="img" /><br/>
         用户名：<input type="text" name="userName" id="userName" onblur="checkName()"><span id="userId"></span><br>

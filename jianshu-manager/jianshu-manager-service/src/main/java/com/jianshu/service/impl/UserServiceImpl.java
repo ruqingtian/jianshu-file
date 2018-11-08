@@ -90,7 +90,8 @@ public class UserServiceImpl implements UserService {
             HomeUser homeUser=new HomeUser();
             User user=users.get(i);
             homeUser.setId(users.get(i).getId());
-            homeUser.setImg("../../image/"+users.get(i).getImg());
+            homeUser.setImg(users.get(i).getImg());
+
             homeUser.setNickName(users.get(i).getNickName());
             homeUser.setLikeNums((users.get(i).getFansNums()));
             list.add(homeUser);
@@ -114,7 +115,7 @@ public class UserServiceImpl implements UserService {
         //设置每页显示数据
         List<User> users = mapper.selectPageUser(index, currentCount);
         for(int i=0;i<users.size();i++){
-            users.get(i).setImg("../../image/"+ users.get(i).getImg());
+            users.get(i).setImg("../.."+ users.get(i).getImg());
         }
         pageBean.setShowList(users);
         return pageBean;
