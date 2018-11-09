@@ -183,7 +183,11 @@
                 data:{articleId:id,title:title,content:content},
                 success:function (data) {
 
+                    $("#"+id+"").next().html("（已发布）");
+                    $("#"+id+"").val(data.title);
+
                     alert("发布成功");
+
                 },
                 dataType:"json"
 
@@ -217,7 +221,7 @@
                                 if(data[i].status===1){
                                     sta="已发布";
                                 }
-                                var   content="<br/><input id="+data[i].id+" type='button' class='articleName' value="+data[i].title+" />("+sta+")";
+                                var   content="<br/><input id="+data[i].id+" type='button' class='articleName' value="+data[i].title+" /><span>("+sta+")</span>";
                                 $("#collectionName").append(content+"<input id='deleteArticle' name="+collectionId+" style='display:none' type='button' value='删除'/>");
                             }
                             $("#collectionName").append("<hr/>");

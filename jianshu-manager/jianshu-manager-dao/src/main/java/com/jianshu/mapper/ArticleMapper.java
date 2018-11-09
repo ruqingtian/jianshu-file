@@ -17,4 +17,6 @@ public interface ArticleMapper {
     public void saveArticle(Map map);
     //根据id 删除文章
     public void deleteArticle(int id);
+    //查询所有的文章
+    public List<Article> selectAllArticle();
 }

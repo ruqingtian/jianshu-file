@@ -251,9 +251,18 @@
         </li>
         </c:forEach>
         <li><a href="javascript:void(0)" onclick="nextPage()" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>
-
-
     </ul>
+</div>
+<hr/>
+<div>
+    <c:forEach items="${articleList}" var="article">
+        <div>
+            <h3><a href="javascript:void(0)">${article.title}</a></h3>
+            <p>${article.content}</p>
+            <p>${article.userName}  评论 0 喜欢 ${article.likeNums}</p>
+            <img src="${article.image}"/>
+        </div>
+    </c:forEach>
 </div>
 
 </body>

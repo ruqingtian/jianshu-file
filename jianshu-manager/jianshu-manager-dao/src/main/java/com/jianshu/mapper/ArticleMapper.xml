@@ -40,4 +40,8 @@
     <delete id="deleteArticle" parameterType="Integer">
         DELETE FROM article WHERE id=#{id}
     </delete>
+    <!--查询所有的文章    联表查询  作者姓名-->
+    <select id="selectAllArticle" resultMap="BaseResultMap">
+        SELECT * FROM article;
+    </select>
 </mapper>

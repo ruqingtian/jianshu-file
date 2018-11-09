@@ -59,18 +59,7 @@ public class UserController {
         return JianshuResult.ok();
     }
 
-    //主页用户
-    @RequestMapping(value = "/",method = RequestMethod.GET)
-    public String index(Model model){
-      /*  List<HomeUser> list = service.selectHomeUser();
-        model.addAttribute("homeUserList", list);*/
-       int currentPage=1;
-       int currentCount=2;
-       int index=(currentPage-1)*currentCount;
-        PageBean pageBean = service.selectPageUser(currentPage, index, currentCount);
-        model.addAttribute("pageBean", pageBean);
-        return "index";
-    }
+
 
 
     //检验

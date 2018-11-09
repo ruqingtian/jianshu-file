@@ -43,12 +43,13 @@ public class WriteController {
 
     @RequestMapping(value = "/write/saveArticle",method = RequestMethod.POST)
     @ResponseBody
-    public JianshuResult saveArticle(@RequestParam String title,  @RequestParam Integer articleId, @RequestParam String content)  {
+    public Article saveArticle(@RequestParam String title,  @RequestParam Integer articleId, @RequestParam String content)  {
 
         content=content.substring(3,content.length()-4);
         articleService.updateArticleById(articleId, title, content);
+        Article article = articleService.selectArticleById(articleId);
 
-       return JianshuResult.ok();
+        return article;
     }
 
     @RequestMapping(value = "/save/collection",method = RequestMethod.POST)

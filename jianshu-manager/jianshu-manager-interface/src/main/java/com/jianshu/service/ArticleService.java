@@ -19,4 +19,6 @@ public interface ArticleService {
     public void saveArticle(int userId,int collectionId);
     //根据id删除文章
     public void deleteArticle(int id);
+//    查询所有的文章
+    public List<Article> selectAllArticle();
 }

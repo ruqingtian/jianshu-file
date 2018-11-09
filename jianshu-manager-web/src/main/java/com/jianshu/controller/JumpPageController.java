@@ -1,5 +1,7 @@
 package com.jianshu.controller;
 
+import com.jianshu.otherpojo.PageBean;
+import com.jianshu.pojo.Article;
 import com.jianshu.pojo.Article_collection;
 import com.jianshu.pojo.User;
 import com.jianshu.service.ArticleCollectionService;
@@ -37,7 +39,7 @@ public class JumpPageController {
     @RequestMapping(value = "/write",method = RequestMethod.GET)
     public String write(Model model){
         //模拟登入
-        int userId=1;
+        int userId=2;
 
         //注入ArticleCollectionserviceid
         //用户
@@ -51,5 +53,20 @@ public class JumpPageController {
 
 
         return "/write";
+    }
+
+    //主页
+    @RequestMapping(value = "/",method = RequestMethod.GET)
+    public String index(Model model){
+      /*  List<HomeUser> list = service.selectHomeUser();
+        model.addAttribute("homeUserList", list);*/
+        int currentPage=1;
+        int currentCount=2;
+        int index=(currentPage-1)*currentCount;
+        PageBean pageBean = userService.selectPageUser(currentPage, index, currentCount);
+        model.addAttribute("pageBean", pageBean);
+        List<Article> articleList = articleService.selectAllArticle();
+        model.addAttribute("articleList",articleList );
+        return "index";
     }
 }

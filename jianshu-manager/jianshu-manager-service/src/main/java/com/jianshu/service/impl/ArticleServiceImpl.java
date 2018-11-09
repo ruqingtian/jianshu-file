@@ -1,7 +1,9 @@
 package com.jianshu.service.impl;
 
 import com.jianshu.mapper.ArticleMapper;
+import com.jianshu.mapper.UserMapper;
 import com.jianshu.pojo.Article;
+import com.jianshu.pojo.User;
 import com.jianshu.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleMapper mapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public List<Article> selectArticleByCollectionId(int collectionId) {
@@ -57,5 +61,16 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void deleteArticle(int id) {
         mapper.deleteArticle(id);
+    }
+
+    @Override
+    public List<Article> selectAllArticle() {
+        List<Article> articleList = mapper.selectAllArticle();
+        for(int i=0;i<articleList.size();i++){
+            User user = userMapper.selectUserById(articleList.get(i).getUserId());
+            articleList.get(i).setContent(articleList.get(i).getContent().substring(0,5)+"...");
+            articleList.get(i).setUserName(user.getNickName());
+        }
+        return articleList;
     }
 }
