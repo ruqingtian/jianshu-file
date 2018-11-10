@@ -15,6 +15,24 @@ public class Article implements Serializable {
     private Date createTime ;
     private Date updateTime ;
     private String userName;
+    private int number;
+    private String showTime;
+
+    public String getShowTime() {
+        return showTime;
+    }
+
+    public void setShowTime(String showTime) {
+        this.showTime = showTime;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
 
     public String getUserName() {
         return userName;

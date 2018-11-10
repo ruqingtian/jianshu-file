@@ -26,8 +26,8 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @Value("${CURRENT_COUNT}")
-    private Integer CURRENT_COUNT;
+    @Value("${USER_CURRENT_COUNT}")
+    private Integer USER_CURRENT_COUNT;
     //注册用户
     @RequestMapping(value="/user/save",method= RequestMethod.POST)
     @ResponseBody
@@ -84,12 +84,12 @@ public class UserController {
     }
 
     //分页查询用户
-    @RequestMapping(value = "/index/page",method = RequestMethod.GET)
+    @RequestMapping(value = "/index/userPage",method = RequestMethod.GET)
     @ResponseBody
     public PageBean page(Integer currentPage){
 
-        int index=(currentPage-1)*CURRENT_COUNT;
-        PageBean pageBean = service.selectPageUser(currentPage, index, CURRENT_COUNT);
+        int index=(currentPage-1)*USER_CURRENT_COUNT;
+        PageBean pageBean = service.selectPageUser(currentPage, index, USER_CURRENT_COUNT);
         return pageBean;
 
     }

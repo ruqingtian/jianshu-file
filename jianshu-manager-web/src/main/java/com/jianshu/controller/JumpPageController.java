@@ -69,4 +69,15 @@ public class JumpPageController {
         model.addAttribute("articleList",articleList );
         return "index";
     }
+    //文章详情
+    @RequestMapping(value = "/article/With",method = RequestMethod.GET)
+    public String articleWith(Integer id,Model model){
+
+        Article article = articleService.selectArticleById(id);
+        User user = userService.selectUserById(article.getUserId());
+        model.addAttribute("article",article );
+        model.addAttribute("user",user );
+
+        return "article";
+    }
 }

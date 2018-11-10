@@ -44,4 +44,12 @@
     <select id="selectAllArticle" resultMap="BaseResultMap">
         SELECT * FROM article;
     </select>
+    <!--分页查询文章-->
+    <select id="selectPageArticle" resultMap="BaseResultMap">
+        SELECT * FROM article limit #{index},#{currentCount}
+    </select>
+    <!--查询总条数-->
+    <select id="selectCountArticle" resultType="Integer">
+        SELECT count(id) from article
+    </select>
 </mapper>

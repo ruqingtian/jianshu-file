@@ -1,6 +1,7 @@
 package com.jianshu.mapper;
 
 import com.jianshu.pojo.Article;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -19,4 +20,8 @@ public interface ArticleMapper {
     public void deleteArticle(int id);
     //查询所有的文章
     public List<Article> selectAllArticle();
+    //分页查询文章
+    public List<Article> selectPageArticle(@Param("index")int index,@Param("currentCount") int currentCount);
+    //查询总条数
+    public int selectCountArticle();
 }

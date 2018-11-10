@@ -1,5 +1,6 @@
 package com.jianshu.service;
 
+import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.Article;
 
 import java.util.Date;
@@ -21,4 +22,6 @@ public interface ArticleService {
     public void deleteArticle(int id);
 //    查询所有的文章
     public List<Article> selectAllArticle();
+//    分页查询文章
+    public PageBean selectPageArticle(int currentPage,int index,int currentCount);
 }

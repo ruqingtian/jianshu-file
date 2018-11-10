@@ -15,23 +15,11 @@
     <title>简书-创作你的创作</title>
 
     <style type="text/css">
-       .top{
-            width: 100%;
-            height: 50px;
-            font-size: 20px;
-          z-index:999;
-           position: fixed;
-            top: 0;
-            lsft:0;
-           background-color: antiquewhite;
 
-        }
         .content{
             position:relative; margin-left:10px; margin-top:50px;
         }
-        img{
-            height: 40px;
-        }
+
        .pagination {
            display: inline-block;
            padding-left: 0;
@@ -91,6 +79,14 @@
        .currentPage{
             background-color: #6ce26c !important;
         }
+      .articleShow{
+           text-align:center ;
+           width: 50%;
+       }
+       .showMore{
+           text-align:center ;
+           width: 60%;
+       }
 
 
     </style>
@@ -98,7 +94,7 @@
         window.onload=function () {
             $.ajax({
                 type: "GET",
-                url: "/index/page",
+                url: "/index/userPage",
                 data: {currentPage: 1},
                 success: function (data) {
 
@@ -114,6 +110,24 @@
                 dataType: "json"
             });
            $("a[name='1']").addClass("currentPage");
+           $.ajax({
+              type:"GET",
+              url:"/index/articlePage",
+              data:{currentPage:1},
+              success:function (data) {
+                  console.log(data);
+                 for(var i=0;i<data.showList.length;i++){
+                  var count="<li><img class='articleImg' src="+data.showList[i].image+" style='float: right;position: relative;right:700px;'/>" +
+                      "<div class='articleShow'><h3 style='width: 800px' ><a href='/article/With?id="+data.showList[i].id+"' target='_blank'>"+data.showList[i].title+"</a></h3>" +
+                      "<p style='width: 800px'>"+data.showList[i].content+"</p> " +
+                      "<p style='width: 800px'>"+data.showList[i].userName+"  评论 0 喜欢"+data.showList[i].likeNums+"</p></div></li>"
+
+                  $("#articleShow").append(count);
+                  console.log("添加成功");
+                 }
+              } ,
+               dataType:"json"
+           });
         };
         function jumpPage(obj) {
             var currentPage=$(obj).attr('name');
@@ -219,6 +233,36 @@
                 dataType: "json"
             })
         }
+        function showMore(obj) {
+            var name=$(obj).attr('name');
+            name=parseInt(name)+1;
+
+            $.ajax({
+                type:"GET",
+                url:"/index/articlePage",
+                data:{currentPage:name},
+                success:function (data) {
+                    for(var i=0;i<data.showList.length;i++){
+                        var count="<li><img class='articleImg' src="+data.showList[i].image+" style='float: right;position: relative;right:700px;'/>" +
+                            "<div class='articleShow'><h3 style='width: 800px' ><a href='/article/With?id="+data.showList[i].id+"' target='_blank'>"+data.showList[i].title+"</a></h3>" +
+                            "<p style='width: 800px'>"+data.showList[i].content+"</p> " +
+                            "<p style='width: 800px'>"+data.showList[i].userName+"  评论 0 喜欢"+data.showList[i].likeNums+"</p></div></li>"
+
+                        $("#articleShow").append(count);
+
+                    }
+                    console.log(data.totalPage);
+                    $(obj).attr('name',name);
+                    if(data.totalPage==name){
+                       document.getElementById('showMore').disabled=true;
+                        console.log("成功失效");
+
+                    }
+
+                } ,
+                dataType:"json"
+            });
+        }
     </script>
 
 </head>
@@ -226,18 +270,7 @@
 
 
 <body>
-<div class="top">
-    <nav >
-    <a class="logo" href="/"><img src="../../image/nav-logo-4c7bbafe27adc892f3046e6978459bac.png" /></a>
-    <a class="first" href="/" >首页</a> <a href="/" >下载app</a><input type="text"> <input type="button" value="搜索">
-
-    <!--右上角 -->
-
-    <a  class="btn" href="/login">登入</a>
-    <a class="btn"href="/register">注册</a>
-    <a class="btn" href="/write">写文章</a>
-    </nav>
-</div>
+<jsp:include page="top.jsp"/>
 <div class="content">
     推荐作者：    <a id="${pageBean.totalPage}" name="changeAll" href="javascript:void(0)" onclick="changePage(this)">换一批</a><br/>
     <div id="pageUser">
@@ -254,15 +287,20 @@
     </ul>
 </div>
 <hr/>
-<div>
-    <c:forEach items="${articleList}" var="article">
-        <div>
-            <h3><a href="javascript:void(0)">${article.title}</a></h3>
-            <p>${article.content}</p>
-            <p>${article.userName}  评论 0 喜欢 ${article.likeNums}</p>
-            <img src="${article.image}"/>
-        </div>
-    </c:forEach>
+<div id="articleShow">
+   <%-- <c:forEach items="${articleList}" var="article">
+        <li>
+            <img class="articleImg" src="${article.image}" style="float: right;position: relative;right:700px;"/>
+            <div class="articleShow">
+                <h3 style="width: 800px" ><a href="javascript:void(0)">${article.title}</a></h3>
+                <p style="width: 800px">${article.content}</p>
+                <p style="width: 800px">${article.userName}  评论 0 喜欢 ${article.likeNums}</p>
+            </div>
+        </li>
+    </c:forEach>--%>
+</div>
+<div class="showMore"  >
+    <input id="showMore" name="1" type="button" onclick="showMore(this)" value="阅读更多" style="font-size: 20px; ;">
 </div>
 
 </body>

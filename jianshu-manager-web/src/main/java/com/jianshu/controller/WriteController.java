@@ -1,11 +1,13 @@
 package com.jianshu.controller;
 
 import com.jianshu.otherpojo.JianshuResult;
+import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.Article;
 import com.jianshu.service.ArticleCollectionService;
 import com.jianshu.service.ArticleService;
 import com.jianshu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,9 @@ public class WriteController {
     private UserService userService;
     @Autowired
     private ArticleCollectionService collectionService;
+
+    @Value("${ARTICLE_CURRENT_COUNT}")
+    private Integer ARTICLE_CURRENT_COUNT;
 
     @RequestMapping(value = "/write/article",method = RequestMethod.GET)
     @ResponseBody
@@ -86,5 +91,14 @@ public class WriteController {
     public JianshuResult deleteArticle(Integer id){
         articleService.deleteArticle(id);
         return JianshuResult.ok();
+    }
+
+    @RequestMapping(value = "/index/articlePage",method = RequestMethod.GET)
+    @ResponseBody
+    public PageBean<Article> selectArticlePage(Integer currentPage){
+        int index=(currentPage-1)*ARTICLE_CURRENT_COUNT;
+        PageBean pageBean = articleService.selectPageArticle(currentPage, index, ARTICLE_CURRENT_COUNT);
+        return  pageBean;
+
     }
 }

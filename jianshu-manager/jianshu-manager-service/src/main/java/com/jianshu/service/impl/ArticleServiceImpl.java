@@ -2,12 +2,14 @@ package com.jianshu.service.impl;
 
 import com.jianshu.mapper.ArticleMapper;
 import com.jianshu.mapper.UserMapper;
+import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.Article;
 import com.jianshu.pojo.User;
 import com.jianshu.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +30,13 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article selectArticleById(int id) {
-        return mapper.selectArticleById(id);
+
+        Article article = mapper.selectArticleById(id);
+        article.setNumber(article.getContent().length());
+        SimpleDateFormat format=new SimpleDateFormat("yyyy.MM.dd HH:mm ");
+        article.setShowTime(format.format(article.getUpdateTime()));
+
+        return article;
     }
 
     @Override
@@ -72,5 +80,30 @@ public class ArticleServiceImpl implements ArticleService {
             articleList.get(i).setUserName(user.getNickName());
         }
         return articleList;
+    }
+
+    @Override
+    public PageBean selectPageArticle(int currentPage, int index, int currentCount) {
+        PageBean<Article> pageBean=new PageBean<>();
+        //设置当前页
+        pageBean.setCurrentPage(currentPage);
+        //设置当前显示条数
+        pageBean.setCurrentCount(currentCount);
+        //设置总条数
+        int totalCount=mapper.selectCountArticle();
+        pageBean.setTotalCount(totalCount);
+        //设置总页数
+        int totalPage=(int)Math.ceil(1.0*totalCount/currentCount);
+        pageBean.setTotalPage(totalPage);
+        //设置每页显示数据
+        List<Article> articles=mapper.selectPageArticle(index,currentCount );
+        for(int i=0;i<articles.size();i++){
+            User user = userMapper.selectUserById(articles.get(i).getUserId());
+            articles.get(i).setContent(articles.get(i).getContent().substring(0,5)+"...");
+            articles.get(i).setUserName(user.getNickName());
+        }
+        pageBean.setShowList(articles);
+
+        return pageBean;
     }
 }
