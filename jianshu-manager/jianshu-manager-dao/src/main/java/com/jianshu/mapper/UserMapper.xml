@@ -29,8 +29,8 @@
         select id,nickname,username,pwd,sex,phone,mail,user_desc,fans_nums,concern_nums,create_time,update_time,img
         FROM user
     </select>
-    <select id="selectByUserName"  resultType="String">
-        SELECT pwd FROM user WHERE username=#{userName,jdbcType=VARCHAR}
+    <select id="selectByUserName"  resultType="com.jianshu.pojo.User">
+        SELECT * FROM user WHERE username=#{userName,jdbcType=VARCHAR}
     </select>
     <select id="selectUserById" parameterType="Integer" resultMap="BaseResultMap">
         SELECT id,nickname,username,pwd,sex,phone,mail,user_desc,fans_nums,concern_nums,create_time,update_time,img

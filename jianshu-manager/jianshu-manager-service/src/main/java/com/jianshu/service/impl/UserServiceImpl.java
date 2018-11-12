@@ -62,16 +62,16 @@ public class UserServiceImpl implements UserService {
             return JianshuResult.build(400,"非法的参数") ;
         }
         //3.调用mapper的查询方法 获取数据
-        String str = mapper.selectByUserName(param);
+        User user = mapper.selectByUserName(param);
         //4.如果查询到了数据   --数据不可以用   false
-        if(str!=null&&!"".equals(str)){
+        if(user!=null){
             return JianshuResult.build(202, "用户名存在");
         }
         return JianshuResult.ok(true);
     }
     //登入验证
     @Override
-    public String selectPwdByUserName(String userName) {
+    public User selectPwdByUserName(String userName) {
         return mapper.selectByUserName(userName);
     }
 

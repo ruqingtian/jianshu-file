@@ -21,7 +21,7 @@
 <jsp:include page="top.jsp"/>
 <div style="position:relative; margin-left:10px; margin-top:50px;">
     <h2>${article.title}</h2><br/>
-    <p><img src="${user.img}"/>${user.nickName}<input type="button" value="+关注" style="font-size: 15px; background: #6ce26c"/></p>
+    <p><img  class="smallImg" src="${user.img}"/>${user.nickName}<input type="button" value="+关注" style="font-size: 15px; background: #6ce26c"/></p>
     <p style="font-size: 15px">${article.showTime} 字数 ${article.number} 阅读 ${article.readNums} 评论 0 喜欢 ${article.likeNums}</p>
 </div>
 <div>

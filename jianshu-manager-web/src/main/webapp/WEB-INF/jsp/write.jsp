@@ -174,6 +174,9 @@
         function submitArticle() {
             var title=$("#articleTitle").val();
             var id=$("#articleId").val();
+            if(id=-100){
+                alert("请选择你要修改的文章");
+            }
             var ue = UE.getEditor('container');
             var content=ue.getContent();
 
@@ -195,8 +198,11 @@
         }
         //新建文章
         function saveArticle(obj) {
+            console.log(23);
             var userId=$(obj).attr('id');
-
+            console.log(userId);
+            userId=parseInt(userId.substring(6,userId.length));
+            console.log(userId);
             var collectionId=$("#collectionName").attr("name");
 
 
@@ -221,8 +227,9 @@
                                 if(data[i].status===1){
                                     sta="已发布";
                                 }
-                                var   content="<br/><input id="+data[i].id+" type='button' class='articleName' value="+data[i].title+" /><span>("+sta+")</span>";
-                                $("#collectionName").append(content+"<input id='deleteArticle' name="+collectionId+" style='display:none' type='button' value='删除'/>");
+                                var   content="<br/><input id="+data[i].id+" type='button' class='articleName' value="+data[i].title+" />("+sta+")";
+
+                                $("#collectionName").append(content+"<input id='deleteArticle' name="+data[i].collectionId+" style='display:none' type='button' value='删除'/>");
                             }
                             $("#collectionName").append("<hr/>");
                         }
@@ -276,12 +283,12 @@
     </script>
 </head>`
 <body>
-<h1>${nickName}</h1><br/>
+<h1>${user.nickName}</h1><br/>
 <div>
 
     文章集：<a href="javascript:void(0)" onclick="saveCollection()">新建文集</a> <br/>
     <div id="newCollectionName" style="display:none">
-            <input id="userId" type="hidden" value="${userId}">
+            <input id="userId" type="hidden" value="${user.id}">
             <input  type='text' onclick="newCollNameReset()"  id='newCollName'/>
             <input type='button' onclick="submitCollectionName()" value='提交' />
             <input id='newCollectionNameButton' onclick='updateDisplay()'  type='button' value='取消' />
@@ -299,7 +306,7 @@
     </c:forEach>
 </div>
 <div>
-    <p id="newSaveArticle"  style="display:none">文章:<a id="${userId}"   href="javascript:void(0)" onclick="saveArticle(this)">新建文章</a></p>
+    <p id="newSaveArticle"  style="display:none">文章:<a id="UserId+${user.id}"   href="javascript:void(0)" onclick="saveArticle(this)">新建文章</a></p>
     <div  id="collectionName"></div>
 </div>
 
@@ -311,7 +318,7 @@
 
         标题：<input style="width: 90%" type="text" name="title" value="无标题文章" id="articleTitle"/>
 
-        <input type="hidden" id="articleId" name="articleId"  />
+        <input type="hidden" id="articleId" name="articleId" value="-100"   />
         <script type="text/plain" id="container" name="content" >
             这里是初始化内容
         </script>

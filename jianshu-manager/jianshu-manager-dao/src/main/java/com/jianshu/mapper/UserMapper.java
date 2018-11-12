@@ -15,7 +15,7 @@ public interface UserMapper {
     //查询所有的用户
     List<User> selectAllUser();
     //根据用户名查询
-    String selectByUserName(String userName);
+    User selectByUserName(String userName);
 
     //分页查询主页显示用户
     List<User> selectPageUser(@Param("index") int index,@Param("currentCount") int currentCount);

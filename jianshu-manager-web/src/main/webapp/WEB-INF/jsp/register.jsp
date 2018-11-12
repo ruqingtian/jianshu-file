@@ -76,6 +76,7 @@
             }
         }
         function checkPhone() {
+            console.log(21);
             var inputNode=document.getElementById("phone");
             var content=inputNode.value;
             var spanNode=document.getElementById("userPhone");
@@ -126,7 +127,7 @@
         用户名：<input type="text" name="userName" id="userName" onblur="checkName()"><span id="userId"></span><br>
         设置密码：<input type="password" name="pwd" id="pwd" onblur="checkPwd()"><span id="userPwd"></span><br>
         确认密码：<input type="password" name="pwd2" id="pwd2" onblur="checkPwd2()"><span id="userPwd2"></span><br/>
-        手机号：<input type="text" name="phone" id="phone" onblur="checkPhone()"><span id="userPhone"></span><br>
+        手机号：<input type="text" name="phone" id="phone" onkeyup="checkPhone()"><span id="userPhone"></span><br>
 
 
 

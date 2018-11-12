@@ -15,7 +15,7 @@ public interface UserService {
     public JianshuResult checkName(String param,Integer type);
 
     //根据用户名查密码
-    public String selectPwdByUserName(String userName);
+    public User selectPwdByUserName(String userName);
 
     //根据id 查询用户
     public User selectUserById(int id);

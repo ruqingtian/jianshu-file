@@ -50,11 +50,14 @@ public class WriteController {
     @ResponseBody
     public Article saveArticle(@RequestParam String title,  @RequestParam Integer articleId, @RequestParam String content)  {
 
-        content=content.substring(3,content.length()-4);
-        articleService.updateArticleById(articleId, title, content);
-        Article article = articleService.selectArticleById(articleId);
+        if(articleId!=-100) {
+            content = content.substring(3, content.length() - 4);
+            articleService.updateArticleById(articleId, title, content);
+            Article article = articleService.selectArticleById(articleId);
 
-        return article;
+            return article;
+        }
+        return null;
     }
 
     @RequestMapping(value = "/save/collection",method = RequestMethod.POST)

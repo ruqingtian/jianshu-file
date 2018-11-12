@@ -8,11 +8,14 @@ import com.jianshu.service.ArticleCollectionService;
 import com.jianshu.service.ArticleService;
 import com.jianshu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -37,18 +40,31 @@ public class JumpPageController {
     }
     //跳转写文章的页面
     @RequestMapping(value = "/write",method = RequestMethod.GET)
-    public String write(Model model){
-        //模拟登入
-        int userId=2;
+    public String write(Model model,HttpServletRequest request){
 
         //注入ArticleCollectionserviceid
         //用户
-        User user = userService.selectUserById(userId);
-        model.addAttribute("nickName",user.getNickName() );
-        model.addAttribute("userId",userId );
-        //文章集
-        List<Article_collection> collections = collectionService.selectArticleCollectionByUserId(userId);
-        model.addAttribute("collectionList", collections);
+        Cookie[] cookies = request.getCookies();
+        String userId="";
+        User user=new User();
+        if(cookies!=null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("USERID")) {
+                    userId = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        if(!"".equals(userId)){
+            user = userService.selectUserById(Integer.parseInt(userId));
+            model.addAttribute("user",user );
+            List<Article_collection> collections = collectionService.selectArticleCollectionByUserId(user.getId());
+            model.addAttribute("collectionList", collections);
+
+        }else{
+            return "login";
+        }
+
 
 
 
@@ -57,7 +73,7 @@ public class JumpPageController {
 
     //主页
     @RequestMapping(value = "/",method = RequestMethod.GET)
-    public String index(Model model){
+    public String index(Model model, HttpServletRequest request){
       /*  List<HomeUser> list = service.selectHomeUser();
         model.addAttribute("homeUserList", list);*/
         int currentPage=1;
@@ -67,6 +83,22 @@ public class JumpPageController {
         model.addAttribute("pageBean", pageBean);
         List<Article> articleList = articleService.selectAllArticle();
         model.addAttribute("articleList",articleList );
+        Cookie[] cookies = request.getCookies();
+        String userId="";
+        User user=new User();
+        if(cookies!=null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("USERID")) {
+                    userId = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        if(!"".equals(userId)){
+            user = userService.selectUserById(Integer.parseInt(userId));
+
+        }
+        model.addAttribute("user",user);
         return "index";
     }
     //文章详情

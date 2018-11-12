@@ -11,6 +11,7 @@
 
 <html>
 <head>
+
     <script type="text/javascript" src="/js/jquery-1.8.3.js"></script>
     <title>简书-创作你的创作</title>
 
@@ -100,7 +101,7 @@
 
                     $("#pageUser").html("");
                     for (var i = 0; i < data.showList.length; i++) {
-                        var count = " <img src=" + data.showList[i].img + "/>  " + data.showList[i].nickName + ": 写了0.0 " + data.showList[i].fansNums + " 喜欢 <a href=''>关注</a><br/>";
+                        var count = " <img class='smallImg' src=" + data.showList[i].img + "/>  " + data.showList[i].nickName + ": 写了0.0 " + data.showList[i].fansNums + " 喜欢 <a href=''>关注</a><br/>";
                         $("#pageUser").append(count);
 
                     }
@@ -117,7 +118,7 @@
               success:function (data) {
                   console.log(data);
                  for(var i=0;i<data.showList.length;i++){
-                  var count="<li><img class='articleImg' src="+data.showList[i].image+" style='float: right;position: relative;right:700px;'/>" +
+                  var count="<li><img class='articleImg smallImg' src="+data.showList[i].image+" style='float: right;position: relative;right:700px;'/>" +
                       "<div class='articleShow'><h3 style='width: 800px' ><a href='/article/With?id="+data.showList[i].id+"' target='_blank'>"+data.showList[i].title+"</a></h3>" +
                       "<p style='width: 800px'>"+data.showList[i].content+"</p> " +
                       "<p style='width: 800px'>"+data.showList[i].userName+"  评论 0 喜欢"+data.showList[i].likeNums+"</p></div></li>"
@@ -136,13 +137,13 @@
             $(obj).addClass("currentPage");
             $.ajax({
                 type:"GET",
-                url:"/index/page",
+                url:"/index/userPage",
                 data:{currentPage:currentPage},
                 success:function (data) {
 
                     $("#pageUser").html("");
                     for(var i=0;i<data.showList.length;i++){
-                   var count=" <img src="+data.showList[i].img+"/>  "+data.showList[i].nickName+": 写了0.0 "+data.showList[i].fansNums+" 喜欢 <a href=''>关注</a><br/>";
+                   var count=" <img  class='smallImg' src="+data.showList[i].img+"/>  "+data.showList[i].nickName+": 写了0.0 "+data.showList[i].fansNums+" 喜欢 <a href=''>关注</a><br/>";
                    $("#pageUser").append(count);
 
                     }
@@ -161,13 +162,13 @@
                 $("a[name="+currentPage+''+"]").addClass("currentPage");
                 $.ajax({
                     type:"GET",
-                    url:"/index/page",
+                    url:"/index/userPage",
                     data:{currentPage:currentPage},
                     success:function (data) {
 
                         $("#pageUser").html("");
                         for(var i=0;i<data.showList.length;i++){
-                            var count=" <img src="+data.showList[i].img+"/>  "+data.showList[i].nickName+": 写了0.0 "+data.showList[i].fansNums+" 喜欢 <a href=''>关注</a><br/>";
+                            var count=" <img  class='smallImg' src="+data.showList[i].img+"/>  "+data.showList[i].nickName+": 写了0.0 "+data.showList[i].fansNums+" 喜欢 <a href=''>关注</a><br/>";
                             $("#pageUser").append(count);
                         }
                     },
@@ -190,13 +191,13 @@
                 $("a[name=" + currentPage + '' + "]").addClass("currentPage");
                 $.ajax({
                     type: "GET",
-                    url: "/index/page",
+                    url: "/index/userPage",
                     data: {currentPage: currentPage},
                     success: function (data) {
 
                         $("#pageUser").html("");
                         for (var i = 0; i < data.showList.length; i++) {
-                            var count = " <img src=" + data.showList[i].img + "/>  " + data.showList[i].nickName + ": 写了0.0 " + data.showList[i].fansNums + " 喜欢 <a href=''>关注</a><br/>";
+                            var count = " <img  class='smallImg' src=" + data.showList[i].img + "/>  " + data.showList[i].nickName + ": 写了0.0 " + data.showList[i].fansNums + " 喜欢 <a href=''>关注</a><br/>";
                             $("#pageUser").append(count);
 
                         }
@@ -217,13 +218,13 @@
             $("a[name=" + currentPage + '' + "]").addClass("currentPage");
             $.ajax({
                 type: "GET",
-                url: "/index/page",
+                url: "/index/userPage",
                 data: {currentPage: currentPage},
                 success: function (data) {
 
                     $("#pageUser").html("");
                     for (var i = 0; i < data.showList.length; i++) {
-                        var count = " <img src=" + data.showList[i].img + "/>  " + data.showList[i].nickName + ": 写了0.0 " + data.showList[i].fansNums + " 喜欢 <a href=''>关注</a><br/>";
+                        var count = " <img  class='smallImg' src=" + data.showList[i].img + "/>  " + data.showList[i].nickName + ": 写了0.0 " + data.showList[i].fansNums + " 喜欢 <a href=''>关注</a><br/>";
                         $("#pageUser").append(count);
 
                     }
@@ -233,7 +234,7 @@
                 dataType: "json"
             })
         }
-        function showMore(obj) {
+        function showMoreArticle(obj) {
             var name=$(obj).attr('name');
             name=parseInt(name)+1;
 
@@ -300,7 +301,7 @@
     </c:forEach>--%>
 </div>
 <div class="showMore"  >
-    <input id="showMore" name="1" type="button" onclick="showMore(this)" value="阅读更多" style="font-size: 20px; ;">
+    <input id="showMore" name="1" type="button" onclick="showMoreArticle(this)" value="阅读更多" style="font-size: 20px; ;">
 </div>
 
 </body>

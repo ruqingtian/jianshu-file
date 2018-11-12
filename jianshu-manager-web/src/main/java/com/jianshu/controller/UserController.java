@@ -3,6 +3,7 @@ package com.jianshu.controller;
 import com.jianshu.otherpojo.JianshuResult;
 import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.HomeUser;
+import com.jianshu.pojo.User;
 import com.jianshu.service.UserService;
 
 import com.jianshu.util.JsonUtils;
@@ -74,12 +75,12 @@ public class UserController {
     @RequestMapping(value = "/user/login",method = RequestMethod.POST)
     @ResponseBody
     public JianshuResult login(String userName,String pwd){
-        String s = service.selectPwdByUserName(userName);
-        if(s==null||!s.equals(pwd)){
+        User user = service.selectPwdByUserName(userName);
+        if(user==null||!user.getPwd().equals(pwd)){
             return  JianshuResult.build(400,"用户名或者密码错误" );
         }
 
-            return JianshuResult.ok("登入成功");
+            return JianshuResult.ok(user);
 
     }
 
