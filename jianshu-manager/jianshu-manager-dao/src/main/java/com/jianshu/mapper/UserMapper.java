@@ -25,6 +25,9 @@ public interface UserMapper {
 
     //根据id 修改用户
     int update(User user);
+
+    //修改用户信息
+    public void updateUser(User user);
     
     //根据id 查询用户
     User selectUserById(int id);

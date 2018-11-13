@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void saveUser(String nickName, String userName, String pwd, String sex, String phone, String mail,String img) {
+    public void saveUser(String nickName, String userName, String pwd, int sex, String phone, String mail,String img) {
 
         User user=new User();
 
@@ -119,5 +119,15 @@ public class UserServiceImpl implements UserService {
         }
         pageBean.setShowList(users);
         return pageBean;
+    }
+
+    @Override
+    public void updateUser(User user) {
+        User user1 = mapper.selectUserById(user.getId());
+        user.setUpdateTime(new Date());
+        if("".equals(user.getImg())){
+            user.setImg(user1.getImg());
+        }
+        mapper.updateUser(user);
     }
 }

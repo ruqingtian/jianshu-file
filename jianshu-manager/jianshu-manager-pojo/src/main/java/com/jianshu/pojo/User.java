@@ -9,7 +9,7 @@ public class User implements Serializable {
     private String nickName;
     private String userName;
     private String pwd;
-    private String sex;
+    private int sex;
     private String phone;
     private String mail;
     private String userDesc;
@@ -17,6 +17,15 @@ public class User implements Serializable {
     private int concernNums;
     private Date createTime;
     private Date updateTime;
+    private String web;
+
+    public String getWeb() {
+        return web;
+    }
+
+    public void setWeb(String web) {
+        this.web = web;
+    }
 
     public String getImg() {
         return img;
@@ -58,11 +67,11 @@ public class User implements Serializable {
         this.pwd = pwd==null?null:pwd.trim();;
     }
 
-    public String getSex() {
+    public int getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(int sex) {
         this.sex = sex;
     }
 

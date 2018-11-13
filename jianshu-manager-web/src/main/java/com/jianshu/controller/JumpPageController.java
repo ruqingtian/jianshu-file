@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
@@ -40,7 +41,7 @@ public class JumpPageController {
     }
     //跳转写文章的页面
     @RequestMapping(value = "/write",method = RequestMethod.GET)
-    public String write(Model model,HttpServletRequest request){
+    public String write(Model model,HttpServletRequest request,HttpServletResponse response){
 
         //注入ArticleCollectionserviceid
         //用户
@@ -51,6 +52,8 @@ public class JumpPageController {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("USERID")) {
                     userId = cookie.getValue();
+                    cookie.setMaxAge(24*60*60);
+                    response.addCookie(cookie);
                     break;
                 }
             }
@@ -73,7 +76,7 @@ public class JumpPageController {
 
     //主页
     @RequestMapping(value = "/",method = RequestMethod.GET)
-    public String index(Model model, HttpServletRequest request){
+    public String index(Model model, HttpServletRequest request, HttpServletResponse response){
       /*  List<HomeUser> list = service.selectHomeUser();
         model.addAttribute("homeUserList", list);*/
         int currentPage=1;
@@ -90,6 +93,8 @@ public class JumpPageController {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("USERID")) {
                     userId = cookie.getValue();
+                    cookie.setMaxAge(24*60*60);
+                    response.addCookie(cookie);
                     break;
                 }
             }
@@ -103,13 +108,40 @@ public class JumpPageController {
     }
     //文章详情
     @RequestMapping(value = "/article/With",method = RequestMethod.GET)
-    public String articleWith(Integer id,Model model){
+    public String articleWith(Integer id,Model model,HttpServletResponse response,HttpServletRequest request){
         articleService.readNumsAddOne(id);
         Article article = articleService.selectArticleById(id);
         User user = userService.selectUserById(article.getUserId());
         model.addAttribute("article",article );
-        model.addAttribute("user",user );
+        model.addAttribute("user1",user );
+        Cookie[] cookies = request.getCookies();
+        String userId="";
+        User user1=new User();
+        if(cookies!=null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("USERID")) {
+                    userId = cookie.getValue();
+                    cookie.setMaxAge(24*60*60);
+                    response.addCookie(cookie);
+                    break;
+                }
+            }
+        }
+        if(!"".equals(userId)){
+            user1 = userService.selectUserById(Integer.parseInt(userId));
+
+        }
+        model.addAttribute("user",user1);
 
         return "article";
+    }
+
+    //跳转页面个人设置
+    @RequestMapping(value ="/user/setting",method = RequestMethod.GET)
+    public String userSetting(Integer id,Model model){
+        User user = userService.selectUserById(id);
+        model.addAttribute("user",user );
+
+        return "userSetting";
     }
 }

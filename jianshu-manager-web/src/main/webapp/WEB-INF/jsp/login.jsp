@@ -46,11 +46,11 @@
                         if(data.status==400){
                             alert(data.msg);
                         }else if(data.status==200){
-                            var expires=1*24*60*60*1000;
-                            var date=new Date(new Date()+expires);
-                            console.log(date);
-                            console.log(data.data.nickName);
-                            document.cookie="USERID="+data.data.id+";expires="+date.toUTCString();
+
+                            var date=new Date();
+                            date.setTime(date.getTime()+(24*60*60*1000));
+                            var expires="expires="+date.toUTCString();
+                            document.cookie="USERID="+data.data.id+";"+expires;
                             window.location.href=document.referrer;
 
                         }

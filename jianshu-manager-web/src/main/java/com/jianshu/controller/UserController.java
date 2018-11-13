@@ -32,7 +32,7 @@ public class UserController {
     //注册用户
     @RequestMapping(value="/user/save",method= RequestMethod.POST)
     @ResponseBody
-    public JianshuResult dosave(String nickName, String userName, String pwd, String sex, String phone, String mail, MultipartFile img, HttpServletRequest request){
+    public JianshuResult dosave(String nickName, String userName, String pwd, Integer sex, String phone, String mail, MultipartFile img, HttpServletRequest request){
 
         String filePath="";
         String uuid="";
@@ -92,6 +92,16 @@ public class UserController {
         int index=(currentPage-1)*USER_CURRENT_COUNT;
         PageBean pageBean = service.selectPageUser(currentPage, index, USER_CURRENT_COUNT);
         return pageBean;
+
+    }
+    //修改所有信息
+    @RequestMapping(value = "/user/update",method = RequestMethod.POST)
+    public String update(User user,Model model){
+        service.updateUser(user);
+        User user1 = service.selectUserById(user.getId());
+        model.addAttribute("user",user1 );
+
+        return "userSetting";
 
     }
 }

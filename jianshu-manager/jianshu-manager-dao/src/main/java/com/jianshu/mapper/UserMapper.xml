@@ -6,7 +6,7 @@
         <result column="nickname" property="nickName" jdbcType="VARCHAR"/>
         <result column="username" property="userName" jdbcType="VARCHAR"/>
         <result column="pwd" property="pwd" jdbcType="VARCHAR"/>
-        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="INTEGER"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="mail" property="mail" jdbcType="VARCHAR"/>
         <result column="user_desc" property="userDesc" jdbcType="VARCHAR"/>
@@ -15,6 +15,7 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="img" property="img" jdbcType="VARCHAR"/>
+        <result column="web" property="web" jdbcType="VARCHAR"/>
 
     </resultMap>
     <insert id="insert" parameterType="com.jianshu.pojo.User">
@@ -47,13 +48,19 @@
     <select id="selectTotalCount" resultType="Integer">
         SELECT count(id) from user
     </select>
-   <!-- <update id="update" parameterType="com.jianshu.pojo.User">
+    <!--修改用户信息-->
+    <update id="updateUser" parameterType="com.jianshu.pojo.User">
         UPDATE user  SET
-        nickname=#{nickName,jdbcType=VARCHAR},username=#{userName,jdbcType=VARCHAR},pwd=#{pwd,jdbcType=VARCHAR},
-        sex=#{sex,jdbcType=VARCHAR},phone=#{phone,jdbcType=VARCHAR},mail=#{mail,jdbcType=VARCHAR},user_desc=#{userDesc,jdbcType=VARCHAR},
-        fans_nums=#{fansNums,jdbcType=INTEGER},concern_nums=#{concernNums,jdbcType=INTEGER},update_time=#{updateTime,jdbcType=TIMESTAMP}
-        where id=#{id,jdbcType=INTEGER}
-    </update>-->
+        img=#{img},
+        nickname=#{nickName},
+        sex=#{sex},
+        user_desc=#{userDesc},
+        phone=#{phone},
+        mail=#{mail},
+        web=#{web},
+        update_time=#{updateTime}
+        where id=#{id}
+    </update>
 
 
 </mapper>

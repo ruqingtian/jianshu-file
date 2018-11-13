@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserService {
     //创建用户
-    public void  saveUser(String nickName,String userName,String pwd,String sex,String phone,String mail,String img);
+    public void  saveUser(String nickName,String userName,String pwd,int sex,String phone,String mail,String img);
 
     //检验数据
     public JianshuResult checkName(String param,Integer type);
@@ -25,5 +25,5 @@ public interface UserService {
     //分页查询用户
     public PageBean selectPageUser(int currentPage,int index, int currentCount);
     //修改用户
-//    public void updateUser(User user);
+    public void updateUser(User user);
 }

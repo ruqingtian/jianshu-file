@@ -210,6 +210,7 @@
                 type:"POST",
                 url:"/save/article",
                 data:{userId:userId,collectionId:collectionId},
+
                 success:function (data) {
                     $.ajax({
                         async:false,

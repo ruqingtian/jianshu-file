@@ -8,9 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-
+    <script type="text/javascript" src="/js/jquery-1.8.3.js"></script>
+    <script type="text/javascript " src="/js/jquery.cookie.js"></script>
     <style type="text/css">
-        div{
+        .content{
             width: 80%;
             text-align: center;
         }
@@ -19,15 +20,15 @@
 </head>
 <body>
 <jsp:include page="top.jsp"/>
-<div style="position:relative; margin-left:10px; margin-top:50px;">
+<div class="content" style="position:relative; margin-left:10px; margin-top:50px;">
     <h2>${article.title}</h2><br/>
-    <p><img  class="smallImg" src="${user.img}"/>${user.nickName}<input type="button" value="+关注" style="font-size: 15px; background: #6ce26c"/></p>
+    <p><img  class="smallImg" src="${user1.img}"/>${user1.nickName}<input type="button" value="+关注" style="font-size: 15px; background: #6ce26c"/></p>
     <p style="font-size: 15px">${article.showTime} 字数 ${article.number} 阅读 ${article.readNums} 评论 0 喜欢 ${article.likeNums}</p>
 </div>
-<div>
+<div class="content">
 <img src="${article.image}"/>
 </div>
-<div>
+<div class="content">
     ${article.content}
 </div>
 </body>
