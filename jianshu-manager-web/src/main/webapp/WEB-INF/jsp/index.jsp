@@ -289,16 +289,7 @@
 </div>
 <hr/>
 <div id="articleShow">
-   <%-- <c:forEach items="${articleList}" var="article">
-        <li>
-            <img class="articleImg" src="${article.image}" style="float: right;position: relative;right:700px;"/>
-            <div class="articleShow">
-                <h3 style="width: 800px" ><a href="javascript:void(0)">${article.title}</a></h3>
-                <p style="width: 800px">${article.content}</p>
-                <p style="width: 800px">${article.userName}  评论 0 喜欢 ${article.likeNums}</p>
-            </div>
-        </li>
-    </c:forEach>--%>
+
 </div>
 <div class="showMore"  >
     <input id="showMore" name="1" type="button" onclick="showMoreArticle(this)" value="阅读更多" style="font-size: 20px; ;">

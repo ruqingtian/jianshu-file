@@ -104,7 +104,7 @@ public class JumpPageController {
     //文章详情
     @RequestMapping(value = "/article/With",method = RequestMethod.GET)
     public String articleWith(Integer id,Model model){
-
+        articleService.readNumsAddOne(id);
         Article article = articleService.selectArticleById(id);
         User user = userService.selectUserById(article.getUserId());
         model.addAttribute("article",article );

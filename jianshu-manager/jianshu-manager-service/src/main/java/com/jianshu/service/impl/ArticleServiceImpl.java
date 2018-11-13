@@ -106,4 +106,11 @@ public class ArticleServiceImpl implements ArticleService {
 
         return pageBean;
     }
+
+    @Override
+    public void readNumsAddOne(int id) {
+        Article article = mapper.selectArticleById(id);
+        int readNums=article.getReadNums()+1;
+        mapper.readNumsAddOne(id,readNums );
+    }
 }

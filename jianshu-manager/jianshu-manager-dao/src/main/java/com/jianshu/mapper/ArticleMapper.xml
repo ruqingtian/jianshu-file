@@ -52,4 +52,8 @@
     <select id="selectCountArticle" resultType="Integer">
         SELECT count(id) from article
     </select>
+    <!--点击一次阅读量加一-->
+    <update id="readNumsAddOne" >
+        UPDATE article SET read_nums=#{readNums} WHERE id=#{id}
+    </update>
 </mapper>
