@@ -1,5 +1,8 @@
 package com.jianshu.pojo;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 

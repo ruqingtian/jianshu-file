@@ -116,7 +116,7 @@
 <div >
     <h3 class="title">
         <div>
-            <a href="/login">登入</a>
+            <a href="/login">登录</a>
             <b>·</b>
             <a href="/register">注册</a>
         </div>

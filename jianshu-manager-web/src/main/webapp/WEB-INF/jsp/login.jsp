@@ -10,7 +10,7 @@
 <head>
 
     <script type="text/javascript" src="/js/jquery-1.6.4.js"></script>
-    <title>登入</title>
+    <title>登录</title>
     <style type="text/css">
         div{
             width: 100%;
@@ -46,11 +46,6 @@
                         if(data.status==400){
                             alert(data.msg);
                         }else if(data.status==200){
-
-                            var date=new Date();
-                            date.setTime(date.getTime()+(24*60*60*1000));
-                            var expires="expires="+date.toUTCString();
-                            document.cookie="USERID="+data.data.id+";"+expires;
                             window.location.href=document.referrer;
 
                         }
@@ -67,7 +62,7 @@
 <div >
     <h3 class="title">
         <div>
-            <a href="/login">登入</a>
+            <a href="/login">登录</a>
             <b>·</b>
             <a href="/register">注册</a>
         </div>

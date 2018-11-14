@@ -34,42 +34,26 @@ public class JumpPageController {
     public String register(){
         return "register";
     }
-    //跳转登入页面
+    //跳转登录页面
     @RequestMapping("/login")
     public String login(){
         return "login";
     }
     //跳转写文章的页面
     @RequestMapping(value = "/write",method = RequestMethod.GET)
-    public String write(Model model,HttpServletRequest request,HttpServletResponse response){
+    public String write(Model model, HttpServletRequest request, HttpServletResponse response) {
 
         //注入ArticleCollectionserviceid
         //用户
-        Cookie[] cookies = request.getCookies();
-        String userId="";
-        User user=new User();
-        if(cookies!=null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("USERID")) {
-                    userId = cookie.getValue();
-                    cookie.setMaxAge(24*60*60);
-                    response.addCookie(cookie);
-                    break;
-                }
-            }
-        }
-        if(!"".equals(userId)){
-            user = userService.selectUserById(Integer.parseInt(userId));
-            model.addAttribute("user",user );
+
+        User user = new User();
+        int userId = getCookieUserId(request, response);
+        if(userId!=-10) {
+            user = userService.selectUserById(userId);
+            model.addAttribute("user", user);
             List<Article_collection> collections = collectionService.selectArticleCollectionByUserId(user.getId());
             model.addAttribute("collectionList", collections);
-
-        }else{
-            return "login";
         }
-
-
-
 
         return "/write";
     }
@@ -86,24 +70,7 @@ public class JumpPageController {
         model.addAttribute("pageBean", pageBean);
         List<Article> articleList = articleService.selectAllArticle();
         model.addAttribute("articleList",articleList );
-        Cookie[] cookies = request.getCookies();
-        String userId="";
-        User user=new User();
-        if(cookies!=null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("USERID")) {
-                    userId = cookie.getValue();
-                    cookie.setMaxAge(24*60*60);
-                    response.addCookie(cookie);
-                    break;
-                }
-            }
-        }
-        if(!"".equals(userId)){
-            user = userService.selectUserById(Integer.parseInt(userId));
 
-        }
-        model.addAttribute("user",user);
         return "index";
     }
     //文章详情
@@ -114,34 +81,35 @@ public class JumpPageController {
         User user = userService.selectUserById(article.getUserId());
         model.addAttribute("article",article );
         model.addAttribute("user1",user );
-        Cookie[] cookies = request.getCookies();
-        String userId="";
-        User user1=new User();
-        if(cookies!=null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("USERID")) {
-                    userId = cookie.getValue();
-                    cookie.setMaxAge(24*60*60);
-                    response.addCookie(cookie);
-                    break;
-                }
-            }
-        }
-        if(!"".equals(userId)){
-            user1 = userService.selectUserById(Integer.parseInt(userId));
-
-        }
-        model.addAttribute("user",user1);
 
         return "article";
     }
 
     //跳转页面个人设置
     @RequestMapping(value ="/user/setting",method = RequestMethod.GET)
-    public String userSetting(Integer id,Model model){
-        User user = userService.selectUserById(id);
+    public String userSetting(Model model,HttpServletRequest request,HttpServletResponse response){
+        int userId = getCookieUserId(request, response);
+        User user = userService.selectUserById(userId);
         model.addAttribute("user",user );
 
         return "userSetting";
+    }
+
+    //获取登录的用户id
+    public int getCookieUserId(HttpServletRequest request, HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+        String userId="-10";
+        if(cookies!=null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("USERID")) {
+                    userId = cookie.getValue();
+                    cookie.setMaxAge(24*60*60);
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                    break;
+                }
+            }
+        }
+        return Integer.parseInt(userId);
     }
 }

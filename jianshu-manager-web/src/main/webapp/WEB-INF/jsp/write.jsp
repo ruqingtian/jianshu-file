@@ -27,9 +27,18 @@
     </style>
     <script type="text/javascript">
 
-        // $(function () {
-        //     alert("123");
-        // });
+        $(function () {
+            $.ajax({
+                type:"GET",
+                url:"/user/isUserLogin",
+                success:function (data) {
+                    if(data.userName==null){
+                        location.href="/login";
+                    }
+                },
+                dataType:"json"
+            })
+        });
         // 获取文章标题
         function getCollection(obj) {
 
@@ -38,7 +47,7 @@
            var spanId=id;
 
             $("#collectionName").attr('name',id);
-            $("#collectionName").html("");
+
             $(".spanShow").removeClass("spanShow");
             $(".textNewName").removeClass("textNewName");
 
@@ -50,7 +59,7 @@
                 data:{id:id},
                 success:function (data) {
 
-
+                    $("#collectionName").html("");
                    document.getElementById('newSaveArticle').style.display="";
                     for(var i=0;i<data.length;i++){
 
@@ -220,19 +229,7 @@
                         dataType:"json",
                         success:function (data) {
 
-                            $("#collectionName").html("");
-                            document.getElementById('newSaveArticle').style.display="";
-                            for(var i=0;i<data.length;i++){
-
-                                var sta="未发布";
-                                if(data[i].status===1){
-                                    sta="已发布";
-                                }
-                                var   content="<br/><input id="+data[i].id+" type='button' class='articleName' value="+data[i].title+" />("+sta+")";
-
-                                $("#collectionName").append(content+"<input id='deleteArticle' name="+data[i].collectionId+" style='display:none' type='button' value='删除'/>");
-                            }
-                            $("#collectionName").append("<hr/>");
+                           articleForeach(data);
                         }
 
                     })
@@ -261,18 +258,7 @@
                         dataType:"json",
                         success:function (data) {
 
-                            $("#collectionName").html("");
-                            document.getElementById('newSaveArticle').style.display="";
-                            for(var i=0;i<data.length;i++){
-
-                                var sta="未发布";
-                                if(data[i].status===1){
-                                    sta="已发布";
-                                }
-                                var   content="<br/><input id="+data[i].id+" type='button' class='articleName' value="+data[i].title+" />("+sta+")";
-                                $("#collectionName").append(content+"<input id='deleteArticle' name="+collectionId+" style='display:none' type='button' value='删除'/>");
-                            }
-                            $("#collectionName").append("<hr/>");
+                          articleForeach(data);
                         }
 
                     })
@@ -280,6 +266,23 @@
                 dataType:"json"
             })
         })
+
+        //文章显示
+        function articleForeach(data) {
+            $("#collectionName").html("");
+            document.getElementById('newSaveArticle').style.display="";
+            for(var i=0;i<data.length;i++){
+
+                var sta="未发布";
+                if(data[i].status===1){
+                    sta="已发布";
+                }
+                var   content="<br/><input id="+data[i].id+" type='button' class='articleName' value="+data[i].title+" />("+sta+")";
+
+                $("#collectionName").append(content+"<input id='deleteArticle' name="+data[i].collectionId+" style='display:none' type='button' value='删除'/>");
+            }
+            $("#collectionName").append("<hr/>");
+        }
 
     </script>
 </head>`

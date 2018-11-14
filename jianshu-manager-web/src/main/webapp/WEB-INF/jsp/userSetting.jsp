@@ -29,12 +29,12 @@
 <body>
 <jsp:include page="top.jsp"></jsp:include>
 <div class="content">
-    <form action="/user/update" method="post">
+    <form action="/user/update" method="post" enctype="multipart/form-data">
         <table>
             <input type="hidden" name="id" value="${user.id}">
         <tr>
             <td><img class="touxiang" src="${user.img}"/> </td>
-            <td><input name="img"  type="file" value="${user.img}">更换头像</td>
+            <td><input name="image"  type="file"/>更换头像</td>
         </tr>
         <tr>
             <td>昵称</td>

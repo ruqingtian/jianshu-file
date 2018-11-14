@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
         }
         return JianshuResult.ok(true);
     }
-    //登入验证
+    //登录验证
     @Override
     public User selectPwdByUserName(String userName) {
         return mapper.selectByUserName(userName);
@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user) {
         User user1 = mapper.selectUserById(user.getId());
         user.setUpdateTime(new Date());
-        if("".equals(user.getImg())){
+        if("/upload/".equals(user.getImg())){
             user.setImg(user1.getImg());
         }
         mapper.updateUser(user);
