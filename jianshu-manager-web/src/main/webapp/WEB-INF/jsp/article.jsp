@@ -17,12 +17,74 @@
         }
     </style>
     <title>文章详情</title>
+    <script type="text/javascript">
+        $(function () {
+            var node=$(".yesAndNoConcern");
+            var userId=node.attr("name");
+            $.ajax({
+                type:"GET",
+                url:"/user/judgeConcern",
+                data:{"userId":userId},
+                success:function (data) {
+                    if(data.data=="未关注"){
+                        node.attr("value","+关注");
+                    }else if(data.data=="已关注"){
+                        node.attr("value","已关注");
+                    }
+                },
+                dataType:"json"
+            })
+        })
+
+        $(".yesAndNoConcern").live('mouseenter',function () {
+            var count=$(this).attr("value");
+            if(count=="已关注"){
+                $(this).attr("value","取消关注");
+            }
+        });
+        $(".yesAndNoConcern").live('mouseleave',function () {
+            var count=$(this).attr("value");
+            if(count=="取消关注"){
+                $(this).attr("value","已关注");
+            }
+        });
+        $(".yesAndNoConcern").live('click',function () {
+            var node=$(this);
+            var count=node.attr("value");
+            var id=node.attr("name");
+            if(count=="取消关注"){
+                $.ajax({
+                    type:"GET",
+                    url:"/user/deleteConcern",
+                    data:{"userId":id},
+                    success:function (data) {
+                        if(data.status==200) {
+                            node.attr("value", "+关注");
+                        }
+                    },
+                    dataType:"json"
+                })
+            }else if(count=="+关注"){
+                $.ajax({
+                    type:"GET",
+                    url:"/user/concern",
+                    data:{"userId":id},
+                    success:function (data) {
+                        if(data.status==200){
+                            node.attr("value","已关注");
+                        }
+                    },
+                    dataType:"json"
+                })
+            }
+        });
+    </script>
 </head>
 <body>
 <jsp:include page="top.jsp"/>
 <div class="content" style="position:relative; margin-left:10px; margin-top:50px;">
     <h2>${article.title}</h2><br/>
-    <p><img  class="smallImg" src="${user1.img}"/>${user1.nickName}<input type="button" value="+关注" style="font-size: 15px; background: #6ce26c"/></p>
+    <p><img  class="smallImg" src="${user1.img}"/>${user1.nickName}<input class="yesAndNoConcern" name="${article.userId}" type="button" value="+关注" style="font-size: 15px; background: #6ce26c"/></p>
     <p style="font-size: 15px">${article.showTime} 字数 ${article.number} 阅读 ${article.readNums} 评论 0 喜欢 ${article.likeNums}</p>
 </div>
 <div class="content">

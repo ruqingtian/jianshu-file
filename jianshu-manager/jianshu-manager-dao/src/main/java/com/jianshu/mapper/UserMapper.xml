@@ -10,7 +10,7 @@
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="mail" property="mail" jdbcType="VARCHAR"/>
         <result column="user_desc" property="userDesc" jdbcType="VARCHAR"/>
-        <result column="fans_nums" property="fansNums" jdbcType="INTEGER"/>
+
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="img" property="img" jdbcType="VARCHAR"/>
@@ -27,21 +27,21 @@
          #{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{img,jdbcType=VARCHAR})
     </insert>
     <select id="selectAllUser" resultMap="BaseResultMap">
-        select id,nickname,username,pwd,sex,phone,mail,user_desc,fans_nums,create_time,update_time,img
+        select id,nickname,username,pwd,sex,phone,mail,user_desc,create_time,update_time,img
         FROM user
     </select>
     <select id="selectByUserName"  resultType="com.jianshu.pojo.User">
         SELECT * FROM user WHERE username=#{userName,jdbcType=VARCHAR}
     </select>
     <select id="selectUserById" parameterType="Integer" resultMap="BaseResultMap">
-        SELECT id,nickname,username,pwd,sex,phone,mail,user_desc,fans_nums,create_time,update_time,img
+        SELECT id,nickname,username,pwd,sex,phone,mail,user_desc,create_time,update_time,img
         FROM USER
         WHERE id=#{userId}
     </select>
 
     <!--分页查询主页显示user-->
     <select id="selectPageUser" resultMap="BaseResultMap">
-        select id,nickname,fans_nums,img
+        select id,nickname,img
         FROM user limit #{index},#{currentCount}
     </select>
     <!--查询总条数-->

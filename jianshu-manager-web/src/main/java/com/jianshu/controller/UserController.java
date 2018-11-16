@@ -1,6 +1,7 @@
 package com.jianshu.controller;
 
 import com.jianshu.otherpojo.JianshuResult;
+import com.jianshu.otherpojo.MyPageUser;
 import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.Concern;
 import com.jianshu.pojo.HomeUser;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -140,6 +142,18 @@ public class UserController {
         response.addCookie(cookie);
         return JianshuResult.ok();
     }
+
+    //判断是否关注
+    @RequestMapping(value = "/user/judgeConcern",method = RequestMethod.GET)
+    @ResponseBody
+    public JianshuResult judgeConcern(Integer userId,HttpServletRequest request,HttpServletResponse response){
+        int cookieId = getCookieUserId(request, response);
+        Concern concern = concernService.selectConcern(cookieId, userId);
+        if(concern!=null){
+            return JianshuResult.ok("已关注");
+        }
+        return  JianshuResult.ok("未关注");
+    }
     //添加关注
     @RequestMapping(value = "/user/concern",method = RequestMethod.GET)
     @ResponseBody
@@ -156,6 +170,48 @@ public class UserController {
             concernService.deleteConcern(cookieId,userId );
         }
         return JianshuResult.ok("删除成功");
+    }
+
+    //查询关注
+    @RequestMapping(value = "/user/concernUser",method = RequestMethod.GET)
+    @ResponseBody
+    public List<MyPageUser> getConcernUser(Integer userId){
+        List<MyPageUser> list=new ArrayList<>();
+        List<Integer> integers = concernService.selectListByUserId(userId);
+        for(Integer id:integers){
+            MyPageUser myPageUser = userService.saveMyPageUser(id.intValue());
+            myPageUser.setConcernStatus(1);
+            list.add(myPageUser);
+
+        }
+        return list;
+    }
+    //查询粉丝
+    @RequestMapping(value = "/user/fansUser",method = RequestMethod.GET)
+    @ResponseBody
+    public List<MyPageUser> getFansUser(Integer concernId){
+        List<MyPageUser> list=new ArrayList<>();
+        List<Integer> integers = concernService.selectListByConcernId(concernId);
+        for(Integer id:integers){
+            MyPageUser myPageUser = userService.saveMyPageUser(id);
+            Concern concern = concernService.selectConcern(concernId, id);
+            if(concern!=null){
+                myPageUser.setConcernStatus(1);
+            }else{
+                myPageUser.setConcernStatus(0);
+            }
+            list.add(myPageUser);
+        }
+        return list;
+    }
+    //取消关注
+    @RequestMapping(value = "/user/deleteConcern",method = RequestMethod.GET)
+    @ResponseBody
+    public JianshuResult deleteConcern(Integer userId,HttpServletRequest request,HttpServletResponse response){
+        int cookieId = getCookieUserId(request, response);
+        concernService.deleteConcern(cookieId,userId );
+        return JianshuResult.ok();
+
     }
 
 

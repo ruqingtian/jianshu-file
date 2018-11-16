@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
             homeUser.setImg(users.get(i).getImg());
 
             homeUser.setNickName(users.get(i).getNickName());
-            homeUser.setLikeNums((users.get(i).getFansNums()));
+            homeUser.setLikeNums((concernMapper.selectListByConcernId(i).size()));
             list.add(homeUser);
         }
         return list;
@@ -122,8 +122,20 @@ public class UserServiceImpl implements UserService {
         pageBean.setTotalPage(totalPage);
         //设置每页显示数据
         List<User> users = mapper.selectPageUser(index, currentCount);
+        List<HomeUser> list=new ArrayList<>();
         for(int i=0;i<users.size();i++){
-            users.get(i).setImg("../.."+ users.get(i).getImg());
+            HomeUser homeUser=new HomeUser();
+            homeUser.setId(users.get(i).getId());
+            homeUser.setImg("../.."+users.get(i).getImg());
+            homeUser.setNickName(users.get(i).getNickName());
+            homeUser.setLikeNums(concernMapper.selectListByConcernId(users.get(i).getId()).size());
+            List<Article> articles = articleMapper.selectListByUserId(users.get(i).getId());
+            int count=0;
+            for(Article article:articles){
+                count+=article.getContent().length();
+            }
+            homeUser.setSumNums(count);
+
         }
         pageBean.setShowList(users);
         return pageBean;
@@ -148,7 +160,7 @@ public class UserServiceImpl implements UserService {
         myPageUser.setId(user.getId());
         myPageUser.setImg(user.getImg());
         myPageUser.setNickName(user.getNickName());
-        myPageUser.setFansNums(user.getFansNums());
+        myPageUser.setFansNums(concernMapper.selectListByConcernId(id).size());
         myPageUser.setConcernNums(integers.size());
         myPageUser.setArticleNums(articles.size());
         int count=0;

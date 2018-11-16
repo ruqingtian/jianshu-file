@@ -45,6 +45,87 @@
         },
         dataType:"json"
     })
+    }
+    function getConcern(obj) {
+        var userId=$(obj).parent().attr('name');
+        $.ajax({
+            type:"GET",
+            url:"/user/concernUser",
+            data:{"userId":userId},
+            success:function (data) {
+               showMypageUser(data);
+
+            },
+            dataType:"json"
+        })
+    }
+    function getFans(obj) {
+        var concernId=$(obj).parent().attr('name');
+        $.ajax({
+            type:"GET",
+            url:"/user/fansUser",
+            data:{"concernId":concernId},
+            success:function (data) {
+                showMypageUser(data);
+            },
+            dataType:"json"
+        })
+
+    }
+    $(".yesAndNoConcern").live('mouseenter',function () {
+       var count=$(this).attr("value");
+       if(count=="已关注"){
+           $(this).attr("value","取消关注");
+       }
+    });
+    $(".yesAndNoConcern").live('mouseleave',function () {
+            var count=$(this).attr("value");
+            if(count=="取消关注"){
+                $(this).attr("value","已关注");
+            }
+        });
+    $(".yesAndNoConcern").live('click',function () {
+            var node=$(this);
+            var count=node.attr("value");
+            var id=node.attr("name");
+           if(count=="取消关注"){
+               $.ajax({
+                   type:"GET",
+                   url:"/user/deleteConcern",
+                   data:{"userId":id},
+                   success:function (data) {
+                       if(data.status==200) {
+                           node.attr("value", "+关注");
+                       }
+                   },
+                   dataType:"json"
+               })
+           }else if(count=="+关注"){
+               $.ajax({
+                   type:"GET",
+                   url:"/user/concern",
+                   data:{"userId":id},
+                   success:function (data) {
+                       if(data.status==200){
+                           node.attr("value","已关注");
+                       }
+                   },
+                   dataType:"json"
+               })
+           }
+        });
+
+    function showMypageUser(data) {
+        $("#content").html("");
+        for(var i=0;i<data.length;i++){
+            var status="+关注"
+            if(data[i].concernStatus==1){
+                var status="已关注"
+            }
+            var content="<img  class='smallImg' src="+data[i].img+"/> <span style='font-size: 20px'>"+data[i].nickName+"</span><br/>" +
+                " 关注"+data[i].concernNums+"| 粉丝"+data[i].fansNums+" | 文章"+data[i].articleNums+"| 字数"+data[i].count+"  | 获得了"+data[i].likeNums+"个喜欢  <input class='yesAndNoConcern' style='font-size: 25px' name="+data[i].id+" type='button' value="+status+"><br/>";
+            $("#content").append(content);
+        }
 
     }
     </script>
@@ -59,7 +140,9 @@
     <input type="button" id="getAllArticle" onclick="getAllArticle(this)" value="文章"/>
     <input type="button" onclick="getDynamic(this)" value="动态"/>
     <input type="button" onclick="getNewReview(this)" value="最新评论"/>
-    <input type="button" onclick="getHot(this)" value="热门"/>
+    <input type="button"  onclick="getHot(this)" value="热门"/>
+    <input type="button" onclick="getConcern(this)" value="关注用户"/>
+    <input type="button" onclick="getFans(this)" value="粉丝"/>
 
 </div>
 <div class="all" id="content">

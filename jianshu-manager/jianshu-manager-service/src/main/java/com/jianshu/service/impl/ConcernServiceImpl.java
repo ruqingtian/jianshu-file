@@ -36,4 +36,10 @@ public class ConcernServiceImpl implements ConcernService {
         mapper.deleteConcern(userId,concernId );
 
     }
+
+    @Override
+    public List<Integer> selectListByConcernId(int concernId) {
+
+        return mapper.selectListByConcernId(concernId);
+    }
 }

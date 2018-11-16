@@ -11,6 +11,15 @@ public class MyPageUser implements Serializable {
     private int articleNums;
     private int count;
     private int likeNums;
+    private int concernStatus;
+
+    public int getConcernStatus() {
+        return concernStatus;
+    }
+
+    public void setConcernStatus(int concernStatus) {
+        this.concernStatus = concernStatus;
+    }
 
     public int getId() {
         return id;

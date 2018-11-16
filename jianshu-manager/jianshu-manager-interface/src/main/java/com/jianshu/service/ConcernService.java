@@ -13,4 +13,6 @@ public interface ConcernService {
     public Concern selectConcern(int userId, int concernId);
     //删除关注
     public void deleteConcern(int userId,int concernId);
+    //查看改用户的粉丝 id 集合
+    public List<Integer> selectListByConcernId(int concernId);
 }

@@ -14,4 +14,6 @@ public interface ConcernMapper {
     public Concern selectConcern(@Param("userId") int userId,@Param("concernId") int concernId);
     //删除关注
     public void deleteConcern(@Param("userId") int userId,@Param("concernId") int concernId);
+    //查看粉丝
+    public List<Integer> selectListByConcernId(int concernId);
 }

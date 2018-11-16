@@ -8,7 +8,7 @@
         <result column="concernid" property="concernId" jdbcType="INTEGER"/>
     </resultMap>
     <!--/查询该用户关注的 id   集合-->
-    <select id="selectListByUserId" parameterType="Integer" resultMap="BaseResultMap">
+    <select id="selectListByUserId" parameterType="Integer" resultType="Integer">
         SELECT concernid FROM concern where userid=#{userId}
     </select>
     <!--添加关注-->
@@ -23,5 +23,8 @@
     <delete id="deleteConcern">
         DELETE FROM concern WHERE userid=#{userId} AND concernid=#{concernId}
     </delete>
-
+    <!--查看粉丝-->
+    <select id="selectListByConcernId" parameterType="Integer" resultType="Integer">
+        SELECT userId FROM concern WHERE concernid=#{concerId}
+    </select>
 </mapper>

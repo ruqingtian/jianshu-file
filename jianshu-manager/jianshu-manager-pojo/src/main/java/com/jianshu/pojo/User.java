@@ -16,7 +16,7 @@ public class User implements Serializable {
     private String phone;
     private String mail;
     private String userDesc;
-    private int fansNums;
+
 
     private Date createTime;
     private Date updateTime;
@@ -100,14 +100,6 @@ public class User implements Serializable {
 
     public void setUserDesc(String userDesc) {
         this.userDesc = userDesc==null?null:userDesc.trim();
-    }
-
-    public int getFansNums() {
-        return fansNums;
-    }
-
-    public void setFansNums(int fansNums) {
-        this.fansNums = fansNums;
     }
 
     public Date getCreateTime() {
