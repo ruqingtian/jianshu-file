@@ -26,4 +26,6 @@ public interface ArticleMapper {
     public int selectCountArticle();
     //点击一次阅读量加一
     public void readNumsAddOne(@Param("id") int id,@Param("readNums")int readNums);
+    //根据userId 查询集合
+    public List<Article> selectListByUserId(int userId);
 }

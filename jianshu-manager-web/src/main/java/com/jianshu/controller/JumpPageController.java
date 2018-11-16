@@ -1,11 +1,13 @@
 package com.jianshu.controller;
 
+import com.jianshu.otherpojo.MyPageUser;
 import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.Article;
 import com.jianshu.pojo.Article_collection;
 import com.jianshu.pojo.User;
 import com.jianshu.service.ArticleCollectionService;
 import com.jianshu.service.ArticleService;
+import com.jianshu.service.ConcernService;
 import com.jianshu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -27,7 +29,8 @@ public class JumpPageController {
     private ArticleCollectionService collectionService;
     @Autowired
     private ArticleService articleService;
-
+    @Autowired
+    private ConcernService concernService;
 
     //转到注册页面
     @RequestMapping("/register")
@@ -93,6 +96,16 @@ public class JumpPageController {
         model.addAttribute("user",user );
 
         return "userSetting";
+    }
+    //跳转我的主页
+    @RequestMapping(value = "/user/myPage",method = RequestMethod.GET)
+    public String myPage(Model model,HttpServletRequest request,HttpServletResponse response){
+        int userId = getCookieUserId(request, response);
+        MyPageUser myPageUser = userService.saveMyPageUser(userId);
+        List<Integer> integers = concernService.selectListByUserId(userId);
+        myPageUser.setConcernNums(integers.size());
+        model.addAttribute("user",myPageUser );
+        return "myPage";
     }
 
     //获取登录的用户id

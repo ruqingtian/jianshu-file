@@ -56,4 +56,8 @@
     <update id="readNumsAddOne" >
         UPDATE article SET read_nums=#{readNums} WHERE id=#{id}
     </update>
+    <!--根据userId 查询集合-->
+    <select id="selectListByUserId" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT * FROM article where user_id=#{userId}
+    </select>
 </mapper>

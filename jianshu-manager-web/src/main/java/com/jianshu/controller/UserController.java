@@ -2,8 +2,10 @@ package com.jianshu.controller;
 
 import com.jianshu.otherpojo.JianshuResult;
 import com.jianshu.otherpojo.PageBean;
+import com.jianshu.pojo.Concern;
 import com.jianshu.pojo.HomeUser;
 import com.jianshu.pojo.User;
+import com.jianshu.service.ConcernService;
 import com.jianshu.service.UserService;
 
 import com.jianshu.util.JsonUtils;
@@ -29,7 +31,9 @@ import java.util.UUID;
 public class UserController {
 
     @Autowired
-    private UserService service;
+    private UserService userService;
+    @Autowired
+    private ConcernService concernService;
 
     @Value("${USER_CURRENT_COUNT}")
     private Integer USER_CURRENT_COUNT;
@@ -39,7 +43,7 @@ public class UserController {
     public JianshuResult dosave(String nickName, String userName, String pwd, Integer sex, String phone, String mail, MultipartFile img, HttpServletRequest request){
 
         String imgPath = workImg(img, request);
-        service.saveUser(nickName,userName,pwd,sex,phone,mail,imgPath);
+        userService.saveUser(nickName,userName,pwd,sex,phone,mail,imgPath);
         return JianshuResult.ok();
     }
 
@@ -50,7 +54,7 @@ public class UserController {
     @RequestMapping(value = "/user/check",method = RequestMethod.POST)
     @ResponseBody
     public JianshuResult checkData(@RequestParam String name,@RequestParam Integer type){
-        JianshuResult jianshuResult = service.checkName(name, type);
+        JianshuResult jianshuResult = userService.checkName(name, type);
         return jianshuResult;
     }
 
@@ -58,7 +62,7 @@ public class UserController {
     @RequestMapping(value = "/user/login",method = RequestMethod.POST)
     @ResponseBody
     public JianshuResult login(String userName, String pwd, HttpServletResponse response){
-        User user = service.selectPwdByUserName(userName);
+        User user = userService.selectPwdByUserName(userName);
         if(user==null||!user.getPwd().equals(pwd)){
             return  JianshuResult.build(400,"用户名或者密码错误" );
         }
@@ -77,7 +81,7 @@ public class UserController {
     public PageBean page(Integer currentPage){
 
         int index=(currentPage-1)*USER_CURRENT_COUNT;
-        PageBean pageBean = service.selectPageUser(currentPage, index, USER_CURRENT_COUNT);
+        PageBean pageBean = userService.selectPageUser(currentPage, index, USER_CURRENT_COUNT);
         return pageBean;
 
     }
@@ -94,8 +98,8 @@ public class UserController {
         user.setMail(mail);
         user.setPhone(phone);
         user.setWeb(web);
-        service.updateUser(user);
-        User user1 = service.selectUserById(user.getId());
+        userService.updateUser(user);
+        User user1 = userService.selectUserById(user.getId());
         model.addAttribute("user",user1);
 
         return "redirect:setting";
@@ -121,7 +125,7 @@ public class UserController {
             }
         }
         if(!"".equals(userId)){
-            user = service.selectUserById(Integer.parseInt(userId));
+            user = userService.selectUserById(Integer.parseInt(userId));
 
         }
       return user;
@@ -136,6 +140,25 @@ public class UserController {
         response.addCookie(cookie);
         return JianshuResult.ok();
     }
+    //添加关注
+    @RequestMapping(value = "/user/concern",method = RequestMethod.GET)
+    @ResponseBody
+    public JianshuResult saveAndDeleteConcern(Integer userId,HttpServletRequest request,HttpServletResponse response){
+        int cookieId = getCookieUserId(request, response);
+        if(cookieId == -10){
+            return JianshuResult.build(400,"请先登录" );
+        }
+        Concern concern = concernService.selectConcern(cookieId, userId);
+        if(concern==null) {
+            concernService.insertConcern(cookieId, userId);
+            return JianshuResult.ok("关注成功");
+        }else{
+            concernService.deleteConcern(cookieId,userId );
+        }
+        return JianshuResult.ok("删除成功");
+    }
+
+
 
 
     //处理图片的路径
@@ -162,5 +185,22 @@ public class UserController {
         }
         String imgPath="/upload/"+uuid+suffix;
         return imgPath;
+    }
+    //获取登录的用户id
+    public int getCookieUserId(HttpServletRequest request, HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+        String userId="-10";
+        if(cookies!=null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("USERID")) {
+                    userId = cookie.getValue();
+                    cookie.setMaxAge(24*60*60);
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                    break;
+                }
+            }
+        }
+        return Integer.parseInt(userId);
     }
 }

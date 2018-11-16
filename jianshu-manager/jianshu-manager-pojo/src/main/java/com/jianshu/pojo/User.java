@@ -17,7 +17,7 @@ public class User implements Serializable {
     private String mail;
     private String userDesc;
     private int fansNums;
-    private int concernNums;
+
     private Date createTime;
     private Date updateTime;
     private String web;
@@ -108,14 +108,6 @@ public class User implements Serializable {
 
     public void setFansNums(int fansNums) {
         this.fansNums = fansNums;
-    }
-
-    public int getConcernNums() {
-        return concernNums;
-    }
-
-    public void setConcernNums(int concernNums) {
-        this.concernNums = concernNums;
     }
 
     public Date getCreateTime() {

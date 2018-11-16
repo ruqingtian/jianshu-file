@@ -20,5 +20,5 @@
     <dubbo:service interface="com.jianshu.service.UserService" ref="userServiceImpl" />
     <dubbo:service interface="com.jianshu.service.ArticleCollectionService" ref="articleCollectionServiceImpl" />
     <dubbo:service interface="com.jianshu.service.ArticleService" ref="articleServiceImpl" />
-
+    <dubbo:service interface="com.jianshu.service.ConcernService" ref="concernServiceImpl" />
 </beans>

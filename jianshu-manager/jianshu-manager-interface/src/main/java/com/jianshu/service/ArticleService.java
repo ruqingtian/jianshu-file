@@ -26,4 +26,6 @@ public interface ArticleService {
     public PageBean selectPageArticle(int currentPage,int index,int currentCount);
     //点击一次阅读量加一
     public void readNumsAddOne(int id);
+    //根据userId 获取文章集合
+    public List<Article> getAllByUserId(int userId);
 }

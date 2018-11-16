@@ -104,4 +104,16 @@ public class WriteController {
         return  pageBean;
 
     }
+
+    @RequestMapping(value = "/article/userArticle",method = RequestMethod.GET)
+    @ResponseBody
+    public List<Article> getAllByUserId(int userId){
+        List<Article> list = articleService.getAllByUserId(userId);
+        for(Article article:list){
+            if(article.getContent().length()>30){
+                article.setContent(article.getContent().substring(0,30 )+"...");
+            }
+        }
+        return list;
+    }
 }

@@ -98,15 +98,7 @@
                 url: "/index/userPage",
                 data: {currentPage: 1},
                 success: function (data) {
-
-                    $("#pageUser").html("");
-                    for (var i = 0; i < data.showList.length; i++) {
-                        var count = " <img class='smallImg' src=" + data.showList[i].img + "/>  " + data.showList[i].nickName + ": 写了0.0 " + data.showList[i].fansNums + " 喜欢 <a href=''>关注</a><br/>";
-                        $("#pageUser").append(count);
-
-                    }
-
-
+                    indexShowUser(data);
                 },
                 dataType: "json"
             });
@@ -140,15 +132,7 @@
                 url:"/index/userPage",
                 data:{currentPage:currentPage},
                 success:function (data) {
-
-                    $("#pageUser").html("");
-                    for(var i=0;i<data.showList.length;i++){
-                   var count=" <img  class='smallImg' src="+data.showList[i].img+"/>  "+data.showList[i].nickName+": 写了0.0 "+data.showList[i].fansNums+" 喜欢 <a href=''>关注</a><br/>";
-                   $("#pageUser").append(count);
-
-                    }
-
-
+                    indexShowUser(data);
                 },
                 dataType:"json"
             })
@@ -165,15 +149,21 @@
                     url:"/index/userPage",
                     data:{currentPage:currentPage},
                     success:function (data) {
-
-                        $("#pageUser").html("");
-                        for(var i=0;i<data.showList.length;i++){
-                            var count=" <img  class='smallImg' src="+data.showList[i].img+"/>  "+data.showList[i].nickName+": 写了0.0 "+data.showList[i].fansNums+" 喜欢 <a href=''>关注</a><br/>";
-                            $("#pageUser").append(count);
-                        }
+                        indexShowUser(data);
                     },
                     dataType:"json"
                 })
+            }
+        }
+        // 首页显示推荐作者公共
+        function indexShowUser(data) {
+            console.log(data);
+            $("#pageUser").html("");
+            for(var i=0;i<data.showList.length;i++){
+                var userId=data.showList[i].userId;
+                console.log(userId);
+                var count=" <img  class='smallImg' src="+data.showList[i].img+"/>  "+data.showList[i].nickName+": 写了0.0 "+data.showList[i].fansNums+" 喜欢 <a class='concernYesAndNo' name="+data.showList[i].id+"  href='javascript:void(0)'>+关注</a><br/>";
+                $("#pageUser").append(count);
             }
         }
         function nextPage() {
@@ -194,15 +184,7 @@
                     url: "/index/userPage",
                     data: {currentPage: currentPage},
                     success: function (data) {
-
-                        $("#pageUser").html("");
-                        for (var i = 0; i < data.showList.length; i++) {
-                            var count = " <img  class='smallImg' src=" + data.showList[i].img + "/>  " + data.showList[i].nickName + ": 写了0.0 " + data.showList[i].fansNums + " 喜欢 <a href=''>关注</a><br/>";
-                            $("#pageUser").append(count);
-
-                        }
-
-
+                        indexShowUser(data);
                     },
                     dataType: "json"
                 })
@@ -221,15 +203,7 @@
                 url: "/index/userPage",
                 data: {currentPage: currentPage},
                 success: function (data) {
-
-                    $("#pageUser").html("");
-                    for (var i = 0; i < data.showList.length; i++) {
-                        var count = " <img  class='smallImg' src=" + data.showList[i].img + "/>  " + data.showList[i].nickName + ": 写了0.0 " + data.showList[i].fansNums + " 喜欢 <a href=''>关注</a><br/>";
-                        $("#pageUser").append(count);
-
-                    }
-
-
+                    indexShowUser(data);
                 },
                 dataType: "json"
             })
@@ -252,7 +226,6 @@
                         $("#articleShow").append(count);
 
                     }
-                    console.log(data.totalPage);
                     $(obj).attr('name',name);
                     if(data.totalPage==name){
                        document.getElementById('showMore').disabled=true;
@@ -264,6 +237,31 @@
                 dataType:"json"
             });
         }
+      $("#pageUser a").live('click',function () {
+          var userId=$(this).attr('name');
+          var node=$(this);
+         $.ajax({
+            type:"GET",
+            url:"/user/concern",
+            data:{"userId":userId},
+            success:function (data) {
+                console.log(data);
+                if(data.data=="关注成功"){
+                   node.text('取消关注');
+
+                }
+                if(data.data=="删除成功"){
+                    node.text('+关注');
+                }
+                if(data.msg=="请先登录"){
+                    location.href="/login";
+                }
+
+            },
+            dataType:"json"
+         })
+
+      })
     </script>
 
 </head>
@@ -277,7 +275,7 @@
     <div id="pageUser">
 
     </div>
-    <ul class="pagination">
+    <ul class="pagination" style="display: none">
         <li><a href="javascript:void(0)" onclick="beforePage()" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
         <c:forEach begin="1" end="${pageBean.totalPage}" var="page">
         <li>
@@ -286,6 +284,7 @@
         </c:forEach>
         <li><a href="javascript:void(0)" onclick="nextPage()" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>
     </ul>
+    <input style="font-size: 20px;" type="button" value="查看全部" />
 </div>
 <hr/>
 <div id="articleShow">

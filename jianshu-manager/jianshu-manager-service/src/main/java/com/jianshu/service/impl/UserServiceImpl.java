@@ -1,8 +1,12 @@
 package com.jianshu.service.impl;
 
+import com.jianshu.mapper.ArticleMapper;
+import com.jianshu.mapper.ConcernMapper;
 import com.jianshu.mapper.UserMapper;
 import com.jianshu.otherpojo.JianshuResult;
+import com.jianshu.otherpojo.MyPageUser;
 import com.jianshu.otherpojo.PageBean;
+import com.jianshu.pojo.Article;
 import com.jianshu.pojo.HomeUser;
 import com.jianshu.pojo.User;
 import com.jianshu.service.UserService;
@@ -20,6 +24,10 @@ import java.util.regex.Pattern;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper mapper;
+    @Autowired
+    private ArticleMapper articleMapper;
+    @Autowired
+    private ConcernMapper concernMapper;
 
 
     @Override
@@ -129,5 +137,25 @@ public class UserServiceImpl implements UserService {
             user.setImg(user1.getImg());
         }
         mapper.updateUser(user);
+    }
+
+    @Override
+    public MyPageUser saveMyPageUser(int id) {
+        MyPageUser myPageUser=new MyPageUser();
+        User user = mapper.selectUserById(id);
+        List<Article> articles = articleMapper.selectListByUserId(id);
+        List<Integer> integers = concernMapper.selectListByUserId(id);
+        myPageUser.setId(user.getId());
+        myPageUser.setImg(user.getImg());
+        myPageUser.setNickName(user.getNickName());
+        myPageUser.setFansNums(user.getFansNums());
+        myPageUser.setConcernNums(integers.size());
+        myPageUser.setArticleNums(articles.size());
+        int count=0;
+        for(Article article:articles){
+            count+=article.getContent().length();
+        }
+        myPageUser.setCount(count);
+        return myPageUser;
     }
 }

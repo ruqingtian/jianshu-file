@@ -113,4 +113,14 @@ public class ArticleServiceImpl implements ArticleService {
         int readNums=article.getReadNums()+1;
         mapper.readNumsAddOne(id,readNums );
     }
+
+    @Override
+    public List<Article> getAllByUserId(int userId) {
+        List<Article> articles = mapper.selectListByUserId(userId);
+        SimpleDateFormat format=new SimpleDateFormat("MM.dd HH:mm ");
+        for(Article article:articles){
+            article.setShowTime(format.format(article.getUpdateTime()));
+        }
+        return articles;
+    }
 }
