@@ -84,14 +84,17 @@
 <jsp:include page="top.jsp"/>
 <div class="content" style="position:relative; margin-left:10px; margin-top:50px;">
     <h2>${article.title}</h2><br/>
-    <p><img  class="smallImg" src="${user1.img}"/>${user1.nickName}<input class="yesAndNoConcern" name="${article.userId}" type="button" value="+关注" style="font-size: 15px; background: #6ce26c"/></p>
-    <p style="font-size: 15px">${article.showTime} 字数 ${article.number} 阅读 ${article.readNums} 评论 0 喜欢 ${article.likeNums}</p>
+    <p><img  class="smallImg" src="${user.img}"/>${user.nickName}<input class="yesAndNoConcern" name="${article.userId}" type="button" value="+关注" style="font-size: 15px; background: #6ce26c"/></p>
+    <p style="font-size: 15px">${article.showTime} 字数 ${article.number} 阅读 ${article.readNums} 评论 0 喜欢 ${user.likeNums}</p>
 </div>
 <div class="content">
 <img src="${article.image}"/>
 </div>
 <div class="content">
     ${article.content}
+</div>
+<div class="content">
+    <input type="button" style="font-size: 30px;color: red" value="喜欢  :   ${user.likeNums}"/>
 </div>
 </body>
 </html>

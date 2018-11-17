@@ -6,18 +6,21 @@
 
         <result column="userid" property="userId" jdbcType="INTEGER"/>
         <result column="concernid" property="concernId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="likearticleid" property="likeArticleId" jdbcType="INTEGER"/>
+        <result column="readarticleid" property="readArticleId" jdbcType="INTEGER"/>
     </resultMap>
     <!--/查询该用户关注的 id   集合-->
     <select id="selectListByUserId" parameterType="Integer" resultType="Integer">
         SELECT concernid FROM concern where userid=#{userId}
     </select>
     <!--添加关注-->
-    <insert id="insertConcern">
-        INSERT INTO concern VALUE (#{userId},#{concernId})
+    <insert id="insertConcern" parameterType="com.jianshu.pojo.Concern">
+        INSERT INTO concern(userid,concernid,create_time) VALUE (#{userId},#{concernId},#{createTime})
     </insert>
     <!--查询关注-->
     <select id="selectConcern" resultMap="BaseResultMap">
-        SELECT * FROM concern WHERE userid=#{userId} AND concernid=#{concernId}
+        SELECT userid,concernid FROM concern WHERE userid=#{userId} AND concernid=#{concernId}
     </select>
     <!--删除关注-->
     <delete id="deleteConcern">
@@ -26,5 +29,34 @@
     <!--查看粉丝-->
     <select id="selectListByConcernId" parameterType="Integer" resultType="Integer">
         SELECT userId FROM concern WHERE concernid=#{concerId}
+    </select>
+    <!--阅读-->
+    <insert id="insertReadArticleId" parameterType="com.jianshu.pojo.Concern">
+        INSERT INTO concern(userid,readarticleid,create_time) VALUE (#{userId},#{readArticleId},#{createTime})
+    </insert>
+    <!--查询阅读次数-->
+    <select id="selectCountRead" resultType="Integer">
+        SELECT COUNT(readarticleid) FROM concern WHERE readarticleid=#{readArticleId}
+    </select>
+    <!--查询user阅读是否存在-->
+    <select id="selectConcernByUserId" resultMap="BaseResultMap">
+        SELECT userid,readarticleid FROM concern where userid=#{userId} AND readarticleid=#{readArticleId}
+    </select>
+
+    <!--添加喜欢-->
+    <insert id="insertLikeArticleId" parameterType="com.jianshu.pojo.Concern">
+        INSERT INTO concern(userid,likearticleid,create_time) VALUE(#{userId},#{likeArticleId},#{createTime})
+    </insert>
+    <!--删除喜欢-->
+    <delete id="deleteLike">
+        DELETE FROM concern WHERE userid=#{userId} AND likearticleid=#{likeArticleId}
+    </delete>
+    <!--查询喜欢数量-->
+    <select id="selectCountLike" resultType="Integer">
+        SELECT COUNT(userid) FROM concern WHERE likearticleid=#{likeArticleId}
+    </select>
+    <!--查询喜欢是否存在-->
+    <select id="selectConcernByUserIdAndLikeArticleId">
+        SELECT userid,likearticleid FROM concern where userid=#{userId} AND likearticleid=#{likeArticleId}
     </select>
 </mapper>

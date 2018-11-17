@@ -16,8 +16,6 @@ public class User implements Serializable {
     private String phone;
     private String mail;
     private String userDesc;
-
-
     private Date createTime;
     private Date updateTime;
     private String web;

@@ -108,7 +108,7 @@
               url:"/index/articlePage",
               data:{currentPage:1},
               success:function (data) {
-                  console.log(data);
+
                  for(var i=0;i<data.showList.length;i++){
                   var count="<li><img class='articleImg smallImg' src="+data.showList[i].image+" style='float: right;position: relative;right:700px;'/>" +
                       "<div class='articleShow'><h3 style='width: 800px' ><a href='/article/With?id="+data.showList[i].id+"' target='_blank'>"+data.showList[i].title+"</a></h3>" +
@@ -116,7 +116,7 @@
                       "<p style='width: 800px'>"+data.showList[i].userName+"  评论 0 喜欢"+data.showList[i].likeNums+"</p></div></li>"
 
                   $("#articleShow").append(count);
-                  console.log("添加成功");
+
                  }
               } ,
                dataType:"json"
@@ -124,7 +124,7 @@
         };
         function jumpPage(obj) {
             var currentPage=$(obj).attr('name');
-            console.log(currentPage);
+
             $(".currentPage").removeClass("currentPage");
             $(obj).addClass("currentPage");
             $.ajax({
@@ -157,12 +157,12 @@
         }
         // 首页显示推荐作者公共
         function indexShowUser(data) {
-            console.log(data);
+
             $("#pageUser").html("");
             for(var i=0;i<data.showList.length;i++){
-                var userId=data.showList[i].userId;
-                console.log(userId);
-                var count=" <img  class='smallImg' src="+data.showList[i].img+"/>  "+data.showList[i].nickName+": 写了0.0 "+data.showList[i].fansNums+" 喜欢 <a class='concernYesAndNo' name="+data.showList[i].id+"  href='javascript:void(0)'>+关注</a><br/>";
+                var userId=data.showList[i].id;
+
+                var count="<a href='/user/myPage?userId="+userId+"' target='_blank' > <img  class='smallImg' src="+data.showList[i].img+"/>  "+data.showList[i].nickName+"</a>: 写了0.0 "+data.showList[i].likeNums+" 喜欢 <a class='concernYesAndNo' name="+data.showList[i].id+"  href='javascript:void(0)'>+关注</a><br/>";
                 $("#pageUser").append(count);
             }
         }
@@ -172,7 +172,7 @@
 
             var totalPageStr=$("a[name=changeAll]").attr('id');
             var totalPage=parseInt(totalPageStr)+1;
-            console.log(totalPage);
+
 
 
             if(currentPage!=totalPage) {
@@ -192,9 +192,9 @@
         }
         function changePage(obj) {
             var totalCount=$(obj).attr('id');
-            console.log(totalCount);
+
             var currentPage=parseInt(Math.random()*totalCount)+1;
-            console.log(currentPage);
+
             $(".currentPage").removeClass("currentPage");
 
             $("a[name=" + currentPage + '' + "]").addClass("currentPage");
@@ -229,7 +229,7 @@
                     $(obj).attr('name',name);
                     if(data.totalPage==name){
                        document.getElementById('showMore').disabled=true;
-                        console.log("成功失效");
+
 
                     }
 
@@ -245,7 +245,7 @@
             url:"/user/concern",
             data:{"userId":userId},
             success:function (data) {
-                console.log(data);
+
                 if(data.data=="关注成功"){
                    node.text('取消关注');
 

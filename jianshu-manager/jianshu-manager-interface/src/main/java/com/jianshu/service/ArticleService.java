@@ -1,5 +1,6 @@
 package com.jianshu.service;
 
+import com.jianshu.otherpojo.MoreArticle;
 import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.Article;
 
@@ -24,8 +25,9 @@ public interface ArticleService {
     public List<Article> selectAllArticle();
 //    分页查询文章
     public PageBean selectPageArticle(int currentPage,int index,int currentCount);
-    //点击一次阅读量加一
-    public void readNumsAddOne(int id);
+
     //根据userId 获取文章集合
     public List<Article> getAllByUserId(int userId);
+    //封装MoreArticle
+    public MoreArticle saveMoreArticle(int articleId);
 }

@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void saveUser(String nickName, String userName, String pwd, int sex, String phone, String mail,String img) {
+    public void saveUser(String nickName, String userName, String pwd, String phone,String img) {
 
         User user=new User();
 
@@ -39,9 +39,8 @@ public class UserServiceImpl implements UserService {
         user.setNickName(nickName);
         user.setUserName(userName);
         user.setPwd(pwd);
-        user.setSex(sex);
         user.setPhone(phone);
-        user.setMail(mail);
+        user.setSex(2);
         user.setImg(img);
         //补全信息
         user.setCreateTime(new Date());
@@ -109,7 +108,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageBean selectPageUser(int currentPage,int index, int currentCount) {
-        PageBean<User> pageBean=new PageBean<>();
+        PageBean<HomeUser> pageBean=new PageBean<>();
         //设置当前页
         pageBean.setCurrentPage(currentPage);
         //设置当前显示条数
@@ -128,16 +127,20 @@ public class UserServiceImpl implements UserService {
             homeUser.setId(users.get(i).getId());
             homeUser.setImg("../.."+users.get(i).getImg());
             homeUser.setNickName(users.get(i).getNickName());
-            homeUser.setLikeNums(concernMapper.selectListByConcernId(users.get(i).getId()).size());
+
             List<Article> articles = articleMapper.selectListByUserId(users.get(i).getId());
-            int count=0;
+            int count=0;//记录总字数
+            int a=0;//记录总喜欢数量
             for(Article article:articles){
                 count+=article.getContent().length();
+                a+=concernMapper.selectCountLike(article.getId());
             }
             homeUser.setSumNums(count);
+            homeUser.setLikeNums(a);
+            list.add(homeUser);
 
         }
-        pageBean.setShowList(users);
+        pageBean.setShowList(list);
         return pageBean;
     }
 
@@ -163,11 +166,16 @@ public class UserServiceImpl implements UserService {
         myPageUser.setFansNums(concernMapper.selectListByConcernId(id).size());
         myPageUser.setConcernNums(integers.size());
         myPageUser.setArticleNums(articles.size());
-        int count=0;
+        int count=0;//记录字数
+        int a=0;//记录喜欢的个数
         for(Article article:articles){
             count+=article.getContent().length();
+            a+=concernMapper.selectCountLike(article.getId());
+
         }
         myPageUser.setCount(count);
+        myPageUser.setLikeNums(a);
+       ;
         return myPageUser;
     }
 }

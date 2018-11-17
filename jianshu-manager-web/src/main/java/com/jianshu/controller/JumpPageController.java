@@ -1,9 +1,11 @@
 package com.jianshu.controller;
 
+import com.jianshu.otherpojo.MoreArticle;
 import com.jianshu.otherpojo.MyPageUser;
 import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.Article;
 import com.jianshu.pojo.Article_collection;
+import com.jianshu.pojo.Concern;
 import com.jianshu.pojo.User;
 import com.jianshu.service.ArticleCollectionService;
 import com.jianshu.service.ArticleService;
@@ -79,11 +81,19 @@ public class JumpPageController {
     //文章详情
     @RequestMapping(value = "/article/With",method = RequestMethod.GET)
     public String articleWith(Integer id,Model model,HttpServletResponse response,HttpServletRequest request){
-        articleService.readNumsAddOne(id);
-        Article article = articleService.selectArticleById(id);
-        User user = userService.selectUserById(article.getUserId());
+
+        int cookieId = getCookieUserId(request, response);
+        if(cookieId!=-10){
+            Concern concern = concernService.selectRead(cookieId, id);
+            if(concern==null){
+                concernService.insertRead(cookieId,id );
+            }
+        }
+
+        MoreArticle article = articleService.saveMoreArticle(id);
+        MyPageUser myPageUser = userService.saveMyPageUser(article.getUserId());
         model.addAttribute("article",article );
-        model.addAttribute("user1",user );
+        model.addAttribute("user",myPageUser );
 
         return "article";
     }
@@ -99,14 +109,21 @@ public class JumpPageController {
     }
     //跳转我的主页
     @RequestMapping(value = "/user/myPage",method = RequestMethod.GET)
-    public String myPage(Model model,HttpServletRequest request,HttpServletResponse response){
-        int userId = getCookieUserId(request, response);
-        MyPageUser myPageUser = userService.saveMyPageUser(userId);
-        List<Integer> integers = concernService.selectListByUserId(userId);
-        myPageUser.setConcernNums(integers.size());
-        model.addAttribute("user",myPageUser );
+    public String myPage(Integer userId,Model model,HttpServletRequest request,HttpServletResponse response){
+
+            MyPageUser myPageUser = userService.saveMyPageUser(userId);
+            List<Integer> integers = concernService.selectListByUserId(userId);
+            myPageUser.setConcernNums(integers.size());
+            model.addAttribute("user", myPageUser);
+
+
+        int cookieId = getCookieUserId(request, response);
+        if(cookieId!=userId){
+            model.addAttribute("status","不是本人主页" );
+        }
         return "myPage";
     }
+
 
     //获取登录的用户id
     public int getCookieUserId(HttpServletRequest request, HttpServletResponse response){

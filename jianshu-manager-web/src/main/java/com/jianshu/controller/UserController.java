@@ -41,12 +41,13 @@ public class UserController {
     private Integer USER_CURRENT_COUNT;
     //注册用户
     @RequestMapping(value="/user/save",method= RequestMethod.POST)
-    @ResponseBody
-    public JianshuResult dosave(String nickName, String userName, String pwd, Integer sex, String phone, String mail, MultipartFile img, HttpServletRequest request){
 
+    public String dosave(String nickName, String userName, String pwd, String phone, MultipartFile img, HttpServletRequest request,HttpServletResponse response){
         String imgPath = workImg(img, request);
-        userService.saveUser(nickName,userName,pwd,sex,phone,mail,imgPath);
-        return JianshuResult.ok();
+        userService.saveUser(nickName,userName,pwd,phone,imgPath);
+        login(userName,pwd , response);
+        return "redirect:index";
+
     }
 
 

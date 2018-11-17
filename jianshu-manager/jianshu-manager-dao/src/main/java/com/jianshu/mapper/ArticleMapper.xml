@@ -6,8 +6,6 @@
         <result column="user_id" property="userId" jdbcType="INTEGER"/>
         <result column="collection_id" property="collectionId" jdbcType="INTEGER"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
-        <result column="read_nums" property="readNums" jdbcType="INTEGER"/>
-        <result column="like_nums" property="likeNums" jdbcType="INTEGER"/>
         <result column="image" property="image" jdbcType="VARCHAR"/>
         <result column="content" property="content" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
@@ -17,13 +15,13 @@
 
     <!--根据文章集id 查询List.-->
     <select id="selectArticleByCollectionId" parameterType="Integer" resultMap="BaseResultMap">
-        SELECT id,user_id,collection_id,title,read_nums,like_nums,image,content,create_time,update_time,status
+        SELECT id,user_id,collection_id,title,image,content,create_time,update_time,status
         FROM article
         WHERE collection_id=#{collectionId}
     </select>
     <!--根据文章id 查询文章-->
     <select id="selectArticleById" resultMap="BaseResultMap">
-       SELECT id,user_id,collection_id,title,read_nums,like_nums,image,content,create_time,update_time,status
+       SELECT id,user_id,collection_id,title,image,content,create_time,update_time,status
         FROM article
         WHERE id=#{id}
     </select>
@@ -52,10 +50,6 @@
     <select id="selectCountArticle" resultType="Integer">
         SELECT count(id) from article
     </select>
-    <!--点击一次阅读量加一-->
-    <update id="readNumsAddOne" >
-        UPDATE article SET read_nums=#{readNums} WHERE id=#{id}
-    </update>
     <!--根据userId 查询集合-->
     <select id="selectListByUserId" parameterType="Integer" resultMap="BaseResultMap">
         SELECT * FROM article where user_id=#{userId}

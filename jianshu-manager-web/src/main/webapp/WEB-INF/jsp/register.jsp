@@ -90,7 +90,10 @@
         function checkAll() {
             var flag=true;
             console.log(111);
-            alert(document.getElementById("userId").innerHTML);
+            console.log($("#userId").html());
+            console.log($("#userPwd").html());
+            console.log($("#userPwd2").html());
+            console.log($("#ususerPhone").html());
 
 
             console.log($("#userId").html());
@@ -107,6 +110,7 @@
                 flag=false;
             }
             console.log("flag="+flag);
+            alert(flag);
             return flag;
         }
     </script>
@@ -131,7 +135,7 @@
 
 
 
-    <input  type="submit" value="提交" onclick="checkAll()"/>
+    <input  type="submit" value="提交" onclick="return checkAll()"/>
 </form>
 </div>
 </body>

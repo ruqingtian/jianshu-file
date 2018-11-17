@@ -24,8 +24,6 @@ public interface ArticleMapper {
     public List<Article> selectPageArticle(@Param("index")int index,@Param("currentCount") int currentCount);
     //查询总条数
     public int selectCountArticle();
-    //点击一次阅读量加一
-    public void readNumsAddOne(@Param("id") int id,@Param("readNums")int readNums);
     //根据userId 查询集合
     public List<Article> selectListByUserId(int userId);
 }

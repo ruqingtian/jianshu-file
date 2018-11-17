@@ -8,8 +8,6 @@ public class Article implements Serializable {
     private int userId;
     private int collectionId ;
     private  String title;
-    private int readNums ;
-    private int likeNums ;
     private String image;
     private String content;
     private Date createTime ;
@@ -74,22 +72,6 @@ public class Article implements Serializable {
 
     public void setTitle(String title) {
         this.title = title==null?null:title.trim();
-    }
-
-    public int getReadNums() {
-        return readNums;
-    }
-
-    public void setReadNums(int readNums) {
-        this.readNums = readNums;
-    }
-
-    public int getLikeNums() {
-        return likeNums;
-    }
-
-    public void setLikeNums(int likeNums) {
-        this.likeNums = likeNums;
     }
 
     public String getImage() {

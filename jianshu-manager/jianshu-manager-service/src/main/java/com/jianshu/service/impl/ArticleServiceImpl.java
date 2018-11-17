@@ -2,10 +2,13 @@ package com.jianshu.service.impl;
 
 import com.jianshu.mapper.ArticleMapper;
 import com.jianshu.mapper.UserMapper;
+import com.jianshu.otherpojo.MoreArticle;
 import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.Article;
 import com.jianshu.pojo.User;
 import com.jianshu.service.ArticleService;
+import com.jianshu.service.ConcernService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,8 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleMapper mapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private ConcernService concernService;
 
     @Override
     public List<Article> selectArticleByCollectionId(int collectionId) {
@@ -107,12 +112,6 @@ public class ArticleServiceImpl implements ArticleService {
         return pageBean;
     }
 
-    @Override
-    public void readNumsAddOne(int id) {
-        Article article = mapper.selectArticleById(id);
-        int readNums=article.getReadNums()+1;
-        mapper.readNumsAddOne(id,readNums );
-    }
 
     @Override
     public List<Article> getAllByUserId(int userId) {
@@ -122,5 +121,15 @@ public class ArticleServiceImpl implements ArticleService {
             article.setShowTime(format.format(article.getUpdateTime()));
         }
         return articles;
+    }
+
+    @Override
+    public MoreArticle saveMoreArticle(int articleId) {
+        MoreArticle moreArticle=new MoreArticle();
+        Article article = selectArticleById(articleId);
+        BeanUtils.copyProperties(article, moreArticle);
+        int count = concernService.selectCountRead(articleId);
+        moreArticle.setReadNums(count);
+        return moreArticle;
     }
 }

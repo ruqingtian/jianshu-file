@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Tian
@@ -9,7 +10,7 @@
 <html>
 <head>
     <script type="text/javascript" src="/js/jquery-1.8.3.js"></script>
-    <title>我的主页</title>
+    <title>${user.nickName}-简书</title>
     <style type="text/css">
         .content{
             position:relative; margin-left:10px; margin-top:50px;
@@ -21,8 +22,9 @@
     </style>
     <script type="text/javascript">
         $(function () {
-            console.log(3);
+
             getAllArticle();
+
         });
 
     function  getAllArticle() {
@@ -34,6 +36,7 @@
         success:function (data) {
             $("#content").html("");
             for(var i=0;i<data.length;i++){
+
                 var count="<li><img class='articleImg' src="+data[i].image+" style='float: right;position: relative;right:700px;'/>" +
                     "<div class='articleShow'><h3 style='width: 800px' ><a href='/article/With?id="+data[i].id+"' target='_blank'>"+data[i].title+"</a></h3>" +
                     "<p style='width: 800px'>"+data[i].content+"</p> " +
@@ -72,48 +75,6 @@
         })
 
     }
-    $(".yesAndNoConcern").live('mouseenter',function () {
-       var count=$(this).attr("value");
-       if(count=="已关注"){
-           $(this).attr("value","取消关注");
-       }
-    });
-    $(".yesAndNoConcern").live('mouseleave',function () {
-            var count=$(this).attr("value");
-            if(count=="取消关注"){
-                $(this).attr("value","已关注");
-            }
-        });
-    $(".yesAndNoConcern").live('click',function () {
-            var node=$(this);
-            var count=node.attr("value");
-            var id=node.attr("name");
-           if(count=="取消关注"){
-               $.ajax({
-                   type:"GET",
-                   url:"/user/deleteConcern",
-                   data:{"userId":id},
-                   success:function (data) {
-                       if(data.status==200) {
-                           node.attr("value", "+关注");
-                       }
-                   },
-                   dataType:"json"
-               })
-           }else if(count=="+关注"){
-               $.ajax({
-                   type:"GET",
-                   url:"/user/concern",
-                   data:{"userId":id},
-                   success:function (data) {
-                       if(data.status==200){
-                           node.attr("value","已关注");
-                       }
-                   },
-                   dataType:"json"
-               })
-           }
-        });
 
     function showMypageUser(data) {
         $("#content").html("");
@@ -128,12 +89,61 @@
         }
 
     }
+        $(".yesAndNoConcern").live('mouseenter',function () {
+            var count=$(this).attr("value");
+            if(count=="已关注"){
+                $(this).attr("value","取消关注");
+            }
+        });
+        $(".yesAndNoConcern").live('mouseleave',function () {
+            var count=$(this).attr("value");
+            if(count=="取消关注"){
+                $(this).attr("value","已关注");
+            }
+        });
+        $(".yesAndNoConcern").live('click',function () {
+            var node=$(this);
+            var count=node.attr("value");
+            var id=node.attr("name");
+            if(count=="取消关注"){
+                $.ajax({
+                    type:"GET",
+                    url:"/user/deleteConcern",
+                    data:{"userId":id},
+                    success:function (data) {
+                        if(data.status==200) {
+                            node.attr("value", "+关注");
+                        }
+                    },
+                    dataType:"json"
+                })
+            }else if(count=="+关注"){
+                $.ajax({
+                    type:"GET",
+                    url:"/user/concern",
+                    data:{"userId":id},
+                    success:function (data) {
+                        if(data.status==200){
+                            node.attr("value","已关注");
+                        }
+                    },
+                    dataType:"json"
+                })
+            }
+        });
     </script>
 </head>
 <body>
 <jsp:include page="top.jsp"/>
 <div class="content all">
-    <img style="height: 80px" src="${user.img}"/>   <span style="font-size: 30px">${user.nickName}</span><br/>
+    <img style="height: 80px" src="${user.img}"/>   <span style="font-size: 30px">${user.nickName}</span>
+
+    <c:choose>
+        <c:when test="${ not empty status}">
+            <input class="yesAndNoConcern" name="${user.id}" type="button" style="font-size: 20px" value="+关注"/>
+        </c:when>
+    </c:choose>
+    <br/>
     关注 ${user.concernNums} 粉丝 ${user.fansNums}  文章${user.articleNums} 字数${user.count}   收获喜欢 ${user.likeNums}
 </div>
 <div class="all" name="${user.id}">

@@ -11,7 +11,11 @@ public class MyPageUser implements Serializable {
     private int articleNums;
     private int count;
     private int likeNums;
-    private int concernStatus;
+    private int concernStatus;//1已关注
+
+
+
+
 
     public int getConcernStatus() {
         return concernStatus;
