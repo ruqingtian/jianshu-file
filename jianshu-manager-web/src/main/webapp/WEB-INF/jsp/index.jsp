@@ -162,7 +162,7 @@
             for(var i=0;i<data.showList.length;i++){
                 var userId=data.showList[i].id;
 
-                var count="<a href='/user/myPage?userId="+userId+"' target='_blank' > <img  class='smallImg' src="+data.showList[i].img+"/>  "+data.showList[i].nickName+"</a>: 写了0.0 "+data.showList[i].likeNums+" 喜欢 <a class='concernYesAndNo' name="+data.showList[i].id+"  href='javascript:void(0)'>+关注</a><br/>";
+                var count="<a  href='/user/myPage?userId="+userId+"'  target='_blank' > <img  class='smallImg' src="+data.showList[i].img+"/>  "+data.showList[i].nickName+"</a>: 写了0.0 "+data.showList[i].likeNums+" 喜欢 <input class='yesAndNoConcern' name="+userId+" type='button' value='+关注'/><br/>";
                 $("#pageUser").append(count);
             }
         }
@@ -237,8 +237,22 @@
                 dataType:"json"
             });
         }
-      $("#pageUser a").live('click',function () {
+        $(".yesAndNoConcern").live('mouseenter',function () {
+            var count=$(this).attr("value");
+            console.log(count);
+            if(count=="已关注"){
+                $(this).attr("value","取消关注");
+            }
+        });
+        $(".yesAndNoConcern").live('mouseleave',function () {
+            var count=$(this).attr("value");
+            if(count=="取消关注"){
+                $(this).attr("value","已关注");
+            }
+        });
+      $(".yesAndNoConcern ").live('click',function () {
           var userId=$(this).attr('name');
+          console.log(userId);
           var node=$(this);
          $.ajax({
             type:"GET",
@@ -247,11 +261,11 @@
             success:function (data) {
 
                 if(data.data=="关注成功"){
-                   node.text('取消关注');
+                   node.attr("value","已关注");
 
                 }
                 if(data.data=="删除成功"){
-                    node.text('+关注');
+                    node.attr("value","+关注");
                 }
                 if(data.msg=="请先登录"){
                     location.href="/login";

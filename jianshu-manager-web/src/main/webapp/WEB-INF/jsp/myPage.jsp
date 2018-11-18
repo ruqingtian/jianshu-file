@@ -114,6 +114,7 @@
                         if(data.status==200) {
                             node.attr("value", "+关注");
                         }
+
                     },
                     dataType:"json"
                 })
@@ -125,6 +126,9 @@
                     success:function (data) {
                         if(data.status==200){
                             node.attr("value","已关注");
+                        }
+                        if(data.msg=="请先登录"){
+                            location.href="/login";
                         }
                     },
                     dataType:"json"

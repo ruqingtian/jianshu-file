@@ -70,14 +70,34 @@
                     url:"/user/concern",
                     data:{"userId":id},
                     success:function (data) {
+
                         if(data.status==200){
                             node.attr("value","已关注");
+                        }
+                        if(data.msg=="请先登录"){
+                            location.href="/login";
                         }
                     },
                     dataType:"json"
                 })
             }
         });
+        function yesAndNoLike(obj) {
+            var articleId=$(obj).attr('name');
+            $.ajax({
+                type:"GET",
+                url:"/article/like",
+                data:{"articleId":articleId},
+                success:function (data) {
+                    console.log(data);
+                    if(data.msg=="请先登录"){
+                        location.href="/login";
+                    }
+                    $(obj).attr("value","喜欢  :   "+data.data);
+                },
+                dataType:"json"
+            })
+        }
     </script>
 </head>
 <body>
@@ -94,7 +114,7 @@
     ${article.content}
 </div>
 <div class="content">
-    <input type="button" style="font-size: 30px;color: red" value="喜欢  :   ${user.likeNums}"/>
+    <input name="${article.id}" onclick="yesAndNoLike(this)" type="button" style="font-size: 30px;color: red" value="喜欢  :   ${user.likeNums}"/>
 </div>
 </body>
 </html>

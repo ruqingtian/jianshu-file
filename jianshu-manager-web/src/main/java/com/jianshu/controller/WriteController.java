@@ -3,8 +3,10 @@ package com.jianshu.controller;
 import com.jianshu.otherpojo.JianshuResult;
 import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.Article;
+import com.jianshu.pojo.Concern;
 import com.jianshu.service.ArticleCollectionService;
 import com.jianshu.service.ArticleService;
+import com.jianshu.service.ConcernService;
 import com.jianshu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -24,6 +28,8 @@ public class WriteController {
     private UserService userService;
     @Autowired
     private ArticleCollectionService collectionService;
+    @Autowired
+    private ConcernService concernService;
 
     @Value("${ARTICLE_CURRENT_COUNT}")
     private Integer ARTICLE_CURRENT_COUNT;
@@ -115,5 +121,42 @@ public class WriteController {
             }
         }
         return list;
+    }
+
+    @RequestMapping(value = "/article/like",method = RequestMethod.GET)
+    @ResponseBody
+    public JianshuResult yesAndNoLike(Integer articleId,HttpServletRequest request,HttpServletResponse response){
+        int cookieId = getCookieUserId(request, response);
+        int likeNums = concernService.selectCountLike(articleId);
+        if(cookieId==-10){
+            return JianshuResult.build(400,"请先登录" );
+        }
+        Concern concern = concernService.selectConcernByUserIdANdLikeArticleId(cookieId, articleId);
+        if(concern==null){
+            concernService.insertLikeArticleId(cookieId,articleId );
+
+            return JianshuResult.ok(likeNums+1);
+
+        }else{
+            concernService.deleteConcernByUserIdANdLikeArticleId(cookieId,articleId );
+        }
+        return JianshuResult.ok(likeNums-1);
+    }
+    //获取登录的用户id
+    public int getCookieUserId(HttpServletRequest request, HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+        String userId="-10";
+        if(cookies!=null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("USERID")) {
+                    userId = cookie.getValue();
+                    cookie.setMaxAge(24*60*60);
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                    break;
+                }
+            }
+        }
+        return Integer.parseInt(userId);
     }
 }
