@@ -4,11 +4,20 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Article_review implements Serializable {
+    private int id;
     private int articleId;
     private int userId ;
     private String content;
     private Date createTime ;
     private Date updateTime ;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getArticleId() {
         return articleId;

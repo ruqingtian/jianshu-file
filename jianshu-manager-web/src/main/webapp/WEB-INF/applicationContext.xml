@@ -44,6 +44,8 @@
     <dubbo:reference interface="com.jianshu.service.ArticleCollectionService" id="articleCollectionService" timeout="300000"/>
     <dubbo:reference interface="com.jianshu.service.ArticleService" id="articleService" timeout="300000"/>
     <dubbo:reference interface="com.jianshu.service.ConcernService" id="concernService" timeout="300000"/>
+    <dubbo:reference interface="com.jianshu.service.ArticleReviewService" id="articleReviewService" timeout="300000"/>
+
 
 
 </beans>

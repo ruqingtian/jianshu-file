@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jianshu.mapper.ArticleReviewMapper" >
+    <resultMap id="BaseResultMap" type="com.jianshu.pojo.Article_review">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="article_id" property="articleId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--添加评论-->
+    <insert id="insertReview" parameterType="com.jianshu.pojo.Article_review">
+        INSERT INTO article_review(article_id,user_id,content,create_time,update_time) VALUE (#{articleId},#{userId},#{content},#{createTime},#{updateTime})
+    </insert>
+    <!--根据文章的id 查询所有评论-->
+    <select id="selectListByArticleId" parameterType="Integer" resultMap="BaseResultMap">
+      SELECT * FROM article_review WHERE article_id=#{articleId} ORDER BY create_time desc
+    </select>
+    <!--根据id 删除评论-->
+    <delete id="deleteReviewById" parameterType="Integer">
+        DELETE from article_review WHERE id=#{id}
+    </delete>
+</mapper>
