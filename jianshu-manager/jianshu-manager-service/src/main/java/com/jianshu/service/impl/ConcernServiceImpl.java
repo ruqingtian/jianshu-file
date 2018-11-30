@@ -1,7 +1,9 @@
 package com.jianshu.service.impl;
 
 import com.jianshu.mapper.ConcernMapper;
+import com.jianshu.mapper.DynamicMapper;
 import com.jianshu.pojo.Concern;
+import com.jianshu.pojo.Dynamic;
 import com.jianshu.service.ConcernService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ import java.util.List;
 public class ConcernServiceImpl implements ConcernService {
     @Autowired
     private ConcernMapper mapper;
+    @Autowired
+    private DynamicMapper dynamicMapper;
 
     @Override
     public List<Integer> selectListByUserId(int userId) {
@@ -28,6 +32,13 @@ public class ConcernServiceImpl implements ConcernService {
         concern.setUserId(userId);
         concern.setCreateTime(new Date());
         mapper.insertConcern(concern);
+        //插入动态
+        Dynamic dynamic=new Dynamic();
+        dynamic.setUserId(userId);
+        dynamic.setConcernId(concernId);
+        dynamic.setContent("关注了作者");
+        dynamic.setCreateTime(new Date());
+        dynamicMapper.insertConcernId(dynamic);
     }
 
     @Override
@@ -39,6 +50,7 @@ public class ConcernServiceImpl implements ConcernService {
     @Override
     public void deleteConcern(int userId, int concernId) {
         mapper.deleteConcern(userId,concernId );
+        dynamicMapper.deleteConcernId(userId,concernId,"关注了作者" );
 
     }
 
@@ -74,6 +86,13 @@ public class ConcernServiceImpl implements ConcernService {
         concern.setLikeArticleId(likeArticleId);
         concern.setCreateTime(new Date());
         mapper.insertLikeArticleId(concern);
+        //插入动态
+        Dynamic dynamic=new Dynamic();
+        dynamic.setUserId(userId);
+        dynamic.setArticleId(likeArticleId);
+        dynamic.setContent("喜欢了文章");
+        dynamic.setCreateTime(new Date());
+        dynamicMapper.insertArticleId(dynamic);
     }
 
     @Override
@@ -84,6 +103,7 @@ public class ConcernServiceImpl implements ConcernService {
     @Override
     public void deleteConcernByUserIdANdLikeArticleId(int userId, int likeArticleId) {
         mapper.deleteLike(userId,likeArticleId );
+        dynamicMapper.deleteArticleId(userId,likeArticleId,"喜欢了文章" );
     }
 
     @Override

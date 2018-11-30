@@ -1,10 +1,12 @@
 package com.jianshu.service.impl;
 
-import com.jianshu.mapper.ArticleMapper;
-import com.jianshu.mapper.UserMapper;
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
+import com.jianshu.mapper.*;
 import com.jianshu.otherpojo.MoreArticle;
 import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.Article;
+import com.jianshu.pojo.Article_review;
+import com.jianshu.pojo.Dynamic;
 import com.jianshu.pojo.User;
 import com.jianshu.service.ArticleService;
 import com.jianshu.service.ConcernService;
@@ -26,7 +28,11 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private ConcernService concernService;
+    private ConcernMapper concernMapper;
+    @Autowired
+    private DynamicMapper dynamicMapper;
+    @Autowired
+    private ArticleReviewMapper reviewMapper;
 
     @Override
     public List<Article> selectArticleByCollectionId(int collectionId) {
@@ -54,6 +60,14 @@ public class ArticleServiceImpl implements ArticleService {
         map.put("updateTime",updateTime );
         map.put("status",1);
         mapper.updataArticleById(map);
+        //插入动态
+        Article article = mapper.selectArticleById(id);
+        Dynamic dynamic=new Dynamic();
+        dynamic.setUserId(article.getUserId());
+        dynamic.setArticleId(id);
+        dynamic.setContent("发表了文章");
+        dynamic.setCreateTime(new Date());
+        dynamicMapper.insertArticleMyself(dynamic);
     }
 
     @Override
@@ -73,7 +87,16 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void deleteArticle(int id) {
+        List<Integer> integers = reviewMapper.selectIdByArticleId(id);
+        for(Integer integer:integers){
+            dynamicMapper.deleteDynamicByReviewId(integer);
+        }
         mapper.deleteArticle(id);
+        reviewMapper.deleteRiviewByArticleId(id);
+        concernMapper.deleteConcernBylikeArticleId(id);
+        dynamicMapper.deleteArticleMyself(id ,"发表了文章" );
+        dynamicMapper.deleteArticleMyself(id ,"喜欢了文章" );
+
     }
 
     @Override
@@ -128,8 +151,10 @@ public class ArticleServiceImpl implements ArticleService {
         MoreArticle moreArticle=new MoreArticle();
         Article article = selectArticleById(articleId);
         BeanUtils.copyProperties(article, moreArticle);
-        int count = concernService.selectCountRead(articleId);
+        int count = concernMapper.selectCountRead(articleId);
+        int likeNums = concernMapper.selectCountLike(articleId);
         moreArticle.setReadNums(count);
+        moreArticle.setLikeNums(likeNums);
         return moreArticle;
     }
 }

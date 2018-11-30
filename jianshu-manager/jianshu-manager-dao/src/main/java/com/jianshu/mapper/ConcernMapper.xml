@@ -59,4 +59,10 @@
     <select id="selectConcernByUserIdAndLikeArticleId" resultType="com.jianshu.pojo.Concern">
         SELECT userid,likearticleid FROM concern where userid=#{userId} AND likearticleid=#{likeArticleId}
     </select>
+
+    <!--根据文章的id 删除所有-->
+    <delete id="deleteConcernBylikeArticleId">
+        DELETE  FROM concern WHERE likearticleid=#{likeArticleId} OR readarticleid=#{likeArticleId}
+    </delete>
+
 </mapper>

@@ -22,4 +22,20 @@
     <delete id="deleteReviewById" parameterType="Integer">
         DELETE from article_review WHERE id=#{id}
     </delete>
+    <!--根据int userId, int articleId, String content 查询评论id-->
+    <select id="selectIdByUserIdAndArticleIdAndContent" resultType="Integer">
+        SELECT  id FROM article_review WHERE  user_id=#{userId} AND article_id=#{articleId} AND content=#{content}
+    </select>
+    <!--根据id 查询评论-->
+    <select id="selectReviewById" resultMap="BaseResultMap">
+        SELECT * FROM article_review WHERE id=#{id}
+    </select>
+    <!--根据文章id 删除所有的评论-->
+    <delete id="deleteRiviewByArticleId">
+        DELETE FROM  article_review WHERE article_id=#{articleId}
+    </delete>
+    <!--根据文章的id  查询id 集合-->
+    <select id="selectIdByArticleId" resultType="Integer">
+        SELECT id FROM article_review WHERE article_id=#{articleId}
+    </select>
 </mapper>

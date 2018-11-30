@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jianshu.mapper.DynamicMapper" >
+    <resultMap id="BaseResultMap" type="com.jianshu.pojo.Dynamic">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="userid" property="userId" jdbcType="INTEGER"/>
+        <result column="concernid" property="concernId" jdbcType="INTEGER"/>
+        <result column="articleid" property="articleId" jdbcType="INTEGER"/>
+        <result column="reviewid" property="reviewId" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <!--添加动态 关注用户-->
+    <insert id="insertConcernId" parameterType="com.jianshu.pojo.Dynamic">
+        INSERT INTO dynamic(userid,concernid,content,create_time)
+                VALUE (#{userId},#{concernId},#{content},#{createTime})
+    </insert>
+    <!--删除动态 取消关注-->
+    <delete id="deleteConcernId">
+        DELETE FROM dynamic where userid=#{userId} AND concernid=#{concernId} AND content=#{content}
+    </delete>
+
+    <!--喜欢文章的动态-->
+    <insert id="insertArticleId" parameterType="com.jianshu.pojo.Dynamic">
+         INSERT INTO dynamic(userid,articleid,content,create_time)
+               VALUE (#{userId},#{articleId},#{content},#{createTime})
+    </insert>
+    <!--删除喜欢文章的动态-->
+    <delete id="deleteArticleId" >
+        DELETE FROM dynamic where userid=#{userId} AND articleid=#{articleId} AND content=#{content}
+    </delete>
+
+    <!--发表文章的动态-->
+    <insert id="insertArticleMyself" parameterType="com.jianshu.pojo.Dynamic">
+        INSERT INTO dynamic(userid,articleid,content,create_time)
+             VALUE (#{userId},#{articleId},#{content},#{createTime})
+    </insert>
+    <!--删除文章的动态-->
+    <delete id="deleteArticleMyself" >
+        DELETE FROM dynamic where  articleid=#{articleId} AND content=#{content}
+    </delete>
+
+    <!--评论文章的动态-->
+    <insert id="insertReviewId" parameterType="com.jianshu.pojo.Dynamic">
+        INSERT INTO dynamic(userid,reviewid,content,create_time)
+               VALUE (#{userId},#{reviewId},#{content},#{createTime})
+    </insert>
+    <!--删除评论文章的动态-->
+    <delete id="deleteReviewId">
+        DELETE FROM dynamic WHERE userid=#{userId} AND reviewid=#{reviewId} AND content=#{content}
+    </delete>
+    <!--根据文章id 删除-->
+    <delete id="deleteDynamicByReviewId">
+        DELETE FROM dynamic WHERE reviewid=#{reviewId}
+    </delete>
+</mapper>
+

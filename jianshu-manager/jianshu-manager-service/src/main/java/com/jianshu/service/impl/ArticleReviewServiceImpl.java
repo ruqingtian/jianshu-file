@@ -1,9 +1,11 @@
 package com.jianshu.service.impl;
 
 import com.jianshu.mapper.ArticleReviewMapper;
+import com.jianshu.mapper.DynamicMapper;
 import com.jianshu.mapper.UserMapper;
 import com.jianshu.otherpojo.ReviewMore;
 import com.jianshu.pojo.Article_review;
+import com.jianshu.pojo.Dynamic;
 import com.jianshu.pojo.User;
 import com.jianshu.service.ArticleReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class ArticleReviewServiceImpl implements ArticleReviewService {
     @Autowired
     private ArticleReviewMapper articleReviewMapper;
     @Autowired
+    private DynamicMapper dynamicMapper;
+    @Autowired
     private UserMapper userMapper;
     @Override
     public void insertReview(int userId, int articleId, String content) {
@@ -29,6 +33,14 @@ public class ArticleReviewServiceImpl implements ArticleReviewService {
         review.setCreateTime(new Date());
         review.setUpdateTime(new Date());
         articleReviewMapper.insertReview(review);
+        //插入动态
+        int reviewId = articleReviewMapper.selectIdByUserIdAndArticleIdAndContent(userId, articleId, content);
+        Dynamic dynamic=new Dynamic();
+        dynamic.setUserId(userId);
+        dynamic.setReviewId(reviewId);
+        dynamic.setContent("发表了评论");
+        dynamic.setCreateTime(new Date());
+        dynamicMapper.insertReviewId(dynamic);
 
     }
 
@@ -53,7 +65,11 @@ public class ArticleReviewServiceImpl implements ArticleReviewService {
 
     @Override
     public void deleteReviewById(int id) {
+        Article_review review = articleReviewMapper.selectReviewById(id);
         articleReviewMapper.deleteReviewById(id);
+        dynamicMapper.deleteReviewId(review.getUserId(),review.getId() ,"发表了评论" );
+
+
     }
 
 

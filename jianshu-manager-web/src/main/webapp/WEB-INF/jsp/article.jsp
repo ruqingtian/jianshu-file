@@ -211,7 +211,7 @@
                                                                            style="font-size: 15px; background: #6ce26c"/>
         </p>
         <p style="font-size: 15px">${article.showTime} 字数 ${article.number} 阅读 ${article.readNums} 评论 0
-            喜欢 ${user.likeNums}</p>
+            喜欢 ${article.likeNums}</p>
     </div>
     <div>
         <img src="${article.image}"/>
@@ -221,7 +221,7 @@
     </div>
     <div>
         <input name="${article.id}" onclick="yesAndNoLike(this)" type="button" style="font-size: 30px;color: red"
-               value="喜欢  :   ${user.likeNums}"/>
+               value="喜欢  :   ${article.likeNums}"/>
     </div>
     <div>
         <img id="reviewTouXiangImg" class="smallImg" src="/"/><textarea name="${article.id}" id="reviewText" placeholder="写下你的评论" style="width: 500px" rows="5" cols="20"></textarea><br/>
