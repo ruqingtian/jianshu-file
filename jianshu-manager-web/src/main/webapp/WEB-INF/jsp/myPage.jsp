@@ -135,6 +135,30 @@
                 })
             }
         });
+        function getDynamic(obj) {
+            var userId=$(obj).parent().attr("name");
+            console.log(userId);
+            $.ajax({
+                type:"GET",
+                url:"/article/dynamic",
+                data:{"userId":userId},
+                success:function (data) {
+                    console.log(data);
+                    $("#content").html("");
+                    for(var i=0;i<data.length;i++) {
+                        if (data[i].dynamicContent=="喜欢了文章") {
+                            var content = "<div><img class='smallImg' src=" + data[i].img + ">   " + data[i].dynamicContent + "    " + data[i].dynamicDate + "<br/>" +
+                                "<h3><a href=/article/With?id=" + data[i].id + ">" + data[i].title + "</a></h3><br/> " +
+                                "" + data[i].content + "<br/>" +
+                                " " + data[i].userName + "   阅读 " + data[i].readNums + " 喜欢 " + data[i].likeNums + " </div>";
+                            $("#content").append(content);
+                         }
+                    }
+
+                },
+                dataType:"json"
+            })
+        }
     </script>
 </head>
 <body>

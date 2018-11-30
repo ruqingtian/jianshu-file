@@ -1,6 +1,7 @@
 package com.jianshu.controller;
 
 import com.jianshu.otherpojo.JianshuResult;
+import com.jianshu.otherpojo.MoreArticle;
 import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.Article;
 import com.jianshu.pojo.Concern;
@@ -113,9 +114,9 @@ public class WriteController {
 
     @RequestMapping(value = "/article/userArticle",method = RequestMethod.GET)
     @ResponseBody
-    public List<Article> getAllByUserId(int userId){
-        List<Article> list = articleService.getAllByUserId(userId);
-        for(Article article:list){
+    public List<MoreArticle> getAllByUserId(int userId){
+        List<MoreArticle> list = articleService.getAllByUserId(userId);
+        for(MoreArticle article:list){
             if(article.getContent().length()>30){
                 article.setContent(article.getContent().substring(0,30 )+"...");
             }
@@ -142,6 +143,15 @@ public class WriteController {
         }
         return JianshuResult.ok(likeNums-1);
     }
+
+    @RequestMapping(value = "/article/dynamic",method = RequestMethod.GET)
+    @ResponseBody
+    public List<MoreArticle> getDynamic(Integer userId){
+        List<MoreArticle> list = articleService.dynamicMessage(userId);
+        return list;
+    }
+
+
     //获取登录的用户id
     public int getCookieUserId(HttpServletRequest request, HttpServletResponse response){
         Cookie[] cookies = request.getCookies();

@@ -52,6 +52,6 @@
     </select>
     <!--根据userId 查询集合-->
     <select id="selectListByUserId" parameterType="Integer" resultMap="BaseResultMap">
-        SELECT * FROM article where user_id=#{userId}
+        SELECT * FROM article where user_id=#{userId} ORDER BY create_time desc
     </select>
 </mapper>

@@ -92,10 +92,11 @@
                 url:"/write/content",
                 data:{id:aId},
                 success:function (data) {
+
                     var ue = UE.getEditor('container');
                     ue.setContent(data.content);
                     $("#articleTitle").val(data.title);
-                    $("#articleId").val(data.id);
+                    $("#articleId").attr("value",data.id);
 
                 },
                 dataType:"json"
@@ -182,8 +183,8 @@
         //提交文章
         function submitArticle() {
             var title=$("#articleTitle").val();
-            var id=$("#articleId").val();
-            if(id=-100){
+            var id=$("#articleId").attr("value");
+            if(id==-100){
                 alert("请选择你要修改的文章");
             }
             var ue = UE.getEditor('container');
@@ -277,7 +278,7 @@
                 if(data[i].status===1){
                     sta="已发布";
                 }
-                var   content="<br/><input id="+data[i].id+" type='button' class='articleName' value="+data[i].title+" />("+sta+")";
+                var   content="<br/><input id="+data[i].id+" type='button' class='articleName' value="+data[i].title+" /><span>("+sta+")</span>";
 
                 $("#collectionName").append(content+"<input id='deleteArticle' name="+data[i].collectionId+" style='display:none' type='button' value='删除'/>");
             }

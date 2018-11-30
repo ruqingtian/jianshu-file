@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -44,8 +41,8 @@ public class ArticleServiceImpl implements ArticleService {
 
         Article article = mapper.selectArticleById(id);
         article.setNumber(article.getContent().length());
-        SimpleDateFormat format=new SimpleDateFormat("yyyy.MM.dd HH:mm ");
-        article.setShowTime(format.format(article.getUpdateTime()));
+
+        article.setShowTime( changeDate(article.getUpdateTime()));
 
         return article;
     }
@@ -104,7 +101,11 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articleList = mapper.selectAllArticle();
         for(int i=0;i<articleList.size();i++){
             User user = userMapper.selectUserById(articleList.get(i).getUserId());
-            articleList.get(i).setContent(articleList.get(i).getContent().substring(0,5)+"...");
+            if(articleList.get(i).getContent().length()>5) {
+                articleList.get(i).setContent(articleList.get(i).getContent().substring(0, 5) + "...");
+            }else{
+                articleList.get(i).setContent(articleList.get(i).getContent());
+            }
             articleList.get(i).setUserName(user.getNickName());
         }
         return articleList;
@@ -127,7 +128,12 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articles=mapper.selectPageArticle(index,currentCount );
         for(int i=0;i<articles.size();i++){
             User user = userMapper.selectUserById(articles.get(i).getUserId());
-            articles.get(i).setContent(articles.get(i).getContent().substring(0,5)+"...");
+            if(articles.get(i).getContent().length()>5) {
+                articles.get(i).setContent(articles.get(i).getContent().substring(0,5)+"...");
+            }else{
+                articles.get(i).setContent(articles.get(i).getContent());
+            }
+
             articles.get(i).setUserName(user.getNickName());
         }
         pageBean.setShowList(articles);
@@ -137,13 +143,18 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public List<Article> getAllByUserId(int userId) {
+    public List<MoreArticle> getAllByUserId(int userId) {
         List<Article> articles = mapper.selectListByUserId(userId);
+        List<MoreArticle> list=new ArrayList<>();
         SimpleDateFormat format=new SimpleDateFormat("MM.dd HH:mm ");
         for(Article article:articles){
+            MoreArticle moreArticle=new MoreArticle();
             article.setShowTime(format.format(article.getUpdateTime()));
+            BeanUtils.copyProperties(article,moreArticle );
+            moreArticle.setLikeNums(concernMapper.selectCountLike(moreArticle.getId()));
+            list.add(moreArticle);
         }
-        return articles;
+        return list;
     }
 
     @Override
@@ -156,5 +167,40 @@ public class ArticleServiceImpl implements ArticleService {
         moreArticle.setReadNums(count);
         moreArticle.setLikeNums(likeNums);
         return moreArticle;
+    }
+
+    @Override
+    public List<MoreArticle> dynamicMessage(int userId) {
+        List<Dynamic> dynamics = dynamicMapper.selectDynamicByUserId(userId);
+        List<MoreArticle> list=new ArrayList<>();
+        User user = userMapper.selectUserById(userId);
+        for(Dynamic dynamic:dynamics){
+            if("喜欢了文章".equals(dynamic.getContent())){
+                MoreArticle article=new MoreArticle();
+                Article article1 = mapper.selectArticleById(dynamic.getArticleId());
+                BeanUtils.copyProperties(article1,article );
+                if(article1.getContent().length()>30) {
+                    article.setContent(article1.getContent().substring(0,30)+"...");
+                }
+
+                User user1 = userMapper.selectUserById(article1.getUserId());
+                article.setUserName(user1.getNickName());
+                article.setImg(user.getImg());
+                article.setNickName(user.getNickName());
+                article.setDynamicContent(dynamic.getContent());
+                article.setDynamicDate(changeDate(dynamic.getCreateTime()));
+                article.setReadNums(concernMapper.selectCountRead(article.getId()));
+                article.setLikeNums(concernMapper.selectCountLike(article.getId()));
+                list.add(article);
+            }
+        }
+        return list;
+    }
+
+    //时间格式修改
+    public String changeDate(Date date){
+        SimpleDateFormat format=new SimpleDateFormat("yyyy.MM.dd HH:mm ");
+        String time = format.format(date);
+        return time;
     }
 }

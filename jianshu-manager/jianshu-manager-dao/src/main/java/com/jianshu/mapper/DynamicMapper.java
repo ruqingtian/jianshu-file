@@ -3,6 +3,8 @@ package com.jianshu.mapper;
 import com.jianshu.pojo.Dynamic;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface DynamicMapper {
     //添加动态 关注用户
     public void insertConcernId(Dynamic dynamic);
@@ -26,4 +28,7 @@ public interface DynamicMapper {
 
     //根据文章id 删除
     public void deleteDynamicByReviewId(int reviewId);
+
+    //根据userId 查询所有的动态信息
+    public List<Dynamic> selectDynamicByUserId(@Param(value = "userId") int userId);
 }

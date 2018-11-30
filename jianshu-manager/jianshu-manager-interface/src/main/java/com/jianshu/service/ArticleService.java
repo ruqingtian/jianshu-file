@@ -27,7 +27,10 @@ public interface ArticleService {
     public PageBean selectPageArticle(int currentPage,int index,int currentCount);
 
     //根据userId 获取文章集合
-    public List<Article> getAllByUserId(int userId);
+    public List<MoreArticle> getAllByUserId(int userId);
     //封装MoreArticle
     public MoreArticle saveMoreArticle(int articleId);
+
+    //动态消息 封装MoreArticle
+    public List<MoreArticle> dynamicMessage(int userId);
 }

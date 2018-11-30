@@ -12,7 +12,7 @@ public class Article implements Serializable {
     private String content;
     private Date createTime ;
     private Date updateTime ;
-    private String userName;
+    private String userName;//文章作者的昵称
     private int number;
     private String showTime;
 

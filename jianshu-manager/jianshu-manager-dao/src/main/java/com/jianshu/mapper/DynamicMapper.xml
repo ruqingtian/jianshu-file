@@ -53,5 +53,9 @@
     <delete id="deleteDynamicByReviewId">
         DELETE FROM dynamic WHERE reviewid=#{reviewId}
     </delete>
+    <!--根据userId 查询所有的动态信息-->
+    <select id="selectDynamicByUserId" resultMap="BaseResultMap">
+        SELECT * FROM dynamic where userid=${userId} ORDER BY create_time desc
+    </select>
 </mapper>
 
