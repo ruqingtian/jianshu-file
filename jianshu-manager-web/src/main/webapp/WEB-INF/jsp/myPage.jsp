@@ -146,13 +146,37 @@
                     console.log(data);
                     $("#content").html("");
                     for(var i=0;i<data.length;i++) {
+                        var content="";
                         if (data[i].dynamicContent=="喜欢了文章") {
-                            var content = "<div><img class='smallImg' src=" + data[i].img + ">   " + data[i].dynamicContent + "    " + data[i].dynamicDate + "<br/>" +
+                            content = "<div><img class='smallImg' src=" + data[i].img + "> "+data[i].nickName+"  " + data[i].dynamicContent + "    " + data[i].dynamicDate + "<br/>" +
+                                "<img class='articleImg' src="+data[i].image+" style='float: right;position: relative;right:700px;'/><h3><a href=/article/With?id=" + data[i].id + ">" + data[i].title + "</a></h3><br/> " +
+                                "" + data[i].content + "<br/>" +
+                                " " + data[i].userName + "   阅读 " + data[i].readNums + "评论 "+data[i].reviewNums+" 喜欢 " + data[i].likeNums + " </div>";
+
+                         }else if(data[i].dynamicContent=="发表了文章"){
+                            content = "<div><img class='smallImg' src=" + data[i].img + "> "+data[i].nickName+"   " + data[i].dynamicContent + "    " + data[i].dynamicDate + "<br/>" +
                                 "<h3><a href=/article/With?id=" + data[i].id + ">" + data[i].title + "</a></h3><br/> " +
                                 "" + data[i].content + "<br/>" +
-                                " " + data[i].userName + "   阅读 " + data[i].readNums + " 喜欢 " + data[i].likeNums + " </div>";
-                            $("#content").append(content);
-                         }
+                                " 阅读 " + data[i].readNums + "评论 "+data[i].reviewNums+" 喜欢 " + data[i].likeNums + " </div>";
+
+                        }else if(data[i].dynamicContent=="发表了评论"){
+                            content = "<div><img class='smallImg' src=" + data[i].img + "> "+data[i].nickName+"  " + data[i].dynamicContent + "    " + data[i].dynamicDate + "<br/>" +
+                                    data[i].reviewContent+"<br/>"+
+                                "<h3><a href=/article/With?id=" + data[i].id + ">" + data[i].title + "</a></h3><br/> " +
+                                "" + data[i].content + "<br/>" +
+                                " " + data[i].userName + "   阅读 " + data[i].readNums + "评论 "+data[i].reviewNums+" 喜欢 " + data[i].likeNums + " </div>";
+
+                        }else if(data[i].dynamicContent=="关注了作者"){
+                            var status="+关注";
+                            if(data[i].concernStatus==1){
+                                status="已关注";
+                            }
+                            content="<div><img class='smallImg' src=" + data[i].userImg + "> "+data[i].userName+"  " + data[i].dynamicContent + "    " + data[i].dynamicDate + "<br/>" +
+                                "<div><a  href='/user/myPage?userId="+data[i].id+"'  target='_blank' ><img class='smallImg' src="+data[i].img+"/>"+data[i].nickName+"</a><input class='yesAndNoConcern' name="+data[i].id+" style='font-size: 25px' type='button' value="+status+"> <br/>" +
+                                "写了  "+data[i].count+"字，被"+data[i].concernNums+"人关注，获得了"+data[i].likeNums+"个喜欢<br/>" +
+                                ""+data[i].desc+"</div></div>";
+                        }
+                        $("#content").append(content);
                     }
 
                 },

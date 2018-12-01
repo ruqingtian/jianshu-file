@@ -42,8 +42,8 @@
 
     <!--评论文章的动态-->
     <insert id="insertReviewId" parameterType="com.jianshu.pojo.Dynamic">
-        INSERT INTO dynamic(userid,reviewid,content,create_time)
-               VALUE (#{userId},#{reviewId},#{content},#{createTime})
+        INSERT INTO dynamic(userid,articleid,reviewid,content,create_time)
+               VALUE (#{userId},#{articleId},#{reviewId},#{content},#{createTime})
     </insert>
     <!--删除评论文章的动态-->
     <delete id="deleteReviewId">

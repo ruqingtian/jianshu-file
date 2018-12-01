@@ -3,11 +3,9 @@ package com.jianshu.service.impl;
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.jianshu.mapper.*;
 import com.jianshu.otherpojo.MoreArticle;
+import com.jianshu.otherpojo.MyPageUser;
 import com.jianshu.otherpojo.PageBean;
-import com.jianshu.pojo.Article;
-import com.jianshu.pojo.Article_review;
-import com.jianshu.pojo.Dynamic;
-import com.jianshu.pojo.User;
+import com.jianshu.pojo.*;
 import com.jianshu.service.ArticleService;
 import com.jianshu.service.ConcernService;
 import org.springframework.beans.BeanUtils;
@@ -170,29 +168,65 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<MoreArticle> dynamicMessage(int userId) {
+    public List dynamicMessage(int userId,int cookieId) {
         List<Dynamic> dynamics = dynamicMapper.selectDynamicByUserId(userId);
-        List<MoreArticle> list=new ArrayList<>();
+        List list=new ArrayList<>();
         User user = userMapper.selectUserById(userId);
         for(Dynamic dynamic:dynamics){
-            if("喜欢了文章".equals(dynamic.getContent())){
-                MoreArticle article=new MoreArticle();
-                Article article1 = mapper.selectArticleById(dynamic.getArticleId());
-                BeanUtils.copyProperties(article1,article );
-                if(article1.getContent().length()>30) {
-                    article.setContent(article1.getContent().substring(0,30)+"...");
+            if(!"关注了作者".equals(dynamic.getContent())) {
+                MoreArticle article = new MoreArticle();
+                if (dynamic.getArticleId() != 0) {
+                    Article article1 = mapper.selectArticleById(dynamic.getArticleId());
+                    BeanUtils.copyProperties(article1, article);
+                    if (article1.getContent().length() > 30) {
+                        article.setContent(article1.getContent().substring(0, 30) + "...");
+                    }
+                    User user1 = userMapper.selectUserById(article1.getUserId());
+                    article.setUserName(user1.getNickName());
+                    article.setReviewNums(reviewMapper.selectListByArticleId(article1.getId()).size());
                 }
-
-                User user1 = userMapper.selectUserById(article1.getUserId());
-                article.setUserName(user1.getNickName());
+                if (dynamic.getReviewId() != 0) {
+                    article.setReviewContent(reviewMapper.selectReviewById(dynamic.getReviewId()).getContent());
+                }
                 article.setImg(user.getImg());
                 article.setNickName(user.getNickName());
+
                 article.setDynamicContent(dynamic.getContent());
                 article.setDynamicDate(changeDate(dynamic.getCreateTime()));
                 article.setReadNums(concernMapper.selectCountRead(article.getId()));
                 article.setLikeNums(concernMapper.selectCountLike(article.getId()));
                 list.add(article);
+            }else{
+                MyPageUser myPageUser=new MyPageUser();
+                User user1 = userMapper.selectUserById(dynamic.getConcernId());
+                myPageUser.setId(user1.getId());
+                myPageUser.setImg(user1.getImg());
+                myPageUser.setNickName(user1.getNickName());
+                myPageUser.setConcernNums(concernMapper.selectListByConcernId(user1.getId()).size());
+
+                List<Article> articles = mapper.selectListByUserId(user1.getId());
+                int sum=0;
+                int likeNums=0;
+                for(Article article:articles){
+                   sum+= article.getContent().length();
+                   likeNums+=concernMapper.selectCountLike(article.getId());
+                }
+                myPageUser.setCount(sum);
+                myPageUser.setLikeNums(likeNums);
+                myPageUser.setDesc(user1.getUserDesc());
+                Concern concern = concernMapper.selectConcern(cookieId, user1.getId());
+                if(concern!=null){
+                    myPageUser.setConcernStatus(1);
+                }else{
+                    myPageUser.setConcernStatus(0);
+                }
+                myPageUser.setUserImg(user.getImg());
+                myPageUser.setUserName(user.getNickName());
+                myPageUser.setDynamicContent(dynamic.getContent());
+                myPageUser.setDynamicDate(changeDate(dynamic.getCreateTime()));
+                list.add(myPageUser);
             }
+
         }
         return list;
     }

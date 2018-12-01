@@ -39,6 +39,7 @@ public class ArticleReviewServiceImpl implements ArticleReviewService {
         dynamic.setUserId(userId);
         dynamic.setReviewId(reviewId);
         dynamic.setContent("发表了评论");
+        dynamic.setArticleId(articleId);
         dynamic.setCreateTime(new Date());
         dynamicMapper.insertReviewId(dynamic);
 

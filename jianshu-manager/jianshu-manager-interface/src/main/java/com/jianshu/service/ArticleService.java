@@ -32,5 +32,5 @@ public interface ArticleService {
     public MoreArticle saveMoreArticle(int articleId);
 
     //动态消息 封装MoreArticle
-    public List<MoreArticle> dynamicMessage(int userId);
+    public List dynamicMessage(int userId,int cookieId);
 }

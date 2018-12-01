@@ -146,8 +146,9 @@ public class WriteController {
 
     @RequestMapping(value = "/article/dynamic",method = RequestMethod.GET)
     @ResponseBody
-    public List<MoreArticle> getDynamic(Integer userId){
-        List<MoreArticle> list = articleService.dynamicMessage(userId);
+    public List<MoreArticle> getDynamic(Integer userId,HttpServletRequest request,HttpServletResponse response){
+        int cookieId = getCookieUserId(request, response);
+        List list = articleService.dynamicMessage(userId,cookieId);
         return list;
     }
 

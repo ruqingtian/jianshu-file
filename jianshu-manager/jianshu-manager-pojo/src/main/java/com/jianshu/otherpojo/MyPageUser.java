@@ -9,13 +9,54 @@ public class MyPageUser implements Serializable {
     private int concernNums;
     private int fansNums;
     private int articleNums;
-    private int count;
+    private int count;//总字数
     private int likeNums;
+    private String desc;//个人简介
     private int concernStatus;//1已关注
+    private String userImg;
+    private String userName;
+    private String dynamicContent;
+    private String dynamicDate;
 
+    public String getDynamicContent() {
+        return dynamicContent;
+    }
 
+    public void setDynamicContent(String dynamicContent) {
+        this.dynamicContent = dynamicContent;
+    }
 
+    public String getDynamicDate() {
+        return dynamicDate;
+    }
 
+    public void setDynamicDate(String dynamicDate) {
+        this.dynamicDate = dynamicDate;
+    }
+
+    public String getUserImg() {
+        return userImg;
+    }
+
+    public void setUserImg(String userImg) {
+        this.userImg = userImg;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
     public int getConcernStatus() {
         return concernStatus;

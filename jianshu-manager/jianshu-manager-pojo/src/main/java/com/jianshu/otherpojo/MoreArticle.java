@@ -7,11 +7,20 @@ import java.io.Serializable;
 public class MoreArticle  extends Article implements Serializable  {
     private int readNums;
     private int likeNums;//喜欢该文章在数量
+    private int reviewNums;//评论的数量
     private String img;//头像
     private String nickName;//昵称
     private String dynamicContent;//动态信息的内容
     private String reviewContent;//动态 评论内容
     private String dynamicDate;//动态评论时间
+
+    public int getReviewNums() {
+        return reviewNums;
+    }
+
+    public void setReviewNums(int reviewNums) {
+        this.reviewNums = reviewNums;
+    }
 
     public String getImg() {
         return img;
