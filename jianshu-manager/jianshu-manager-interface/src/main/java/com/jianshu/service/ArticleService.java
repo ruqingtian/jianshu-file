@@ -1,5 +1,6 @@
 package com.jianshu.service;
 
+import com.github.pagehelper.Page;
 import com.jianshu.otherpojo.MoreArticle;
 import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.Article;
@@ -33,4 +34,7 @@ public interface ArticleService {
 
     //动态消息 封装MoreArticle
     public List dynamicMessage(int userId,int cookieId);
+    //模糊查询 分页
+    public PageBean<MoreArticle> likeTitileLimit(String title ,int currentPage, int index, int currentCount);
+
 }

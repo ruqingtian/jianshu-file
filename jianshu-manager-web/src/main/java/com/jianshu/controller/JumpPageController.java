@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -122,6 +123,13 @@ public class JumpPageController {
             model.addAttribute("status","不是本人主页" );
         }
         return "myPage";
+    }
+    //跳转搜索页面
+    @RequestMapping(value = "search",method = RequestMethod.GET)
+    public String searchJsp(String content,Model model) throws Exception {
+       content=new String(content.getBytes("iso-8859-1"),"UTF-8");
+        model.addAttribute("content",content );
+        return "search";
     }
 
 

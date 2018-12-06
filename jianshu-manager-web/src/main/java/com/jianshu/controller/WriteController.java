@@ -2,6 +2,7 @@ package com.jianshu.controller;
 
 import com.jianshu.otherpojo.JianshuResult;
 import com.jianshu.otherpojo.MoreArticle;
+import com.jianshu.otherpojo.MyPageUser;
 import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.Article;
 import com.jianshu.pojo.Concern;
@@ -19,6 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -34,6 +36,8 @@ public class WriteController {
 
     @Value("${ARTICLE_CURRENT_COUNT}")
     private Integer ARTICLE_CURRENT_COUNT;
+    @Value("${SEARCH_ARTICLE_COUNT}")
+    private Integer SEARCH_ARTICLE_COUNT;
 
     @RequestMapping(value = "/write/article",method = RequestMethod.GET)
     @ResponseBody
@@ -151,6 +155,17 @@ public class WriteController {
         List list = articleService.dynamicMessage(userId,cookieId);
         return list;
     }
+
+    @RequestMapping(value = "/search/article",method = RequestMethod.POST)
+    @ResponseBody
+    public PageBean<MoreArticle> searchArticle(String content,int currentPage)  {
+
+        int index=(currentPage-1)*SEARCH_ARTICLE_COUNT;
+        PageBean<MoreArticle> pageBean = articleService.likeTitileLimit(content, currentPage, index, SEARCH_ARTICLE_COUNT);
+        return pageBean;
+    }
+
+
 
 
     //获取登录的用户id

@@ -1,6 +1,7 @@
 package com.jianshu.service.impl;
 
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
+import com.github.pagehelper.Page;
 import com.jianshu.mapper.*;
 import com.jianshu.otherpojo.MoreArticle;
 import com.jianshu.otherpojo.MyPageUser;
@@ -230,6 +231,40 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return list;
     }
+
+    @Override
+    public PageBean<MoreArticle> likeTitileLimit(String title,int currentPage, int index, int currentCount) {
+        title="%"+title+"%";
+        PageBean<MoreArticle> pageBean=new PageBean<>();
+        List<Article> articles = mapper.selectListByTitleOrContent(title, index, currentCount);
+        List<MoreArticle> list=new ArrayList<>();
+        for(Article article:articles){
+            MoreArticle moreArticle=new MoreArticle();
+            if (article.getContent().length() > 30) {
+                article.setContent(article.getContent().substring(0, 200) + "...");
+            }
+
+            BeanUtils.copyProperties(article,moreArticle );
+            moreArticle.setDynamicDate(changeDate(article.getCreateTime()));
+            User user = userMapper.selectUserById(article.getUserId());
+            moreArticle.setImg(user.getImg());
+            moreArticle.setNickName(user.getNickName());
+            moreArticle.setReadNums(concernMapper.selectCountRead(article.getId()));
+            moreArticle.setReviewNums(reviewMapper.selectListByArticleId(article.getId()).size());
+            moreArticle.setLikeNums(concernMapper.selectCountLike(article.getId()));
+            list.add(moreArticle);
+
+        }
+        pageBean.setCurrentPage(currentPage);
+        pageBean.setCurrentCount(currentCount);
+        pageBean.setTotalCount(mapper.selectCountLikeTitleOrContent(title));
+        pageBean.setTotalPage((int)Math.ceil(1.0*(pageBean.getTotalCount())/currentCount));
+        pageBean.setShowList(list);
+
+        return pageBean;
+    }
+
+
 
     //时间格式修改
     public String changeDate(Date date){

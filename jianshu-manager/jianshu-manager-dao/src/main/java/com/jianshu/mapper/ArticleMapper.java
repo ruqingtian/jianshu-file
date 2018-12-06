@@ -26,4 +26,8 @@ public interface ArticleMapper {
     public int selectCountArticle();
     //根据userId 查询集合
     public List<Article> selectListByUserId(int userId);
+    //模糊查询  分页
+    public List<Article> selectListByTitleOrContent(@Param("title")String title,@Param("index")int index,@Param("currentCount")int currentCount);
+    //模糊查询总条数
+    public int selectCountLikeTitleOrContent(@Param("title")String title);
 }

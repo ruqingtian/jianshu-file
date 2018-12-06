@@ -54,4 +54,12 @@
     <select id="selectListByUserId" parameterType="Integer" resultMap="BaseResultMap">
         SELECT * FROM article where user_id=#{userId} ORDER BY create_time desc
     </select>
+    <!--//模糊查询  分页-->
+    <select id="selectListByTitleOrContent" resultMap="BaseResultMap">
+        SELECT * FROM article WHERE title LIKE #{title} OR content LIKE #{title}  ORDER BY create_time desc limit #{index},#{currentCount}
+    </select>
+    <!--//模糊查询总条数-->
+    <select id="selectCountLikeTitleOrContent" resultType="Integer">
+        SELECT count(id) FROM article WHERE title LIKE #{title} OR content LIKE #{title}
+    </select>
 </mapper>
