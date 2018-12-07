@@ -38,9 +38,9 @@
     <delete id="deleteArticle" parameterType="Integer">
         DELETE FROM article WHERE id=#{id}
     </delete>
-    <!--查询所有的文章    联表查询  作者姓名-->
+    <!--查询所有的文章    -->
     <select id="selectAllArticle" resultMap="BaseResultMap">
-        SELECT * FROM article;
+        SELECT * FROM article ORDER BY create_time desc;
     </select>
     <!--分页查询文章-->
     <select id="selectPageArticle" resultMap="BaseResultMap">

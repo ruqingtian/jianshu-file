@@ -7,6 +7,7 @@ import com.jianshu.otherpojo.JianshuResult;
 import com.jianshu.otherpojo.MyPageUser;
 import com.jianshu.otherpojo.PageBean;
 import com.jianshu.pojo.Article;
+import com.jianshu.pojo.Concern;
 import com.jianshu.pojo.HomeUser;
 import com.jianshu.pojo.User;
 import com.jianshu.service.UserService;
@@ -210,6 +211,41 @@ public class UserServiceImpl implements UserService {
         pageBean.setTotalPage((int)Math.ceil(1.0*(pageBean.getTotalCount())/currentCount));
 
 
+        return pageBean;
+    }
+
+    @Override
+    public PageBean<MyPageUser> selectAllUserAndPageBean(int currentPage,int currentCount,int userId) {
+        PageBean<MyPageUser> pageBean=new PageBean<>();
+        int index=(currentPage-1)*currentCount;
+        List<User> users = mapper.selectPageUser(index,currentCount );
+        List<MyPageUser> list=new ArrayList<>();
+
+        for(User user:users){
+            MyPageUser myPageUser=new MyPageUser();
+            myPageUser.setId(user.getId());
+            myPageUser.setImg(user.getImg());
+            myPageUser.setNickName(user.getNickName());
+            myPageUser.setDesc(user.getUserDesc());
+            Concern concern = concernMapper.selectConcern(userId, user.getId());
+            if(concern!=null){
+                myPageUser.setConcernStatus(1);
+            }else{
+                myPageUser.setConcernStatus(0);
+            }
+
+            List<Article> articles = articleMapper.selectListByUserId(user.getId());
+            if(articles.size()>3){
+                articles=articles.subList(0,3 );
+            }
+            myPageUser.setArticleTitle(articles);
+            list.add(myPageUser);
+        }
+        pageBean.setCurrentPage(currentPage);
+        pageBean.setCurrentCount(currentCount);
+        pageBean.setTotalCount(mapper.selectAllUser().size());
+        pageBean.setTotalPage((int)Math.ceil(1.0*(pageBean.getTotalCount())/currentCount));
+        pageBean.setShowList(list);
         return pageBean;
     }
 }

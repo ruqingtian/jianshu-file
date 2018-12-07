@@ -275,7 +275,11 @@
             dataType:"json"
          })
 
-      })
+      });
+      function getAllUser() {
+          window.open('/allUser');
+      }
+
     </script>
 
 </head>
@@ -298,7 +302,7 @@
         </c:forEach>
         <li><a href="javascript:void(0)" onclick="nextPage()" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>
     </ul>
-    <input style="font-size: 20px;" type="button" value="查看全部" />
+    <input style="font-size: 20px;" type="button" onclick="getAllUser()" value="查看全部" />
 </div>
 <hr/>
 <div id="articleShow">

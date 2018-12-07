@@ -132,6 +132,12 @@ public class JumpPageController {
         return "search";
     }
 
+    //跳转所有作者
+    @RequestMapping(value = "/allUser",method = RequestMethod.GET)
+    public String getAllUser(){
+        return "allUser";
+    }
+
 
     //获取登录的用户id
     public int getCookieUserId(HttpServletRequest request, HttpServletResponse response){
@@ -150,4 +156,5 @@ public class JumpPageController {
         }
         return Integer.parseInt(userId);
     }
+
 }

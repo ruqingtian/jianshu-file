@@ -53,3 +53,10 @@
     background-color: #fff;
     border-color: #ddd
 }
+.content{
+    position:relative; margin-left:10px; margin-top:50px;
+}
+.all{
+    left: 20%;
+    position: relative;
+}

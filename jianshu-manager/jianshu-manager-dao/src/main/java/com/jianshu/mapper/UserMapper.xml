@@ -41,7 +41,7 @@
 
     <!--分页查询主页显示user-->
     <select id="selectPageUser" resultMap="BaseResultMap">
-        select id,nickname,img
+        select *
         FROM user limit #{index},#{currentCount}
     </select>
     <!--查询总条数-->

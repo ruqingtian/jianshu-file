@@ -20,14 +20,14 @@ public class MyPageUser implements Serializable {
     private String userName;
     private String dynamicContent;
     private String dynamicDate;
-    public List<Article> articleTitlw;
+    public List<Article> articleTitle;
 
-    public List<Article> getArticleTitlw() {
-        return articleTitlw;
+    public List<Article> getArticleTitle() {
+        return articleTitle;
     }
 
-    public void setArticleTitlw(List<Article> articleTitlw) {
-        this.articleTitlw = articleTitlw;
+    public void setArticleTitle(List<Article> articleTitle) {
+        this.articleTitle = articleTitle;
     }
 
     public String getDynamicContent() {

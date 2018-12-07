@@ -41,6 +41,8 @@ public class UserController {
     private Integer USER_CURRENT_COUNT;
     @Value("${SEARCH_USER_COUNT}")
     private Integer SEARCH_USER_COUNT;
+    @Value("${ALLUSER_CURRENT_COUNT}")
+    private Integer ALLUSER_CURRENT_COUNT;
     //注册用户
     @RequestMapping(value="/user/save",method= RequestMethod.POST)
 
@@ -245,6 +247,23 @@ public class UserController {
         String imgPath="/upload/"+uuid+suffix;
         return imgPath;
     }
+    //搜索用户
+    @RequestMapping(value ="/search/user",method = RequestMethod.POST)
+    @ResponseBody
+    public PageBean<MyPageUser> selectSearchUser(String nickName,Integer currentPage){
+        int index=(currentPage-1)*SEARCH_USER_COUNT;
+        PageBean<MyPageUser> pageBean = userService.selectLikeNickName(currentPage, index, nickName, SEARCH_USER_COUNT);
+        return pageBean;
+    }
+
+    @RequestMapping(value = "/user/getAll",method = RequestMethod.GET)
+    @ResponseBody
+    public PageBean<MyPageUser> selectAllUser(Integer currentPage,HttpServletRequest request,HttpServletResponse response){
+        int cookieUserId = getCookieUserId(request, response);
+        PageBean<MyPageUser> pageBean = userService.selectAllUserAndPageBean(currentPage, ALLUSER_CURRENT_COUNT, cookieUserId);
+        return  pageBean;
+    }
+
     //获取登录的用户id
     public int getCookieUserId(HttpServletRequest request, HttpServletResponse response){
         Cookie[] cookies = request.getCookies();
@@ -262,12 +281,5 @@ public class UserController {
         }
         return Integer.parseInt(userId);
     }
-    //搜索用户
-    @RequestMapping(value ="/search/user",method = RequestMethod.POST)
-    @ResponseBody
-    public PageBean<MyPageUser> selectSearchUser(String nickName,Integer currentPage){
-        int index=(currentPage-1)*SEARCH_USER_COUNT;
-        PageBean<MyPageUser> pageBean = userService.selectLikeNickName(currentPage, index, nickName, SEARCH_USER_COUNT);
-        return pageBean;
-    }
+
 }
