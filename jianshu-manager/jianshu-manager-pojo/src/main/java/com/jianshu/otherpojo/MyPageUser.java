@@ -1,6 +1,9 @@
 package com.jianshu.otherpojo;
 
+import com.jianshu.pojo.Article;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class MyPageUser implements Serializable {
     private int id;
@@ -17,6 +20,15 @@ public class MyPageUser implements Serializable {
     private String userName;
     private String dynamicContent;
     private String dynamicDate;
+    public List<Article> articleTitlw;
+
+    public List<Article> getArticleTitlw() {
+        return articleTitlw;
+    }
+
+    public void setArticleTitlw(List<Article> articleTitlw) {
+        this.articleTitlw = articleTitlw;
+    }
 
     public String getDynamicContent() {
         return dynamicContent;

@@ -29,4 +29,6 @@ public interface UserService {
     public void updateUser(User user);
     //封装MyPageUser
     public MyPageUser saveMyPageUser(int id);
+    //模糊查询分页
+    public PageBean<MyPageUser> selectLikeNickName(int currentPage,int index,String nickName,int currentCount);
 }

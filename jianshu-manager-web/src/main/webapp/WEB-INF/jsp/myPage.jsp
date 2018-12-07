@@ -183,6 +183,47 @@
                 dataType:"json"
             })
         }
+        function getLikeArticle(obj) {
+            var userId=$(obj).parent().attr('name');
+            getAllLikeArticle(userId)
+        }
+        function getAllLikeArticle(userId) {
+            $.ajax({
+                type:"GET",
+                url:"/article/showLike",
+                data:{"userId":userId},
+                success:function (data) {
+                    console.log(data);
+                    $("#content").html("")
+                    if(data.length==0){
+                        $("#content").html("没有你喜欢的文章")
+                    }
+                    for(var i=0;i<data.length;i++){
+                        var content="<div name="+data[i].workerId+"><img class='smallImg' src="+data[i].img+"/>"+data[i].nickName+"   "+data[i].dynamicDate+"<br/>" +
+                            " <a href='' >"+data[i].title+"</a><br/>" +
+                            " "+data[i].content+"<br/>" +
+                            "阅读 "+data[i].readNums+"  评论  "+data[i].reviewNums+"  喜欢  "+data[i].likeNums+"    <input type='button' name="+data[i].id+" class='deleteLikeArticle' value='取消喜欢'/></div>";
+                        $("#content").append(content);
+                    }
+                },
+                dataType:"json"
+            });
+        }
+        $(".deleteLikeArticle").live("click",function () {
+            if(confirm("确定取消喜欢该文章")) {
+                var articleId = $(this).attr('name');
+                var userId = $(this).parent().attr('name');
+                console.log(userId);
+                $.ajax({
+                    type: "GET",
+                    data: {"articleId": articleId},
+                    url: "/article/like",
+                    success: function () {
+                        getAllLikeArticle(userId);
+                    }
+                })
+            }
+        })
     </script>
 </head>
 <body>
@@ -201,7 +242,7 @@
 <div class="all" name="${user.id}">
     <input type="button" id="getAllArticle" onclick="getAllArticle(this)" value="文章"/>
     <input type="button" onclick="getDynamic(this)" value="动态"/>
-    <input type="button" onclick="getNewReview(this)" value="最新评论"/>
+    <input type="button" onclick="getLikeArticle(this)" value="喜欢的文章"/>
     <input type="button"  onclick="getHot(this)" value="热门"/>
     <input type="button" onclick="getConcern(this)" value="关注用户"/>
     <input type="button" onclick="getFans(this)" value="粉丝"/>

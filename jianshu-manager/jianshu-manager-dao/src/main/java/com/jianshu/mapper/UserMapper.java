@@ -32,4 +32,8 @@ public interface UserMapper {
     //根据id 查询用户
     User selectUserById(int id);
 
+    //模糊查询
+    public List<User> selectLikeNickName(@Param("nickName")String nickName,@Param("index")int index,@Param("currentCount")int currentCount);
+    //模糊查询查询总条数
+    public int selectCountLikeNickName(@Param("nickName")String nickName);
 }

@@ -39,6 +39,8 @@ public class UserController {
 
     @Value("${USER_CURRENT_COUNT}")
     private Integer USER_CURRENT_COUNT;
+    @Value("${SEARCH_USER_COUNT}")
+    private Integer SEARCH_USER_COUNT;
     //注册用户
     @RequestMapping(value="/user/save",method= RequestMethod.POST)
 
@@ -259,5 +261,13 @@ public class UserController {
             }
         }
         return Integer.parseInt(userId);
+    }
+    //搜索用户
+    @RequestMapping(value ="/search/user",method = RequestMethod.POST)
+    @ResponseBody
+    public PageBean<MyPageUser> selectSearchUser(String nickName,Integer currentPage){
+        int index=(currentPage-1)*SEARCH_USER_COUNT;
+        PageBean<MyPageUser> pageBean = userService.selectLikeNickName(currentPage, index, nickName, SEARCH_USER_COUNT);
+        return pageBean;
     }
 }

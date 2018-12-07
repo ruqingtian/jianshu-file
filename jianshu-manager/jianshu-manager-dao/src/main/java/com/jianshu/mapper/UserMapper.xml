@@ -61,7 +61,14 @@
         update_time=#{updateTime}
         where id=#{id}
     </update>
+    <!--模糊查询-->
+    <select id="selectLikeNickName" resultMap="BaseResultMap">
+        SELECT * FROM user WHERE nickname LIKE '%${nickName}%' limit #{index},#{currentCount}
+    </select>
 
-
+    <!--//模糊查询总条数-->
+    <select id="selectCountLikeNickName" resultType="Integer">
+        SELECT count(id) FROM user WHERE nickname LIKE '%${nickName}%'
+    </select>
 </mapper>
 

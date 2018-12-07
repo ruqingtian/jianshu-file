@@ -13,6 +13,15 @@ public class MoreArticle  extends Article implements Serializable  {
     private String dynamicContent;//动态信息的内容
     private String reviewContent;//动态 评论内容
     private String dynamicDate;//动态评论时间
+    private int workerId;//使用者id
+
+    public int getWorkerId() {
+        return workerId;
+    }
+
+    public void setWorkerId(int workerId) {
+        this.workerId = workerId;
+    }
 
     public int getReviewNums() {
         return reviewNums;

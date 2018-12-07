@@ -178,4 +178,38 @@ public class UserServiceImpl implements UserService {
        ;
         return myPageUser;
     }
+
+    @Override
+    public PageBean<MyPageUser> selectLikeNickName(int currentPage,int index, String nickName, int currentCount) {
+        PageBean<MyPageUser> pageBean=new PageBean<>();
+        List<User> users = mapper.selectLikeNickName(nickName, index, currentCount);
+        List<MyPageUser> list=new ArrayList<>();
+
+        for(User user:users){
+            MyPageUser myPageUser=new MyPageUser();
+            myPageUser.setId(user.getId());
+            myPageUser.setImg(user.getImg());
+            myPageUser.setNickName(user.getNickName());
+            myPageUser.setConcernNums(concernMapper.selectListByUserId(user.getId()).size());
+            myPageUser.setFansNums(concernMapper.selectListByConcernId(user.getId()).size());
+            List<Article> articles = articleMapper.selectListByUserId(user.getId());
+            myPageUser.setArticleNums(articles.size());
+            int sum=0,like=0;
+            for(Article article:articles){
+                sum+=article.getContent().length();
+                like+=concernMapper.selectCountLike(article.getId());
+            }
+            myPageUser.setCount(sum);
+            myPageUser.setLikeNums(like);
+           list.add(myPageUser);
+        }
+        pageBean.setShowList(list);
+        pageBean.setCurrentCount(currentCount);
+        pageBean.setCurrentPage(currentPage);
+        pageBean.setTotalCount(mapper.selectCountLikeNickName(nickName));
+        pageBean.setTotalPage((int)Math.ceil(1.0*(pageBean.getTotalCount())/currentCount));
+
+
+        return pageBean;
+    }
 }

@@ -240,7 +240,7 @@ public class ArticleServiceImpl implements ArticleService {
         List<MoreArticle> list=new ArrayList<>();
         for(Article article:articles){
             MoreArticle moreArticle=new MoreArticle();
-            if (article.getContent().length() > 30) {
+            if (article.getContent().length() > 200) {
                 article.setContent(article.getContent().substring(0, 200) + "...");
             }
 
@@ -264,6 +264,29 @@ public class ArticleServiceImpl implements ArticleService {
         return pageBean;
     }
 
+    @Override
+    public List<MoreArticle> getAllLikeArticle(int userId) {
+        List<Integer> integers = concernMapper.selectLikeArticleIdByUserId(userId);
+        List<MoreArticle> list=new ArrayList<>();
+        for(Integer s:integers){
+            Article article = mapper.selectArticleById(s);
+            if (article.getContent().length() > 200) {
+                article.setContent(article.getContent().substring(0, 200) + "...");
+            }
+            MoreArticle moreArticle=new MoreArticle();
+            BeanUtils.copyProperties(article,moreArticle );
+            User user = userMapper.selectUserById(article.getUserId());
+            moreArticle.setDynamicDate(changeDate(article.getCreateTime()));
+            moreArticle.setImg(user.getImg());
+            moreArticle.setNickName(user.getNickName());
+            moreArticle.setWorkerId(userId);
+            moreArticle.setReadNums(concernMapper.selectCountRead(article.getId()));
+            moreArticle.setReviewNums(reviewMapper.selectIdByArticleId(article.getId()).size());
+            moreArticle.setLikeNums(concernMapper.selectCountLike(article.getId()));
+            list.add(moreArticle);
+        }
+        return list;
+    }
 
 
     //时间格式修改

@@ -32,6 +32,8 @@ public interface ConcernMapper {
     public int selectCountLike(@Param("likeArticleId")int likeArticleId);
     //查询喜欢是否存在
     public Concern selectConcernByUserIdAndLikeArticleId(@Param("userId")int userId,@Param("likeArticleId")int likeArticleId);
+    //根据userId 查询所有喜欢的文章Id
+    public List<Integer> selectLikeArticleIdByUserId(@Param("userId")int userId);
 
     //根据文章的id 删除所有
     public void deleteConcernBylikeArticleId(int likeArticleId);

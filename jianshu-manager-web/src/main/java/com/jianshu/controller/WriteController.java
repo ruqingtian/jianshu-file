@@ -165,6 +165,13 @@ public class WriteController {
         return pageBean;
     }
 
+    @RequestMapping(value = "/article/showLike",method =  RequestMethod.GET)
+    @ResponseBody
+    public List<MoreArticle> showLikeArticle(Integer userId){
+        List<MoreArticle> allLikeArticle = articleService.getAllLikeArticle(userId);
+        return allLikeArticle;
+    }
+
 
 
 

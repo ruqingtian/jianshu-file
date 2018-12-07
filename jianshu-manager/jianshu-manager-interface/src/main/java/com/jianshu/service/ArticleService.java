@@ -36,5 +36,6 @@ public interface ArticleService {
     public List dynamicMessage(int userId,int cookieId);
     //模糊查询 分页
     public PageBean<MoreArticle> likeTitileLimit(String title ,int currentPage, int index, int currentCount);
-
+    //根据userId 获得喜欢的文章
+    public List<MoreArticle> getAllLikeArticle(int userId);
 }
