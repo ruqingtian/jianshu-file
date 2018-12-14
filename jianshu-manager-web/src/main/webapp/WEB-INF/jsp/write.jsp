@@ -323,6 +323,7 @@
 
         标题：<input style="width: 90%" type="text" name="title" value="无标题文章" id="articleTitle"/>
 
+
         <input type="hidden" id="articleId" name="articleId" value="-100"   />
         <script type="text/plain" id="container" name="content" >
             这里是初始化内容
