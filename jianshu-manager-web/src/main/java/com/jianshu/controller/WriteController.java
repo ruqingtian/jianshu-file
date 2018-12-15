@@ -15,13 +15,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class WriteController {
@@ -59,11 +62,12 @@ public class WriteController {
 
     @RequestMapping(value = "/write/saveArticle",method = RequestMethod.POST)
     @ResponseBody
-    public Article saveArticle(@RequestParam String title,  @RequestParam Integer articleId, @RequestParam String content)  {
+    public Article saveArticle( String title,MultipartFile titleImg,  Integer articleId, String content,HttpServletRequest request)  {
 
         if(articleId!=-100) {
+            String imgPath = workImg(titleImg, request);
             content = content.substring(3, content.length() - 4);
-            articleService.updateArticleById(articleId, title, content);
+            articleService.updateArticleById(articleId, title, content,imgPath);
             Article article = articleService.selectArticleById(articleId);
 
             return article;
@@ -191,5 +195,30 @@ public class WriteController {
             }
         }
         return Integer.parseInt(userId);
+    }
+    //处理图片的路径
+    public  String workImg(MultipartFile img,HttpServletRequest request){
+        String filePath="";
+        String uuid="";
+        String suffix="";
+        //判断文件是否为空
+        if(!img.isEmpty()){
+            //文件保存路径
+            try {
+                uuid= UUID.randomUUID().toString().replace("-","" );
+                //取后缀
+                String imgName=img.getOriginalFilename();
+                suffix =imgName.substring(imgName.lastIndexOf(".") );
+
+                filePath=request.getSession().getServletContext().getRealPath("/")+"upload/"+uuid+suffix;
+                //转存文件
+                img.transferTo(new File(filePath));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        String imgPath="/upload/"+uuid+suffix;
+        return imgPath;
     }
 }

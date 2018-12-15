@@ -25,6 +25,14 @@
         }
 
     </style>
+    <script type="text/javascript">
+        function imgChange(obj) {
+            var file=document.getElementById("touxiangImg");
+            var imgUrl=window.URL.createObjectURL(file.files[0]);
+            console.log(imgUrl);
+            $(".touxiang").attr("src",imgUrl);
+        }
+    </script>
 </head>
 <body>
 <jsp:include page="top.jsp"></jsp:include>
@@ -33,8 +41,8 @@
         <table>
             <input type="hidden" name="id" value="${user.id}">
         <tr>
-            <td><img class="touxiang" src="${user.img}"/> </td>
-            <td><input name="image"  type="file"/>更换头像</td>
+            <td><img class="touxiang" id="changeImg" src="${user.img}"/> </td>
+            <td><input name="image" id="touxiangImg" onchange="imgChange(this)"  type="file"/>更换头像</td>
         </tr>
         <tr>
             <td>昵称</td>

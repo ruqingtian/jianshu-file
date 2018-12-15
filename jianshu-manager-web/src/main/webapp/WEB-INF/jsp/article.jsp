@@ -15,6 +15,10 @@
             width: 80%;
             text-align: center;
         }
+        .articleImg{
+            width: 390px;
+            height: 270px;
+        }
     </style>
     <title>文章详情</title>
     <script type="text/javascript">
@@ -214,7 +218,7 @@
             喜欢 ${article.likeNums}</p>
     </div>
     <div>
-        <img src="${article.image}"/>
+        <img class="articleImg" src="${article.image}"/>
     </div>
     <div>
         ${article.content}

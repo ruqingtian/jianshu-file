@@ -17,7 +17,7 @@ public interface ArticleService {
     public Article selectArticleById(int id);
 
     //根据文章id 修改文章
-    public void updateArticleById(int id, String title, String content);
+    public void updateArticleById(int id, String title, String content,String titileImg);
     //新建文章
     public void saveArticle(int userId,int collectionId);
     //根据id删除文章

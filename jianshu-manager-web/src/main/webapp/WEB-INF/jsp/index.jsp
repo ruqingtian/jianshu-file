@@ -89,7 +89,10 @@
            width: 60%;
        }
 
-
+        .articleImg{
+            width: 130px;
+            height: 90px;
+        }
     </style>
     <script type="text/javascript">
         window.onload=function () {

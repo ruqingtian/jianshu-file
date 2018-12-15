@@ -75,7 +75,7 @@
             if(content.trim()!=""){
                 var url='search?content='+content;
                 url=encodeURI(url);
-                window.open('search?content='+content);
+                window.open('/search?content='+content);
             }
 
         }

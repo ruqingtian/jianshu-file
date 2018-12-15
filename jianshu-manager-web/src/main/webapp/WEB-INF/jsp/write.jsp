@@ -92,11 +92,12 @@
                 url:"/write/content",
                 data:{id:aId},
                 success:function (data) {
-
+                    console.log(data);
                     var ue = UE.getEditor('container');
                     ue.setContent(data.content);
                     $("#articleTitle").val(data.title);
                     $("#articleId").attr("value",data.id);
+                    $("#titleImg").attr("src",data.image);
 
                 },
                 dataType:"json"
@@ -189,11 +190,19 @@
             }
             var ue = UE.getEditor('container');
             var content=ue.getContent();
+            var formData=new FormData();
+            formData.append('titleImg',$("#fileImg")[0].files[0]);
+            formData.append('articleId',id);
+            formData.append('title',title);
+            formData.append('content',content);
 
             $.ajax({
                 type:"POST",
                 url:"/write/saveArticle",
-                data:{articleId:id,title:title,content:content},
+                data:formData,
+                async: false,
+                contentType: false,
+                processData: false,
                 success:function (data) {
 
                     $("#"+id+"").next().html("（已发布）");
@@ -266,7 +275,7 @@
                 },
                 dataType:"json"
             })
-        })
+        });
 
         //文章显示
         function articleForeach(data) {
@@ -283,6 +292,13 @@
                 $("#collectionName").append(content+"<input id='deleteArticle' name="+data[i].collectionId+" style='display:none' type='button' value='删除'/>");
             }
             $("#collectionName").append("<hr/>");
+        }
+        //图片回显
+        function imgChange(obj) {
+            var file=document.getElementById("fileImg");
+            var imgUrl=window.URL.createObjectURL(file.files[0]);
+
+            $("#titleImg").attr("src",imgUrl);
         }
 
     </script>
@@ -321,8 +337,8 @@
     </script>
     <div >
 
-        标题：<input style="width: 90%" type="text" name="title" value="无标题文章" id="articleTitle"/>
-
+        标题：<input style="width: 90%" type="text" name="title" value="无标题文章" id="articleTitle"/><br/>
+        封面图片：<img src="/" id="titleImg" width="130px" height="90px"><input id="fileImg" accept="image/*" type="file" onchange="imgChange(this)" value="上传"/>
 
         <input type="hidden" id="articleId" name="articleId" value="-100"   />
         <script type="text/plain" id="container" name="content" >

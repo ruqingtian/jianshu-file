@@ -19,6 +19,10 @@
             left: 20%;
             position: relative;
         }
+        .articleImg{
+            width: 130px;
+            height: 90px;
+        }
     </style>
     <script type="text/javascript">
         $(function () {

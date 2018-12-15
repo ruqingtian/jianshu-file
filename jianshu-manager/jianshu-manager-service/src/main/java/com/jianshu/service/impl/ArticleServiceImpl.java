@@ -47,7 +47,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void updateArticleById(int id, String title, String content) {
+    public void updateArticleById(int id, String title, String content,String titleImg) {
         Date updateTime=new Date();
         Map<String ,Object> map=new HashMap<>();
         map.put("id",id );
@@ -55,6 +55,7 @@ public class ArticleServiceImpl implements ArticleService {
         map.put("content",content );
         map.put("updateTime",updateTime );
         map.put("status",1);
+        map.put("image",titleImg );
         mapper.updataArticleById(map);
         //插入动态
         Article article = mapper.selectArticleById(id);
