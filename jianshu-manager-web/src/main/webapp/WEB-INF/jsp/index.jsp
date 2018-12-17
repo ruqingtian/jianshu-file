@@ -116,7 +116,7 @@
                   var count="<li><img class='articleImg smallImg' src="+data.showList[i].image+" style='float: right;position: relative;right:700px;'/>" +
                       "<div class='articleShow'><h3 style='width: 800px' ><a href='/article/With?id="+data.showList[i].id+"' target='_blank'>"+data.showList[i].title+"</a></h3>" +
                       "<p style='width: 800px'>"+data.showList[i].content+"</p> " +
-                      "<p style='width: 800px'>"+data.showList[i].userName+"  评论 0 喜欢"+data.showList[i].likeNums+"</p></div></li>"
+                      "<p style='width: 800px'>"+data.showList[i].userName+"  评论 "+data.showList[i].reviewNums+" 喜欢"+data.showList[i].likeNums+"</p></div></li>"
 
                   $("#articleShow").append(count);
 

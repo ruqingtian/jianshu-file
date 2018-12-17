@@ -113,7 +113,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public PageBean selectPageArticle(int currentPage, int index, int currentCount) {
-        PageBean<Article> pageBean=new PageBean<>();
+        PageBean<MoreArticle> pageBean=new PageBean<>();
         //设置当前页
         pageBean.setCurrentPage(currentPage);
         //设置当前显示条数
@@ -126,17 +126,21 @@ public class ArticleServiceImpl implements ArticleService {
         pageBean.setTotalPage(totalPage);
         //设置每页显示数据
         List<Article> articles=mapper.selectPageArticle(index,currentCount );
+        List<MoreArticle> list=new ArrayList<>();
         for(int i=0;i<articles.size();i++){
+            MoreArticle moreArticle=new MoreArticle();
+            BeanUtils.copyProperties(articles.get(i),moreArticle );
             User user = userMapper.selectUserById(articles.get(i).getUserId());
-            if(articles.get(i).getContent().length()>5) {
-                articles.get(i).setContent(articles.get(i).getContent().substring(0,5)+"...");
-            }else{
-                articles.get(i).setContent(articles.get(i).getContent());
+            if(moreArticle.getContent().length()>30) {
+                moreArticle.setContent(articles.get(i).getContent().substring(0,30)+"...");
             }
 
-            articles.get(i).setUserName(user.getNickName());
+            moreArticle.setUserName(user.getNickName());
+            moreArticle.setReviewNums(reviewMapper.selectListByArticleId(moreArticle.getId()).size());
+            moreArticle.setLikeNums(concernMapper.selectCountLike(moreArticle.getId()));
+            list.add(moreArticle);
         }
-        pageBean.setShowList(articles);
+        pageBean.setShowList(list);
 
         return pageBean;
     }
