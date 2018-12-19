@@ -85,10 +85,10 @@ public class UserController {
     //分页查询用户
     @RequestMapping(value = "/index/userPage",method = RequestMethod.GET)
     @ResponseBody
-    public PageBean page(Integer currentPage){
-
+    public PageBean page(Integer currentPage,HttpServletRequest request,HttpServletResponse response){
+        int cookieId = getCookieUserId(request, response);
         int index=(currentPage-1)*USER_CURRENT_COUNT;
-        PageBean pageBean = userService.selectPageUser(currentPage, index, USER_CURRENT_COUNT);
+        PageBean pageBean = userService.selectPageUser(currentPage, index, USER_CURRENT_COUNT,cookieId);
         return pageBean;
 
     }

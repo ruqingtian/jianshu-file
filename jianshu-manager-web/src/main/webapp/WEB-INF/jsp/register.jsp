@@ -126,12 +126,12 @@
         </div>
     </h3>
 <form action="/user/save" class="new_user" id="userRegFrom" method="post" enctype="multipart/form-data" onsubmit="return true"/>
-        昵称：<input type="text" name="nickName"><br/>
+        昵称：<input type="text" name="nickName" placeholder="请输入昵称" ><br/>
         头像：<input type="file" name="img" /><br/>
-        用户名：<input type="text" name="userName" id="userName" onblur="checkName()"><span id="userId"></span><br>
-        设置密码：<input type="password" name="pwd" id="pwd" onblur="checkPwd()"><span id="userPwd"></span><br>
-        确认密码：<input type="password" name="pwd2" id="pwd2" onblur="checkPwd2()"><span id="userPwd2"></span><br/>
-        手机号：<input type="text" name="phone" id="phone" onkeyup="checkPhone()"><span id="userPhone"></span><br>
+        用户名：<input type="text" name="userName" id="userName" placeholder="请输入用户名" onblur="checkName()"><span id="userId"></span><br>
+        设置密码：<input type="password" name="pwd" id="pwd" onblur="checkPwd()" placeholder="请输入密码"><span id="userPwd"></span><br>
+        确认密码：<input type="password" name="pwd2" id="pwd2" onblur="checkPwd2()" placeholder="请确认密码"><span id="userPwd2"></span><br/>
+        手机号：<input type="text" name="phone" id="phone" placeholder="请输入手机号" onkeyup="checkPhone()"><span id="userPhone"></span><br>
 
 
 

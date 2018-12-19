@@ -8,6 +8,15 @@ public class HomeUser implements Serializable {
     private String nickName;
     private double sumNums;
     private int likeNums;
+    private int status;//0表示未关注 1关注
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public int getId() {
         return id;

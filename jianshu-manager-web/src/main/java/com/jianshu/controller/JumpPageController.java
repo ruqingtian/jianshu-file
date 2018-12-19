@@ -72,7 +72,8 @@ public class JumpPageController {
         int currentPage=1;
         int currentCount=2;
         int index=(currentPage-1)*currentCount;
-        PageBean pageBean = userService.selectPageUser(currentPage, index, currentCount);
+        int cookieId = getCookieUserId(request, response);
+        PageBean pageBean = userService.selectPageUser(currentPage, index, currentCount,cookieId);
         model.addAttribute("pageBean", pageBean);
         List<Article> articleList = articleService.selectAllArticle();
         model.addAttribute("articleList",articleList );

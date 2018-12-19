@@ -24,7 +24,7 @@ public interface UserService {
     //查询所有用户
     public List<HomeUser> selectHomeUser();
     //分页查询用户
-    public PageBean selectPageUser(int currentPage,int index, int currentCount);
+    public PageBean selectPageUser(int currentPage,int index, int currentCount,int cookieId);
     //修改用户
     public void updateUser(User user);
     //封装MyPageUser

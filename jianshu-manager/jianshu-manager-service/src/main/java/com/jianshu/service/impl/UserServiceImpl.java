@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageBean selectPageUser(int currentPage,int index, int currentCount) {
+    public PageBean selectPageUser(int currentPage,int index, int currentCount,int cookieId) {
         PageBean<HomeUser> pageBean=new PageBean<>();
         //设置当前页
         pageBean.setCurrentPage(currentPage);
@@ -125,6 +125,16 @@ public class UserServiceImpl implements UserService {
         List<HomeUser> list=new ArrayList<>();
         for(int i=0;i<users.size();i++){
             HomeUser homeUser=new HomeUser();
+            if(cookieId==-10){
+                homeUser.setStatus(0);
+            }else{
+                Concern concern = concernMapper.selectConcern(cookieId, users.get(i).getId());
+                if(concern!=null){
+                    homeUser.setStatus(1);
+                }else{
+                    homeUser.setStatus(0);
+                }
+            }
             homeUser.setId(users.get(i).getId());
             homeUser.setImg("../.."+users.get(i).getImg());
             homeUser.setNickName(users.get(i).getNickName());

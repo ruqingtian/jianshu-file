@@ -160,12 +160,15 @@
         }
         // 首页显示推荐作者公共
         function indexShowUser(data) {
-
+            console.log(data);
             $("#pageUser").html("");
             for(var i=0;i<data.showList.length;i++){
                 var userId=data.showList[i].id;
-
-                var count="<a  href='/user/myPage?userId="+userId+"'  target='_blank' > <img  class='smallImg' src="+data.showList[i].img+"/>  "+data.showList[i].nickName+"</a>: 写了0.0 "+data.showList[i].likeNums+" 喜欢 <input class='yesAndNoConcern' name="+userId+" type='button' value='+关注'/><br/>";
+                var str="+关注";
+                if(data.showList[i].status==1){
+                    str="已关注";
+                }
+                var count="<a  href='/user/myPage?userId="+userId+"'  target='_blank' > <img  class='smallImg' src="+data.showList[i].img+"/>  "+data.showList[i].nickName+"</a>: 写了0.0 "+data.showList[i].likeNums+" 喜欢 <input class='yesAndNoConcern' name="+userId+" type='button' value="+str+"><br/>";
                 $("#pageUser").append(count);
             }
         }

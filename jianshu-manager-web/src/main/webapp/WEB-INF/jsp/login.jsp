@@ -69,10 +69,10 @@
     </h3>
     <form  class="new_user"  >
         <tr>
-        用户名：<input id="userName" type="text" name="userName"><span id="userNameSpan"></span><br>
+        用户名：<input id="userName" type="text" name="userName" placeholder="请输入用户名"><span id="userNameSpan"></span><br>
         </tr>
         <tr>
-        密  码：<input id="passWord" type="password" name="pwd"><span id="passWordSpan"></span><br>
+        密  码：<input id="passWord" type="password" name="pwd" placeholder="请输入密码"><span id="passWordSpan"></span><br>
         </tr>
         <tr>
         <input type="button" onclick="onSubmit()" value="提交">
