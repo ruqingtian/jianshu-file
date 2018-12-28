@@ -12,6 +12,7 @@ import com.jianshu.service.ArticleService;
 import com.jianshu.service.ConcernService;
 import com.jianshu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +35,8 @@ public class JumpPageController {
     private ArticleService articleService;
     @Autowired
     private ConcernService concernService;
+    @Value("${USER_CURRENT_COUNT}")
+    private Integer  USER_CURRENT_COUNT;
 
     //转到注册页面
     @RequestMapping("/register")
@@ -70,10 +73,10 @@ public class JumpPageController {
       /*  List<HomeUser> list = service.selectHomeUser();
         model.addAttribute("homeUserList", list);*/
         int currentPage=1;
-        int currentCount=2;
-        int index=(currentPage-1)*currentCount;
+
+        int index=(currentPage-1)*USER_CURRENT_COUNT;
         int cookieId = getCookieUserId(request, response);
-        PageBean pageBean = userService.selectPageUser(currentPage, index, currentCount,cookieId);
+        PageBean pageBean = userService.selectPageUser(currentPage, index, USER_CURRENT_COUNT,cookieId);
         model.addAttribute("pageBean", pageBean);
         List<Article> articleList = articleService.selectAllArticle();
         model.addAttribute("articleList",articleList );

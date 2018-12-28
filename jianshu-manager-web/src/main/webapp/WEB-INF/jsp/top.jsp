@@ -14,17 +14,17 @@
     <style type="text/css">
         .top{
             width: 100%;
-            height: 50px;
+            height:70px;
             font-size: 20px;
             z-index:999;
             position: fixed;
-            top: 0;
-            lsft:0;
+
             background-color: antiquewhite;
 
         }
         .smallImg{
-            height: 40px;
+            height: 50px;
+            width:50px;
         }
     </style>
     <title>Title</title>
@@ -84,31 +84,32 @@
 </head>
 <body>
 <div class="top">
-    <nav >
-        <a class="logo" href="/"><img class="smallImg" src="../../image/nav-logo-4c7bbafe27adc892f3046e6978459bac.png" /></a>
-        <a class="first" href="/" >首页</a> <a href="/" >下载app</a><input id="searchContent" type="text"/> <input type="button" onclick="search()" value="搜索">
+    <div>
+        <div style="float:left;"><a class="logo" href="/"><img style="width: 120px"
+                                           src="../../image/nav-logo-4c7bbafe27adc892f3046e6978459bac.png"/></a></div>
+        <div style="line-height:70px"><a class="first" style="height:70px;line-height:20px" href="/">首页</a> <a href="/">下载app</a><input
+                id="searchContent" type="text"/> <input type="button" onclick="search()" value="搜索">
 
 
-
-        <!--右上角 -->
-        <span id="changeImg" style="display: inline">
-            <a  class="btn" href="/login">登录</a>
-            <a class="btn"href="/register">注册</a>
+            <!--右上角 -->
+            <span id="changeImg" style="display: inline">
+            <a class="btn" href="/login">登录</a>
+            <a class="btn" href="/register">注册</a>
         </span>
 
-                <span onmouseleave="displayMore()">
-               <img id="topTouXiangImg" style="display: none"  class="smallImg" onmouseover="showMore()" src=""/>
-                <p  id="showMoreArea"  style="display: none">
-                    <a id="myPage"  >我的主页</a>
+            <span onmouseleave="displayMore()">
+               <img id="topTouXiangImg" style="display: none" class="smallImg" onmouseover="showMore()" src=""/>
+                <p id="showMoreArea" style="display: none">
+                    <a id="myPage">我的主页</a>
                     <a href="/user/setting">设置</a>
-                    <a onclick="exitUser()" href="javascript:void(0)"  >退出</a>
+                    <a onclick="exitUser()" href="javascript:void(0)">退出</a>
                 </p>
             </span>
 
 
-
-        <a  class="btn" href="/write" target='_blank'>写文章</a>
-    </nav>
+            <a class="btn" href="/write" target='_blank'>写文章</a>
+        </div>
+    </div>
 </div>
 </body>
 </html>
