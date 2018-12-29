@@ -18,6 +18,7 @@
             font-size: 20px;
             z-index:999;
             position: fixed;
+            margin-top: -8px;
 
             background-color: antiquewhite;
 
@@ -85,7 +86,7 @@
 <body>
 <div class="top">
     <div>
-        <div style="float:left;"><a class="logo" href="/"><img style="width: 120px"
+        <div style="float:left;"><a  href="/"><img style="width: 120px"
                                            src="../../image/nav-logo-4c7bbafe27adc892f3046e6978459bac.png"/></a></div>
         <div style="line-height:70px"><a class="first" style="height:70px;line-height:20px" href="/">首页</a> <a href="/">下载app</a><input
                 id="searchContent" type="text"/> <input type="button" onclick="search()" value="搜索">

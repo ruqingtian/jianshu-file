@@ -35,7 +35,8 @@
     </script>
 </head>
 <body>
-<jsp:include page="top.jsp"></jsp:include>
+<div style="margin-top: -42px">
+<jsp:include page="top.jsp"></jsp:include></div>
 <div class="content">
     <form action="/user/update" method="post" enctype="multipart/form-data">
         <table>

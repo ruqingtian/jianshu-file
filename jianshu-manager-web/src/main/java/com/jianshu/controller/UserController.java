@@ -46,11 +46,11 @@ public class UserController {
     //注册用户
     @RequestMapping(value="/user/save",method= RequestMethod.POST)
 
-    public String dosave(String nickName, String userName, String pwd, String phone, MultipartFile img, HttpServletRequest request,HttpServletResponse response){
-        String imgPath = workImg(img, request);
-        userService.saveUser(nickName,userName,pwd,phone,imgPath);
+    public String dosave(String nickName, String userName, String pwd, String phone,  HttpServletRequest request,HttpServletResponse response){
+
+        userService.saveUser(nickName,userName,pwd,phone);
         login(userName,pwd , response);
-        return "redirect:index";
+        return "redirect:/";
 
     }
 

@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void saveUser(String nickName, String userName, String pwd, String phone,String img) {
+    public void saveUser(String nickName, String userName, String pwd, String phone) {
 
         User user=new User();
 
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
         user.setPwd(pwd);
         user.setPhone(phone);
         user.setSex(2);
-        user.setImg(img);
+        user.setImg("/image/morentouxiang.jpg");
         //补全信息
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());

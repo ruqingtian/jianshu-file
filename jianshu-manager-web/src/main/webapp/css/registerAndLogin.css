@@ -1,0 +1,51 @@
+.overAll{
+    width: 100%;
+
+}
+.logo{
+
+    margin-left:10px;
+    margin-top:50px;
+
+
+    width: 300px;
+}
+.logoImg{
+    width: 250px;
+}
+.backBorder{
+    background:#f7f7f7;
+    width:450px;
+    margin:-30px auto;
+    padding-top:50px;
+    height:520px;
+    border: 3px solid dimgrey;
+    text-align: center;
+}
+.title{
+    font-size: 30px;
+}
+a{
+    color:#969696;
+}
+.now{
+    color: red;
+}
+a:active{
+    color: red;
+}
+a{
+    text-decoration: none;
+
+}
+.content{
+    text-align: left;
+    margin-left:100px;
+    margin-top:60px;
+
+}
+.input{
+    width: 250px;
+    height: 40px;
+    border-radius: 8px;
+}

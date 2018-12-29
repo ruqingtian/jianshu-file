@@ -14,7 +14,7 @@
 
     <script type="text/javascript" src="/js/jquery-1.8.3.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
-    <link href="/css/index.css">
+    <link rel="stylesheet" href="/css/index.css">
     <title>简书-创作你的创作</title>
 
     <style type="text/css">

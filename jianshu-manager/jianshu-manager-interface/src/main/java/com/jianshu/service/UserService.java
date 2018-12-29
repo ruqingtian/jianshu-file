@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserService {
     //创建用户
-    public void  saveUser(String nickName,String userName,String pwd,String phone,String img);
+    public void  saveUser(String nickName,String userName,String pwd,String phone);
 
     //检验数据
     public JianshuResult checkName(String param,Integer type);

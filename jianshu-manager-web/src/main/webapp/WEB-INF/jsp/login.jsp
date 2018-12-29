@@ -10,6 +10,7 @@
 <head>
 
     <script type="text/javascript" src="/js/jquery-1.6.4.js"></script>
+    <link rel="stylesheet" href="/css/registerAndLogin.css">
     <title>登录</title>
     <style type="text/css">
         div{
@@ -28,6 +29,10 @@
 
     </style>
     <script type="text/javascript">
+        $(function () {
+            $(".now").removeClass("now");
+            $("#login").addClass("now");
+        })
         function onSubmit() {
 
             var userName= $("#userName").val();
@@ -57,27 +62,35 @@
     </script>
 </head>
 
-<body>
-<a class="logo" href="/"><img src="../../../image/nav-logo-4c7bbafe27adc892f3046e6978459bac.png" ></a>
-<div >
-    <h3 class="title">
-        <div>
-            <a href="/login">登录</a>
-            <b>·</b>
-            <a href="/register">注册</a>
+<body style="background-color:  #f0f0f0">
+<div class="overAll">
+    <div class="logo" style="margin-left: -15px">
+        <a href="/"><img class="logoImg" src="../../../image/nav-logo-4c7bbafe27adc892f3046e6978459bac.png"></a>
+    </div>
+    <div class="backBorder" style="height: 350px;margin-top: 0px">
+        <div >
+            <h3 class="title">
+                <div style="height: 40px" >
+                    <a class="title" id="login" href="/login">登录</a>
+                    <b>&nbsp;· &nbsp;</b>
+                    <a class="title" id="register" href="/register">注册</a>
+                </div>
+            </h3>
+            <div class="content" >
+                <form class="new_user">
+
+                    <input class="input" id="userName" type="text" name="userName" placeholder="请输入用户名"><span
+                        id="userNameSpan"></span><br>
+
+                    <input class="input" id="passWord" type="password" name="pwd" placeholder="请输入密码"><span
+                        id="passWordSpan"></span><br>
+                    <input class="input" style="background-color: #6ce26c;margin-top: 20px" type="button"
+                           onclick="onSubmit()" value="注册">
+
+                </form>
+            </div>
         </div>
-    </h3>
-    <form  class="new_user"  >
-        <tr>
-        用户名：<input id="userName" type="text" name="userName" placeholder="请输入用户名"><span id="userNameSpan"></span><br>
-        </tr>
-        <tr>
-        密  码：<input id="passWord" type="password" name="pwd" placeholder="请输入密码"><span id="passWordSpan"></span><br>
-        </tr>
-        <tr>
-        <input type="button" onclick="onSubmit()" value="提交">
-        </tr>
-    </form>
+    </div>
 </div>
 </body>
 </html>
