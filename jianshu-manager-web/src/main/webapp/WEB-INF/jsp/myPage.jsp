@@ -10,10 +10,11 @@
 <html>
 <head>
     <script type="text/javascript" src="/js/jquery-1.8.3.js"></script>
+    <link rel="stylesheet" href="/css/myPage.css">
     <title>${user.nickName}-简书</title>
     <style type="text/css">
         .content{
-            position:relative; margin-left:10px; margin-top:50px;
+            position:relative;
         }
         .all{
             left: 20%;
@@ -22,6 +23,16 @@
         .articleImg{
             width: 130px;
             height: 90px;
+        }
+        a{
+            text-decoration: none;
+
+        }
+        a:link{
+            color: black;
+        }
+        a:visited{
+            color: black;
         }
     </style>
     <script type="text/javascript">
@@ -41,10 +52,10 @@
             $("#content").html("");
             for(var i=0;i<data.length;i++){
 
-                var count="<li><img class='articleImg' src="+data[i].image+" style='float: right;position: relative;right:700px;'/>" +
+                var count="<div style='margin-top: 50px'><img class='articleImg' src="+data[i].image+" style='float: right;position: relative;right:700px;'/>" +
                     "<div class='articleShow'><h3 style='width: 800px' ><a href='/article/With?id="+data[i].id+"' target='_blank'>"+data[i].title+"</a></h3>" +
                     "<p style='width: 800px'>"+data[i].content+"</p> " +
-                    "<p style='width: 800px'> 阅读"+data[i].readNums+" 评论 0 喜欢"+data[i].likeNums+"   "+data[i].showTime+"</p></div></li>"
+                    "<p style='width: 800px;color: #646464'> 阅读"+data[i].readNums+" 评论 0 喜欢"+data[i].likeNums+"   "+data[i].showTime+"</p></div></div>"
 
                 $("#content").append(count);
 
@@ -152,19 +163,19 @@
                     for(var i=0;i<data.length;i++) {
                         var content="";
                         if (data[i].dynamicContent=="喜欢了文章") {
-                            content = "<div><img class='smallImg' src=" + data[i].img + "> "+data[i].nickName+"  " + data[i].dynamicContent + "    " + data[i].dynamicDate + "<br/>" +
+                            content = "<div><img class='userImg' src=" + data[i].img + "> "+data[i].nickName+"  " + data[i].dynamicContent + "    " + data[i].dynamicDate + "<br/>" +
                                 "<img class='articleImg' src="+data[i].image+" style='float: right;position: relative;right:700px;'/><h3><a href=/article/With?id=" + data[i].id + ">" + data[i].title + "</a></h3><br/> " +
                                 "" + data[i].content + "<br/>" +
                                 " " + data[i].userName + "   阅读 " + data[i].readNums + "评论 "+data[i].reviewNums+" 喜欢 " + data[i].likeNums + " </div>";
 
                          }else if(data[i].dynamicContent=="发表了文章"){
-                            content = "<div><img class='smallImg' src=" + data[i].img + "> "+data[i].nickName+"   " + data[i].dynamicContent + "    " + data[i].dynamicDate + "<br/>" +
+                            content = "<div style='margin-top:50px'><img class='userImg' src=" + data[i].img + "> "+data[i].nickName+"   " + data[i].dynamicContent + "    " + data[i].dynamicDate + "<br/>" +
                                 "<h3><a href=/article/With?id=" + data[i].id + ">" + data[i].title + "</a></h3><br/> " +
                                 "" + data[i].content + "<br/>" +
                                 " 阅读 " + data[i].readNums + "评论 "+data[i].reviewNums+" 喜欢 " + data[i].likeNums + " </div>";
 
                         }else if(data[i].dynamicContent=="发表了评论"){
-                            content = "<div><img class='smallImg' src=" + data[i].img + "> "+data[i].nickName+"  " + data[i].dynamicContent + "    " + data[i].dynamicDate + "<br/>" +
+                            content = "<div><img class='userImg' src=" + data[i].img + "> "+data[i].nickName+"  " + data[i].dynamicContent + "    " + data[i].dynamicDate + "<br/>" +
                                     data[i].reviewContent+"<br/>"+
                                 "<h3><a href=/article/With?id=" + data[i].id + ">" + data[i].title + "</a></h3><br/> " +
                                 "" + data[i].content + "<br/>" +
@@ -175,7 +186,7 @@
                             if(data[i].concernStatus==1){
                                 status="已关注";
                             }
-                            content="<div><img class='smallImg' src=" + data[i].userImg + "> "+data[i].userName+"  " + data[i].dynamicContent + "    " + data[i].dynamicDate + "<br/>" +
+                            content="<div><img class='userImg' src=" + data[i].userImg + "> "+data[i].userName+"  " + data[i].dynamicContent + "    " + data[i].dynamicDate + "<br/>" +
                                 "<div><a  href='/user/myPage?userId="+data[i].id+"'  target='_blank' ><img class='smallImg' src="+data[i].img+"/>"+data[i].nickName+"</a><input class='yesAndNoConcern' name="+data[i].id+" style='font-size: 25px' type='button' value="+status+"> <br/>" +
                                 "写了  "+data[i].count+"字，被"+data[i].concernNums+"人关注，获得了"+data[i].likeNums+"个喜欢<br/>" +
                                 ""+data[i].desc+"</div></div>";
@@ -232,18 +243,56 @@
 </head>
 <body>
 <jsp:include page="top.jsp"/>
-<div class="content all">
-    <img style="height: 80px" src="${user.img}"/>   <span style="font-size: 30px">${user.nickName}</span>
+<div  style="padding-top: 100px;" class="content all" >
+    <div style="float: left;width: 90px"><img style="height: 90px" src="${user.img}"/></div>
+    <div>
+        <div style="font-size: 30px; "><strong>${user.nickName}</strong></div>
 
-    <c:choose>
-        <c:when test="${ not empty status}">
-            <input class="yesAndNoConcern" name="${user.id}" type="button" style="font-size: 20px" value="+关注"/>
-        </c:when>
-    </c:choose>
-    <br/>
-    关注 ${user.concernNums} 粉丝 ${user.fansNums}  文章${user.articleNums} 字数${user.count}   收获喜欢 ${user.likeNums}
+
+        <br/>
+        <div style="border:1px solid red; margin-top:-20px">
+            <div class="smallDiv" style="float: left;">
+                <div><strong>${user.concernNums}</strong></div>
+                <div class="smallDivChinese">关注</div>
+            </div>
+            <div class="smallDiv" style="float: left;">
+
+                <div><strong>${user.fansNums}</strong></div>
+                <div class="smallDivChinese"> 粉丝</div>
+            </div>
+            <div class="smallDiv" style="float: left;">
+
+                <div><strong>${user.articleNums}</strong></div>
+                <div class="smallDivChinese">文章</div>
+            </div>
+            <div class="smallDiv" style="float: left;">
+
+                <div><strong>${user.count}</strong></div>
+                <div class="smallDivChinese">字数</div>
+            </div>
+            <div class="smallDiv" style="width:80px;float:left">
+
+                <div><strong>${user.likeNums}</strong></div>
+                <div class="smallDivChinese"> 收获喜欢</div>
+
+            </div>
+            <div style="">
+                <c:choose>
+                    <c:when test="${ not empty status}">
+                        <input class="yesAndNoConcern" name="${user.id}" type="button"
+                               style="background-color: #6ce26c;color: black;font-size: 25px;line-height:40px"
+                               value="+关注"/>
+                    </c:when>
+                </c:choose>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+
+
 </div>
-<div class="all" name="${user.id}">
+
+<div style="width: 100%;clear:none;"  class="all" name="${user.id}">
     <input type="button" id="getAllArticle" onclick="getAllArticle(this)" value="文章"/>
     <input type="button" onclick="getDynamic(this)" value="动态"/>
     <input type="button" onclick="getLikeArticle(this)" value="喜欢的文章"/>
@@ -252,7 +301,7 @@
     <input type="button" onclick="getFans(this)" value="粉丝"/>
 
 </div>
-<div class="all" id="content">
+<div style="margin-top:50px" class="all" id="content">
 
 </div>
 

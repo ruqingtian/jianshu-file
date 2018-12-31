@@ -12,8 +12,8 @@
     <script type="text/javascript " src="/js/jquery.cookie.js"></script>
     <style type="text/css">
         .content{
-            width: 80%;
-            text-align: center;
+            width: 640px;
+
         }
         .articleImg{
             width: 390px;
@@ -204,27 +204,45 @@
         })
     </script>
 </head>
-<body>
-<jsp:include page="top.jsp"/>
-<div class="content">
-    <div style="position:relative; margin-left:10px; margin-top:50px;">
-        <h2>${article.title}</h2><br/>
-        <p><img class="smallImg" src="${user.img}"/>${user.nickName}<input class="yesAndNoConcern"
-                                                                           name="${article.userId}" type="button"
-                                                                           value="+关注"
-                                                                           style="font-size: 15px; background: #6ce26c"/>
-        </p>
-        <p style="font-size: 15px">${article.showTime} 字数 ${article.number} 阅读 ${article.readNums} 评论 0
-            喜欢 ${article.likeNums}</p>
+<body >
+<div >
+    <jsp:include page="top.jsp"/>
+</div>
+
+<div  style="margin-left: 90%;margin-top:500px;position:fixed;width: 100px;height: 100px;">
+    <a href="#topHtml" style="position:fixed;margin-right: 80px;margin-bottom: 50px"><img style="width: 50px" src="/image/back.png"></a>
+</div>
+<div class="content" style="margin-left:20%;padding-top:100px " id="topHtml" >
+    <div style="position:relative;text-align: center; margin-left:10px; margin-top:50px;">
+        <p style="font-size: 40px;width: 100%;"><Strong>${article.title}</Strong></p><br/>
+        <div style="padding-left: 20%">
+        <div style="float: left">
+            <img class="smallImg" src="${user.img}"/>
+        </div>
+        <div  >
+            <div style="text-align: left"><span style="padding-left: 10px;padding-right:10px;font-size: 25px">${user.nickName}</span><strong><input class="yesAndNoConcern"
+                                        name="${article.userId}" type="button"
+                                        value="+关注"
+                                        style="font-size: 20px; color: black;background-color: #6ce26c"/></strong>
+            </div>
+            <div style="color: #646464;text-align: left;font-size: 15px">${article.showTime} 字数 ${article.number} 阅读 ${article.readNums} 评论 ${article.reviewNums}
+                喜欢 ${article.likeNums}
+            </div>
+
+        </div>
+        </div>
     </div>
     <div>
-        <img class="articleImg" src="${article.image}"/>
+        <img style="width: 640px" class="articleImg" src="${article.image}"/>
     </div>
-    <div>
-        ${article.content}
+
+
+    <div ><strong>
+             ${article.content}
+          </strong>
     </div>
-    <div>
-        <input name="${article.id}" onclick="yesAndNoLike(this)" type="button" style="font-size: 30px;color: red"
+    <div style="padding-bottom: 50px">
+        <input name="${article.id}" onclick="yesAndNoLike(this)" type="button" style="border: 1px solid red; border-radius: 18px;;height: 70px;font-size: 30px;color: red"
                value="喜欢  :   ${article.likeNums}"/>
     </div>
     <div>
@@ -234,10 +252,13 @@
 
     </div>
 
-    <div id="reviewArea" name="${article.id}">
+    <div id="reviewArea" name="${article.id}" style="padding-top: 30px">
 
     </div>
 
+
 </div>
+
+
 </body>
 </html>

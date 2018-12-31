@@ -90,11 +90,11 @@ function indexShowUser(data) {
         if(data.showList[i].status==1){
             str="已关注";
         }
-        var count="<div style='border:1px solid red; margin-top:20px;width: 350px'>" +
-            "           <div style='float:left;border:1px solid black;width: 50px;'><a  href='/user/myPage?userId="+userId+"'  target='_blank' > " +
+        var count="<div style='margin-top:20px;width: 350px'>" +
+            "           <div style='float:left;width: 50px;'><a  href='/user/myPage?userId="+userId+"'  target='_blank' > " +
                 "           <img  class='smallImg' src="+data.showList[i].img+"/>  </a>" +
             "           </div> " +
-            "           <div style='border:1px solid gold;width:300px;'><a style='font-size: 17px' href='/user/myPage?userId="+userId+"'  target='_blank'>"+data.showList[i].nickName+" </a><input style='margin-left:100px;font-size: 19px' class='yesAndNoConcern' name="+userId+" type='button' value="+str+"><br/>" +
+            "           <div style='width:300px;'><a style='font-size: 17px' href='/user/myPage?userId="+userId+"'  target='_blank'>"+data.showList[i].nickName+" </a><input style='margin-left:100px;font-size: 19px' class='yesAndNoConcern' name="+userId+" type='button' value="+str+"><br/>" +
                 "      <span style='color: #646464'>     写了"+sumNums+"  "+data.showList[i].likeNums+" 喜欢</span>" +
             "           </div>" +
             "      </div>" +

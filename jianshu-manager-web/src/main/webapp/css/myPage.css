@@ -1,0 +1,12 @@
+.userImg{
+    width:30px;
+}
+.smallDiv{
+    width: 50px;
+    text-align: center;
+    border: 1px solid red;
+
+}
+.smallDivChinese{
+    color: #969696;
+}

@@ -169,6 +169,7 @@ public class ArticleServiceImpl implements ArticleService {
         int count = concernMapper.selectCountRead(articleId);
         int likeNums = concernMapper.selectCountLike(articleId);
         moreArticle.setReadNums(count);
+        moreArticle.setReviewNums(reviewMapper.selectListByArticleId(articleId).size());
         moreArticle.setLikeNums(likeNums);
         return moreArticle;
     }

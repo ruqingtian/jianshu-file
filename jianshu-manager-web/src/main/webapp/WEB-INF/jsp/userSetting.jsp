@@ -14,15 +14,43 @@
     <title>用户设置</title>
     <style type="text/css">
         .content{
-            position:relative; margin-left:10px; margin-top:50px;
+            position:relative;
             width: 100%;
             height: 100%;
             left: 35%;
 
         }
         .touxiang{
-            height: 40px;
+            height: 100px;
+            width: 100px;
         }
+        .file {
+            position: relative;
+            display: inline-block;
+            background: #D0EEFF;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #1E88C7;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+        }
+        .file input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        .file:hover {
+            background: #AADFFD;
+            border-color: #78C3F3;
+            color: #004974;
+            text-decoration: none;
+        }
+
 
     </style>
     <script type="text/javascript">
@@ -35,15 +63,15 @@
     </script>
 </head>
 <body>
-<div style="margin-top: -42px">
+<div style="">
 <jsp:include page="top.jsp"></jsp:include></div>
-<div class="content">
+<div class="content" style="padding-top: 100px">
     <form action="/user/update" method="post" enctype="multipart/form-data">
-        <table>
+        <table style="border-spacing: 15px">
             <input type="hidden" name="id" value="${user.id}">
         <tr>
             <td><img class="touxiang" id="changeImg" src="${user.img}"/> </td>
-            <td><input name="image" id="touxiangImg" onchange="imgChange(this)"  type="file"/>更换头像</td>
+            <td><a style="font-size: 25px" href="javascript:;" class="file">更换头像<input name="image" id="touxiangImg" onchange="imgChange(this)"  type="file"/></a></td>
         </tr>
         <tr>
             <td>昵称</td>
@@ -107,7 +135,7 @@
             <td><input name="web" type="text" value="${user.web}"/></td>
         </tr>
             <tr>
-                <td ><input type="submit" value="保存"></td>
+                <td  colspan="2"><input style="font-size: 20px; width: 100px;border-radius: 18px;margin-left:40%;background-color: #6ce26c" type="submit" value="保存"></td>
             </tr>
         </table>
     </form>
