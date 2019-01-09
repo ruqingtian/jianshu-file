@@ -20,7 +20,18 @@ public class MyPageUser implements Serializable {
     private String userName;
     private String dynamicContent;
     private String dynamicDate;
+    private int userId;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public List<Article> articleTitle;
+
 
     public List<Article> getArticleTitle() {
         return articleTitle;

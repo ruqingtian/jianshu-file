@@ -56,15 +56,18 @@ public class ArticleServiceImpl implements ArticleService {
         map.put("updateTime",updateTime );
         map.put("status",1);
         map.put("image",titleImg );
+        Article article1 = mapper.selectArticleById(id);
         mapper.updataArticleById(map);
         //插入动态
-        Article article = mapper.selectArticleById(id);
-        Dynamic dynamic=new Dynamic();
-        dynamic.setUserId(article.getUserId());
-        dynamic.setArticleId(id);
-        dynamic.setContent("发表了文章");
-        dynamic.setCreateTime(new Date());
-        dynamicMapper.insertArticleMyself(dynamic);
+        if(article1.getStatus()==0) {
+            Article article = mapper.selectArticleById(id);
+            Dynamic dynamic = new Dynamic();
+            dynamic.setUserId(article.getUserId());
+            dynamic.setArticleId(id);
+            dynamic.setContent("发表了文章");
+            dynamic.setCreateTime(new Date());
+            dynamicMapper.insertArticleMyself(dynamic);
+        }
     }
 
     @Override
@@ -156,6 +159,9 @@ public class ArticleServiceImpl implements ArticleService {
             article.setShowTime(format.format(article.getUpdateTime()));
             BeanUtils.copyProperties(article,moreArticle );
             moreArticle.setLikeNums(concernMapper.selectCountLike(moreArticle.getId()));
+            moreArticle.setReadNums(concernMapper.selectCountRead(article.getId()));
+            moreArticle.setReviewNums(reviewMapper.selectListByArticleId(article.getId()).size());
+
             list.add(moreArticle);
         }
         return list;
@@ -207,6 +213,7 @@ public class ArticleServiceImpl implements ArticleService {
                 MyPageUser myPageUser=new MyPageUser();
                 User user1 = userMapper.selectUserById(dynamic.getConcernId());
                 myPageUser.setId(user1.getId());
+                myPageUser.setUserId(userId);
                 myPageUser.setImg(user1.getImg());
                 myPageUser.setNickName(user1.getNickName());
                 myPageUser.setConcernNums(concernMapper.selectListByConcernId(user1.getId()).size());

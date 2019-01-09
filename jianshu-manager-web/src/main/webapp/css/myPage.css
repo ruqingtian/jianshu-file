@@ -1,12 +1,54 @@
+.content{
+    position:relative;
+}
+.all{
+    left: 20%;
+    position: relative;
+}
+.articleImg{
+    width: 130px;
+    height: 90px;
+}
+a{
+    text-decoration: none;
+    color: #646464!important;
+
+}
+a:link{
+    color: #646464;
+}
+a:visited{
+    color: black;
+}
 .userImg{
     width:30px;
 }
 .smallDiv{
     width: 50px;
     text-align: center;
-    border: 1px solid red;
+
 
 }
 .smallDivChinese{
     color: #969696;
+}
+.chooseA{
+    font-size: 25px;
+
+
+}
+.chooseA:link{
+    color: #777777;
+}
+.chooseA:hover{
+    background-color:#969696;
+}
+.addChooseClass{
+  background-color:#969696;
+}
+.articleShow{
+    width: 50%;
+}
+.articleTitle:hover{
+    text-decoration: underline;
 }

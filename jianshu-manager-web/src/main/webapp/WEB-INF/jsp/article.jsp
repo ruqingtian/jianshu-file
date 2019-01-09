@@ -28,9 +28,13 @@
                 type:"GET",
                 url:"/user/isUserLogin",
                 success:function (data) {
-
+                    console.log(data);
                     if(data.userName!=null){
                         $("#reviewTouXiangImg").attr("src",data.img);
+                        var userId=$(".yesAndNoConcern").parent().attr("name");
+                        if(userId==data.id){
+                          $(".yesAndNoConcern").attr("style","display:none");
+                        }
                     }else{
 
                         $("#reviewText").attr("placeholder","登录后发表评论");
@@ -220,10 +224,10 @@
             <img class="smallImg" src="${user.img}"/>
         </div>
         <div  >
-            <div style="text-align: left"><span style="padding-left: 10px;padding-right:10px;font-size: 25px">${user.nickName}</span><strong><input class="yesAndNoConcern"
+            <div name="${user.id}"  style="text-align: left"><span style="padding-left: 10px;padding-right:10px;font-size: 25px">${user.nickName}</span><input class="yesAndNoConcern"
                                         name="${article.userId}" type="button"
                                         value="+关注"
-                                        style="font-size: 20px; color: black;background-color: #6ce26c"/></strong>
+                                        style="font-size: 20px; color: black;background-color: #6ce26c"/>
             </div>
             <div style="color: #646464;text-align: left;font-size: 15px">${article.showTime} 字数 ${article.number} 阅读 ${article.readNums} 评论 ${article.reviewNums}
                 喜欢 ${article.likeNums}
