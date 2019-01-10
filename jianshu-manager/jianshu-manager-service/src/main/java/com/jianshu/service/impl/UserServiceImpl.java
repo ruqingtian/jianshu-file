@@ -191,7 +191,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageBean<MyPageUser> selectLikeNickName(int currentPage,int index, String nickName, int currentCount) {
+    public PageBean<MyPageUser> selectLikeNickName(int cookieUserId,int currentPage,int index, String nickName, int currentCount) {
         PageBean<MyPageUser> pageBean=new PageBean<>();
         List<User> users = mapper.selectLikeNickName(nickName, index, currentCount);
         List<MyPageUser> list=new ArrayList<>();
@@ -212,6 +212,17 @@ public class UserServiceImpl implements UserService {
             }
             myPageUser.setCount(sum);
             myPageUser.setLikeNums(like);
+            if(cookieUserId==-10){
+                myPageUser.setConcernStatus(0);
+            }else{
+                Concern concern = concernMapper.selectConcern(cookieUserId, user.getId());
+                if(concern!=null){
+                    myPageUser.setConcernStatus(1);
+                }
+                if(cookieUserId==user.getId()){
+                    myPageUser.setConcernStatus(3);
+                }
+            }
            list.add(myPageUser);
         }
         pageBean.setShowList(list);

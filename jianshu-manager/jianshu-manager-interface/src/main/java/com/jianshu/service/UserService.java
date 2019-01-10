@@ -30,7 +30,7 @@ public interface UserService {
     //封装MyPageUser
     public MyPageUser saveMyPageUser(int id);
     //模糊查询分页
-    public PageBean<MyPageUser> selectLikeNickName(int currentPage,int index,String nickName,int currentCount);
+    public PageBean<MyPageUser> selectLikeNickName(int cookieUserId,int currentPage,int index,String nickName,int currentCount);
     //查询全部的用户进行封装 并分页
     public PageBean<MyPageUser> selectAllUserAndPageBean(int currentPage,int currentCount,int userId);
 }

@@ -3,6 +3,7 @@ $(".yesAndNoConcern").live('mouseenter',function () {
     console.log(count);
     if(count=="已关注"){
         $(this).attr("value","取消关注");
+
     }
 });
 $(".yesAndNoConcern").live('mouseleave',function () {
@@ -23,9 +24,11 @@ $(".yesAndNoConcern ").live('click',function () {
 
             if(data.data=="关注成功"){
                 node.attr("value","已关注");
+                node.removeClass("yesOrNoConcernStyle");
 
             }
             if(data.data=="删除成功"){
+                node.addClass("yesOrNoConcernStyle");
                 node.attr("value","+关注");
             }
             if(data.msg=="请先登录"){

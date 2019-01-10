@@ -250,9 +250,10 @@ public class UserController {
     //搜索用户
     @RequestMapping(value ="/search/user",method = RequestMethod.POST)
     @ResponseBody
-    public PageBean<MyPageUser> selectSearchUser(String nickName,Integer currentPage){
+    public PageBean<MyPageUser> selectSearchUser(String nickName,Integer currentPage,HttpServletRequest request ,HttpServletResponse response){
+        int cookieUserId = getCookieUserId(request, response);
         int index=(currentPage-1)*SEARCH_USER_COUNT;
-        PageBean<MyPageUser> pageBean = userService.selectLikeNickName(currentPage, index, nickName, SEARCH_USER_COUNT);
+        PageBean<MyPageUser> pageBean = userService.selectLikeNickName(cookieUserId,currentPage, index, nickName, SEARCH_USER_COUNT);
         return pageBean;
     }
 
