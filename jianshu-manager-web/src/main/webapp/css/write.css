@@ -1,0 +1,26 @@
+.spanShow{
+    display:inline !important;
+}
+.textNewName{
+    display:inline !important;
+}
+.deleteArticleShow{
+    display:inline !important;
+}
+.fuwenben{
+    height: 350px;
+    width: 800px;
+
+}
+.chooseArticle{
+    background-color: #646464;
+}
+.chooseMouse{
+    background-color: #646464;
+}
+.chooseCollection{
+    background-color: #7274A7;
+}
+.chooseCollectionMouse{
+    background-color: #7274A7;
+}

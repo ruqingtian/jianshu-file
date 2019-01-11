@@ -13,21 +13,17 @@
     <script type="text/javascript" src="/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" src="/ueditor/ueditor.all.js"></script>
     <script type="text/javascript" src="/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <%--<script type="text/javascript" src="/js/write.js"></script>--%>
+    <link rel="stylesheet" href="/css/write.css">
+
     <title>写文章</title>
     <style type="text/css">
-        .spanShow{
-            display:inline !important;
-        }
-        .textNewName{
-            display:inline !important;
-        }
-        .deleteArticleShow{
-            display:inline !important;
-        }
+
     </style>
     <script type="text/javascript">
-
         $(function () {
+            $(".articleCollection")[0].click();
+
             $.ajax({
                 type:"GET",
                 url:"/user/isUserLogin",
@@ -41,10 +37,12 @@
         });
         // 获取文章标题
         function getCollection(obj) {
+            $(".chooseCollection").removeClass("chooseCollection");
+            $(obj).addClass("chooseCollection");
+            var id=$(obj).attr("name");
+            console.log(id);
 
-           var id=obj.name;
-
-           var spanId=id;
+            var spanId=id;
 
             $("#collectionName").attr('name',id);
 
@@ -59,58 +57,60 @@
                 data:{id:id},
                 success:function (data) {
 
-                    $("#collectionName").html("");
-                   document.getElementById('newSaveArticle').style.display="";
-                    for(var i=0;i<data.length;i++){
-
-                        var sta="未发布";
-                        if(data[i].status===1){
-                            sta="已发布";
-                        }
-                     var   content="<br/><input id="+data[i].id+" type='button' class='articleName' value="+data[i].title+" />("+sta+")";
-
-                        $("#collectionName").append(content+"<input id='deleteArticle' name="+data[i].collectionId+" style='display:none' type='button' value='删除'/>");
-                    }
-                    $("#collectionName").append("<hr/>");
+                    articleForeach(data);
 
 
                 },
                 dataType:"json"
             });
         }
-
+        $('.articleCollection').live('mouseenter',function () {
+            $(this).addClass("chooseCollectionMouse");
+        });
+        $('.articleCollection').live('mouseleave',function () {
+            $(this).removeClass("chooseCollectionMouse");
+        });
 
         //获取文章的内容
-        $('.articleName').live('click',function () {
+        $('.articleDiv').live('click',function () {
+            $(".chooseArticle").removeClass("chooseArticle");
+            $(this).addClass("chooseArticle");
+            var aId = this.id;
+            articlewith(aId)
+        });
+        $('.articleDiv').live('mouseenter',function () {
+            $(this).addClass("chooseMouse");
+        });
+        $('.articleDiv').live('mouseleave',function () {
+            $(this).removeClass("chooseMouse");
+        });
+        function articlewith(aId) {
 
-          var aId=this.id;
-           $(".deleteArticleShow").removeClass("deleteArticleShow");
-          $(this).next().addClass("deleteArticleShow");
+            $(".deleteArticleShow").removeClass("deleteArticleShow");
+            $("#deleteArticle"+aId+"").addClass("deleteArticleShow");
 
             $.ajax({
-                type:"POST",
-                url:"/write/content",
-                data:{id:aId},
-                success:function (data) {
+                type: "POST",
+                url: "/write/content",
+                data: {id: aId},
+                success: function (data) {
                     console.log(data);
                     var ue = UE.getEditor('container');
                     ue.setContent(data.content);
                     $("#articleTitle").val(data.title);
-                    $("#articleId").attr("value",data.id);
-                    $("#titleImg").attr("src",data.image);
+                    $("#articleId").attr("value", data.id);
+                    $("#titleImg").attr("src", data.image);
 
                 },
-                dataType:"json"
+                dataType: "json"
             });
-
-
-        });
+        }
         //单击新建文集
         function saveCollection() {
 
 
-           document.getElementById('newCollectionName').style.display="";
-            $("#newCollName").val("请输入文集名...");
+            document.getElementById('newCollectionName').style.display="";
+
 
         }
         //新建文集button
@@ -118,10 +118,7 @@
             document.getElementById('newCollectionName').style.display="none";
 
         }
-        //新建文集中    文集名重置
-        function newCollNameReset() {
-            $("#newCollName").val("");
-        }
+
         //新建文集中  提交
         function submitCollectionName() {
             var userId=$("#userId").val();
@@ -140,7 +137,7 @@
                 dataType:"json"
             });
         }
-         //修改collectionName
+        //修改collectionName
         function updateCollectionName(obj) {
             var id=$(obj).parent().attr('id');
 
@@ -239,7 +236,7 @@
                         dataType:"json",
                         success:function (data) {
 
-                           articleForeach(data);
+                            articleForeach(data);
                         }
 
                     })
@@ -268,7 +265,7 @@
                         dataType:"json",
                         success:function (data) {
 
-                          articleForeach(data);
+                            articleForeach(data);
                         }
 
                     })
@@ -287,11 +284,20 @@
                 if(data[i].status===1){
                     sta="已发布";
                 }
-                var   content="<br/><input id="+data[i].id+" type='button' class='articleName' value="+data[i].title+" /><span>("+sta+")</span>";
+                if(data[i].title.length>5){
+                    var title=data[i].title.substring(0,5)+"...";
+                }else{
+                    var title=data[i].title;
+                }
+                var   content="<div id='"+data[i].id+"' class='articleDiv' style='border: 1px solid #646464;padding-left: 10%;height: 60px'>" +
+                    "<a style='color: black;font-size: 20px;line-height: 60px' href='javascript:void(0)'  class='articleName'  >"+title+"</a>" +
+                    "<span style='font-size: 20px'>("+sta+")</span>" +
+                    "<input id='deleteArticle"+data[i].id+"' name="+data[i].collectionId+" style='display:none;' type='button' value='删除'/>" +
+                    "</div>";
 
-                $("#collectionName").append(content+"<input id='deleteArticle' name="+data[i].collectionId+" style='display:none' type='button' value='删除'/>");
+                $("#collectionName").append(content);
             }
-            $("#collectionName").append("<hr/>");
+
         }
         //图片回显
         function imgChange(obj) {
@@ -301,50 +307,69 @@
             $("#titleImg").attr("src",imgUrl);
         }
 
-    </script>
-</head>`
-<body>
-<h1>${user.nickName}</h1><br/>
-<div>
 
-    文章集：<a href="javascript:void(0)" onclick="saveCollection()">新建文集</a> <br/>
+
+    </script>
+</head>
+<body>
+<%--<h1>${user.nickName}</h1><br/>--%>
+<div style="width: 200px;float: left;border: 1px solid #ec7259;height: 100%;background-color:#404040 ">
+    <div style="width: 80%;height: 60px;border: 1px solid #ec7259;border-radius: 40px;text-align: center;margin-left: 10%;margin-top: 50px">
+        <a href="/" style="color: #ec7259;border-radius: 15px;font-size: 15px;line-height: 60px">返回首页</a>
+    </div>
+    <div style="margin-left: 10%;margin-top: 40px;margin-bottom: 20px">
+        <a style="color:white;font-size: 25px" href="javascript:void(0)" onclick="saveCollection()"><strong>+新建文集</strong></a>
+    </div>
     <div id="newCollectionName" style="display:none">
+        <div style="width: 80%;margin-left: 10%;margin-top: -10px;">
             <input id="userId" type="hidden" value="${user.id}">
-            <input  type='text' onclick="newCollNameReset()"  id='newCollName'/>
-            <input type='button' onclick="submitCollectionName()" value='提交' />
-            <input id='newCollectionNameButton' onclick='updateDisplay()'  type='button' value='取消' />
+            <input style="height: 40px;background-color: #646464;color: #cccccc"  type='text'  placeholder="请输入文集名"  id='newCollName'/>
+        </div>
+        <div style="margin-left: 10%;width: 60%">
+            <div style="border: 1px solid #42c02e;border-radius: 40px;width: 60px;height: 30px;text-align: center;float:left;margin-top: 5px">
+                <a  href="javascript:void(0)" style="color: #42c02e;line-height: 30px"  onclick="submitCollectionName()" >提交</a>
+            </div>
+            <div style="float: right;margin-top: 5px">
+                <a  href="javascript:void(0)" style="color: white;line-height: 30px" id='newCollectionNameButton' onclick='updateDisplay()'   >取消</a>
+            </div>
+            <div style="clear: both"></div>
+        </div>
 
     </div>
     <c:forEach items="${collectionList}" var="collection">
-        <input type="button" name=${collection.id} value=${collection.name}   onclick="getCollection(this)"/>
-       <span  id=${collection.id} style="display:none">
-        <input type="button" onclick="updateCollectionName(this)" value="修改"/>
-           <input type="text" style="display:none" onblur="updateName(this)"/>
-        <input type="button" onclick="deleteCollection(this)" value="删除">
-        </span>
-        <br/>
+        <div  class="articleCollection" style="width: 100%;height: 60px;border: 1px solid red;" name=${collection.id}  onclick="getCollection(this)" >
+            <div style="margin-left: 10%">
+                <a href="javascript:void(0)" style="color: white;line-height: 50px;font-size: 25px"  >${collection.name}</a>
+           <span  id=${collection.id} style="display:none">
+            <input type="button" onclick="updateCollectionName(this)" value="修改"/>
+               <input type="text" style="display:none" onblur="updateName(this)"/>
+            <input type="button" onclick="deleteCollection(this)" value="删除">
+            </span>
+            </div>
+        </div>
 
     </c:forEach>
 </div>
-<div>
-    <p id="newSaveArticle"  style="display:none">文章:<a id="UserId+${user.id}"   href="javascript:void(0)" onclick="saveArticle(this)">新建文章</a></p>
-    <div  id="collectionName"></div>
+<div style="width: 300px;float: left;border: 1px solid blue;height: 100%;">
+    <div style="padding-left: 10%">
+        <p id="newSaveArticle"  style="display:none"><a style="color: black;font-size: 25px" id="UserId+${user.id}"   href="javascript:void(0)" onclick="saveArticle(this)">+新建文章</a></p>
+    </div>
+    <div style=""  id="collectionName"></div>
 </div>
-
-<div>
+<div style="float: right;border: 1px solid gold;height: 100%;width: 800px">
     <script type="text/javascript">
         var ue=UE.getEditor("container");
     </script>
-    <div >
+    <div  style="overflow-y: auto;height: 100%"  >
 
         标题：<input style="width: 90%" type="text" name="title" value="无标题文章" id="articleTitle"/><br/>
         封面图片：<img src="/" id="titleImg" width="130px" height="90px"><input id="fileImg" accept="image/*" type="file" onchange="imgChange(this)" value="上传"/>
-
+        <input type="button" onclick="submitArticle()" value="提交">
         <input type="hidden" id="articleId" name="articleId" value="-100"   />
-        <script type="text/plain" id="container" name="content" >
+        <script class="fuwenben" type="text/plain" id="container" name="content" >
             这里是初始化内容
         </script>
-        <input type="button" onclick="submitArticle()" value="提交">
+
 
     </div>
 
