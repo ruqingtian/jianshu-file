@@ -290,7 +290,7 @@
                     var title=data[i].title;
                 }
                 var   content="<div id='"+data[i].id+"' class='articleDiv' style='border: 1px solid #646464;padding-left: 10%;height: 60px'>" +
-                    "<a style='color: black;font-size: 20px;line-height: 60px' href='javascript:void(0)'  class='articleName'  >"+title+"</a>" +
+                    "<a style='color: black;font-size: 20px;line-height: 60px' href='javascript:void(0)'  class='articleName'  ><strong>"+title+"</strong></a>" +
                     "<span style='font-size: 20px'>("+sta+")</span>" +
                     "<input id='deleteArticle"+data[i].id+"' name="+data[i].collectionId+" style='display:none;' type='button' value='删除'/>" +
                     "</div>";
@@ -313,7 +313,7 @@
 </head>
 <body>
 <%--<h1>${user.nickName}</h1><br/>--%>
-<div style="width: 200px;float: left;border: 1px solid #ec7259;height: 100%;background-color:#404040 ">
+<div style="overflow-y: auto;width: 200px;float: left;height: 100%;background-color:#404040 ">
     <div style="width: 80%;height: 60px;border: 1px solid #ec7259;border-radius: 40px;text-align: center;margin-left: 10%;margin-top: 50px">
         <a href="/" style="color: #ec7259;border-radius: 15px;font-size: 15px;line-height: 60px">返回首页</a>
     </div>
@@ -337,7 +337,7 @@
 
     </div>
     <c:forEach items="${collectionList}" var="collection">
-        <div  class="articleCollection" style="width: 100%;height: 60px;border: 1px solid red;" name=${collection.id}  onclick="getCollection(this)" >
+        <div  class="articleCollection" style="width: 100%;height: 60px;" name=${collection.id}  onclick="getCollection(this)" >
             <div style="margin-left: 10%">
                 <a href="javascript:void(0)" style="color: white;line-height: 50px;font-size: 25px"  >${collection.name}</a>
            <span  id=${collection.id} style="display:none">
@@ -350,22 +350,33 @@
 
     </c:forEach>
 </div>
-<div style="width: 300px;float: left;border: 1px solid blue;height: 100%;">
+<div style="overflow-y: auto;width: 300px;float: left;height: 100%;">
     <div style="padding-left: 10%">
         <p id="newSaveArticle"  style="display:none"><a style="color: black;font-size: 25px" id="UserId+${user.id}"   href="javascript:void(0)" onclick="saveArticle(this)">+新建文章</a></p>
     </div>
     <div style=""  id="collectionName"></div>
 </div>
-<div style="float: right;border: 1px solid gold;height: 100%;width: 800px">
+<div style="float: right;height: 100%;width: 800px">
     <script type="text/javascript">
         var ue=UE.getEditor("container");
     </script>
     <div  style="overflow-y: auto;height: 100%"  >
 
-        标题：<input style="width: 90%" type="text" name="title" value="无标题文章" id="articleTitle"/><br/>
-        封面图片：<img src="/" id="titleImg" width="130px" height="90px"><input id="fileImg" accept="image/*" type="file" onchange="imgChange(this)" value="上传"/>
-        <input type="button" onclick="submitArticle()" value="提交">
+       <div style="padding-left: 10%">
+           <input style="border: none;font-size: 30px;color: #646464" type="text" name="title" value="无标题文章" id="articleTitle"/>
+       </div>
+
+       <div style="border: 3px solid #646464"> 封面图片：<img src="/" id="titleImg" width="130px" height="90px">
+           <div style="float: left">
+               <a class="file">添加封面<input  class="file" id="fileImg" accept="image/*" type="file" onchange="imgChange(this)" /></a>
+           </div>
+           <div style="float: right;padding-top: 30px">
+               <div onclick="submitArticle()" style="padding-top: 7px;margin-right:5px;padding-left:40px;height: 40px;width: 100px;border: 1px solid #42c02e;border-radius: 40px;color: #42c02e">
+                   <a href="javascript:void(0)" style="font-size: 25px;color: #42c02e;" type="button"  >发布</a></div>
         <input type="hidden" id="articleId" name="articleId" value="-100"   />
+           </div>
+           <div style="clear:both"></div>
+       </div>
         <script class="fuwenben" type="text/plain" id="container" name="content" >
             这里是初始化内容
         </script>
