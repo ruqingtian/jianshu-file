@@ -8,6 +8,7 @@
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="image" property="image" jdbcType="VARCHAR"/>
         <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="read_nums" property="readNums" jdbcType="INTEGER"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
@@ -21,7 +22,7 @@
     </select>
     <!--根据文章id 查询文章-->
     <select id="selectArticleById" resultMap="BaseResultMap">
-       SELECT id,user_id,collection_id,title,image,content,create_time,update_time,status
+       SELECT id,user_id,collection_id,title,image,content,create_time,update_time,status,read_nums
         FROM article
         WHERE id=#{id}
     </select>
@@ -40,11 +41,11 @@
     </delete>
     <!--查询所有的文章    -->
     <select id="selectAllArticle" resultMap="BaseResultMap">
-        SELECT * FROM article ORDER BY create_time desc;
+        SELECT * FROM article WHERE status=1 ORDER BY create_time desc;
     </select>
     <!--分页查询文章-->
     <select id="selectPageArticle" resultMap="BaseResultMap">
-        SELECT * FROM article limit #{index},#{currentCount}
+        SELECT * FROM article where status=1 limit #{index},#{currentCount}
     </select>
     <!--查询总条数-->
     <select id="selectCountArticle" resultType="Integer">
@@ -62,4 +63,12 @@
     <select id="selectCountLikeTitleOrContent" resultType="Integer">
         SELECT count(id) FROM article WHERE title LIKE #{title} OR content LIKE #{title}
     </select>
+    <!--//根据文章id查询文章的阅读数-->
+    <select id="selectReadNums" resultType="Integer">
+        SELECT read_nums FROM article where id=#{id}
+    </select>
+    <!--//修改文章的阅读数-->
+    <update id="updateReadNums">
+        UPDATE article SET read_nums=#{readNums} WHERE id=#{id}
+    </update>
 </mapper>

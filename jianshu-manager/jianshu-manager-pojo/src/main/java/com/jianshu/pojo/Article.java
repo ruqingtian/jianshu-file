@@ -15,6 +15,15 @@ public class Article implements Serializable {
     private String userName;//文章作者的昵称
     private int number;
     private String showTime;
+    private int readNums;
+
+    public int getReadNums() {
+        return readNums;
+    }
+
+    public void setReadNums(int readNums) {
+        this.readNums = readNums;
+    }
 
     public String getShowTime() {
         return showTime;

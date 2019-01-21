@@ -47,14 +47,14 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void updateArticleById(int id, String title, String content,String titleImg) {
+    public void updateArticleById(int id, String title, String content,String titleImg,int status) {
         Date updateTime=new Date();
         Map<String ,Object> map=new HashMap<>();
         map.put("id",id );
         map.put("title",title );
         map.put("content",content );
         map.put("updateTime",updateTime );
-        map.put("status",1);
+        map.put("status",status);
         map.put("image",titleImg );
         Article article1 = mapper.selectArticleById(id);
         mapper.updataArticleById(map);
@@ -159,7 +159,7 @@ public class ArticleServiceImpl implements ArticleService {
             article.setShowTime(format.format(article.getUpdateTime()));
             BeanUtils.copyProperties(article,moreArticle );
             moreArticle.setLikeNums(concernMapper.selectCountLike(moreArticle.getId()));
-            moreArticle.setReadNums(concernMapper.selectCountRead(article.getId()));
+
             moreArticle.setReviewNums(reviewMapper.selectListByArticleId(article.getId()).size());
 
             list.add(moreArticle);
@@ -172,9 +172,9 @@ public class ArticleServiceImpl implements ArticleService {
         MoreArticle moreArticle=new MoreArticle();
         Article article = selectArticleById(articleId);
         BeanUtils.copyProperties(article, moreArticle);
-        int count = concernMapper.selectCountRead(articleId);
+
         int likeNums = concernMapper.selectCountLike(articleId);
-        moreArticle.setReadNums(count);
+
         moreArticle.setReviewNums(reviewMapper.selectListByArticleId(articleId).size());
         moreArticle.setLikeNums(likeNums);
         return moreArticle;
@@ -206,7 +206,7 @@ public class ArticleServiceImpl implements ArticleService {
 
                 article.setDynamicContent(dynamic.getContent());
                 article.setDynamicDate(changeDate(dynamic.getCreateTime()));
-                article.setReadNums(concernMapper.selectCountRead(article.getId()));
+
                 article.setLikeNums(concernMapper.selectCountLike(article.getId()));
                 list.add(article);
             }else{
@@ -293,12 +293,24 @@ public class ArticleServiceImpl implements ArticleService {
             moreArticle.setImg(user.getImg());
             moreArticle.setNickName(user.getNickName());
             moreArticle.setWorkerId(userId);
-            moreArticle.setReadNums(concernMapper.selectCountRead(article.getId()));
+            moreArticle.setReadNums(mapper.selectReadNums(article.getId()));
             moreArticle.setReviewNums(reviewMapper.selectIdByArticleId(article.getId()).size());
             moreArticle.setLikeNums(concernMapper.selectCountLike(article.getId()));
             list.add(moreArticle);
         }
         return list;
+    }
+
+    @Override
+    public int selectReadNums(int articleId) {
+        return mapper.selectReadNums(articleId);
+    }
+
+    @Override
+    public void updateReadNums(int articleId) {
+        int nums = mapper.selectReadNums(articleId);
+        mapper.updateReadNums(articleId,nums+1 );
+
     }
 
 

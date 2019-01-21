@@ -30,4 +30,8 @@ public interface ArticleMapper {
     public List<Article> selectListByTitleOrContent(@Param("title")String title,@Param("index")int index,@Param("currentCount")int currentCount);
     //模糊查询总条数
     public int selectCountLikeTitleOrContent(@Param("title")String title);
+    //根据文章id查询文章的阅读数
+    public int selectReadNums(int id);
+    //修改文章的阅读数
+    public void updateReadNums(@Param("id")int id,@Param("readNums")int readNumd);
 }

@@ -33,6 +33,23 @@
             $(".now").removeClass("now");
             $("#login").addClass("now");
         })
+        function regexUserName(obj) {
+            var userName=$(obj).val();
+            console.log(userName);
+            if(userName.trim()==""){
+                $("#userNameSpan").html("用户名不能为空");
+            }else{
+                $("#userNameSpan").html("");
+            }
+        }
+        function regexPassWord(obj) {
+            var passWord=$(obj).val();
+            if(passWord.trim()==""){
+                $("#passWordSpan").html("密码不能为空");
+            }else{
+                $("#passWordSpan").html("");
+            }
+        }
         function onSubmit() {
 
             var userName= $("#userName").val();
@@ -78,15 +95,27 @@
             </h3>
             <div class="content" >
                 <form class="new_user">
+                    <table>
+                        <tr>
+                            <td>用户名：</td>
+                            <td> <input onkeyup="regexUserName(this)" class="input" id="userName" type="text" name="userName" placeholder="请输入用户名"></td>
+                            <td><span id="userNameSpan"></span>
+                        </tr>
 
-                    <input class="input" id="userName" type="text" name="userName" placeholder="请输入用户名"><span
-                        id="userNameSpan"></span><br>
+                        <tr>
+                            <td>密码：</td>
+                            <td><input onkeyup="regexPassWord(this)" class="input" id="passWord" type="password" name="pwd" placeholder="请输入密码"></td>
+                            <td>  <span
+                                    id="passWordSpan"></span></td>
+                        </tr>
 
-                    <input class="input" id="passWord" type="password" name="pwd" placeholder="请输入密码"><span
-                        id="passWordSpan"></span><br>
-                    <input class="input" style="background-color: #6ce26c;margin-top: 20px" type="button"
-                           onclick="onSubmit()" value="注册">
+                        <tr>
+                            <td align="center" colspan="3"> <input class="input" style="background-color: #6ce26c;margin-top: 20px" type="button"
+                                        onclick="onSubmit()" value="登陆"></td>
 
+                        </tr>
+
+                    </table>
                 </form>
             </div>
         </div>

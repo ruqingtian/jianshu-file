@@ -4,6 +4,9 @@
 .textNewName{
     display:inline !important;
 }
+.textOldName{
+    display: none;
+}
 .deleteArticleShow{
     display:inline !important;
 }

@@ -100,9 +100,9 @@
 
 
                 var content = "<div class='articleShow' style='border: 1px solid red;margin-top: 30px'>" +
-                    "<div style='float: left'><img  style='height: 70px' src=" + data[i].img + "/></div>" +
+                    "<div style='float: left'><a href='/user/myPage?userId="+data[i].id+"'  target='_blank'><img  style='height: 70px' src=" + data[i].img + "/></a></div>" +
                     "<div style='color: #646464;float: left'>" +
-                    " <div><strong><span style='font-size: 20px'>" + data[i].nickName + "</span></strong></div>" +
+                    " <div><a href='/user/myPage?userId="+data[i].id+"'  target='_blank'><strong><span style='font-size: 20px'>" + data[i].nickName + "</span></strong></a></div>" +
                     "<div> 关注" + data[i].concernNums + "| 粉丝" + data[i].fansNums + " | 文章" + data[i].articleNums + "</div>" +
                     "<div>| 字数" + data[i].count + "  | 获得了" + data[i].likeNums + "个喜欢</div> " +
                     "</div>" +
@@ -200,7 +200,8 @@
                                 "   <div style='padding-top: 5px;padding-bottom: 10px'>" + data[i].content + "</div>" +
                                 "</div>" +
                                 "<div style='float: right'><img class='articleImg' src='"+data[i].image+"'></div>" +
-                                "<div style='clear: both'></div><div> 阅读 " + data[i].readNums + "评论 "+data[i].reviewNums+" 喜欢 " + data[i].likeNums + "</div> " +
+                                "<div style='clear: both'></div>" +
+                                "<div> 阅读 " + data[i].readNums + "评论 "+data[i].reviewNums+" 喜欢 " + data[i].likeNums + "</div> " +
                                 "</div>";
 
                         }else if(data[i].dynamicContent=="发表了评论"){

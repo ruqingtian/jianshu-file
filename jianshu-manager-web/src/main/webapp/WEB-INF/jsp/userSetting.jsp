@@ -60,6 +60,29 @@
             console.log(imgUrl);
             $(".touxiang").attr("src",imgUrl);
         }
+        function regexPhone(obj) {
+            var phone=$(obj).val();
+            console.log(phone.length);
+            if(phone.length!=11){
+                document.getElementById("regexPhone").innerText="手机号只能11位";
+            }else{
+                var reg=/\d{11}/;
+
+                if(reg.test(phone)){
+                    document.getElementById("regexPhone").innerText="";
+                }else{
+                    document.getElementById("regexPhone").innerText="手机号只能是数字";
+                }
+            }
+        }
+        function checkAll() {
+            var  val=$("#regexPhone").text();
+            var flag=false;
+            if(val==""){
+                flag=true;
+            }
+            return flag;
+        }
     </script>
 </head>
 <body>
@@ -128,14 +151,14 @@
         </tr>
         <tr>
             <td>手机</td>
-            <td><input name="phone" type="text" value="${user.phone}"/></td>
+            <td><input name="phone" type="text" value="${user.phone}" onblur="regexPhone(this)"/><span style="color: red" id="regexPhone"></span></td>
         </tr>
         <tr>
             <td>个人网站</td>
             <td><input name="web" type="text" value="${user.web}"/></td>
         </tr>
             <tr>
-                <td  colspan="2"><input style="font-size: 20px; width: 100px;border-radius: 18px;margin-left:40%;background-color: #6ce26c" type="submit" value="保存"></td>
+                <td  colspan="2"><input style="font-size: 20px; width: 100px;border-radius: 18px;margin-left:40%;background-color: #6ce26c" type="submit" value="保存" onclick="return checkAll()" ></td>
             </tr>
         </table>
     </form>

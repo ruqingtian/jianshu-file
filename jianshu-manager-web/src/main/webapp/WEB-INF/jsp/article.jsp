@@ -16,7 +16,7 @@
 
         }
         .articleImg{
-            width: 390px;
+
             height: 270px;
         }
     </style>
@@ -236,14 +236,14 @@
         </div>
         </div>
     </div>
-    <div>
-        <img style="width: 640px" class="articleImg" src="${article.image}"/>
+    <div style="text-align: center">
+        <img style="" class="articleImg" src="${article.image}"/>
     </div>
 
 
-    <div ><strong>
+    <div style="font-size: 20px" >
              ${article.content}
-          </strong>
+
     </div>
     <div style="padding-bottom: 50px">
         <input name="${article.id}" onclick="yesAndNoLike(this)" type="button" style="border: 1px solid red; border-radius: 18px;;height: 70px;font-size: 30px;color: red"

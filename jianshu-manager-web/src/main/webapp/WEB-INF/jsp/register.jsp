@@ -15,6 +15,11 @@
     <title>注册用户</title>
     <style type="text/css">
 
+
+
+
+        table{table-layout:fixed;}
+
     </style>
 
     <script type="text/javascript">
@@ -132,25 +137,52 @@
                     <a id="register" class="title" href="/register">注册</a>
                 </div>
             </h3>
-            <div class="content" >
+            <div class="content" style="" >
                 <form action="/user/save" class="new_user" id="userRegFrom" method="post" enctype="multipart/form-data"
                       onsubmit="return true"/>
-                <input class="input" type="text" name="nickName" placeholder="你的昵称"><br/>
-                <input class="input" type="text" name="userName" id="userName" placeholder="请输入用户名"
-                       onblur="checkName()"><span
-                    id="userId"></span><br>
-                <input class="input" type="password" name="pwd" id="pwd" onblur="checkPwd()" placeholder="请输入密码"><span
-                    id="userPwd"></span><br>
-                <input class="input" type="password" name="pwd2" id="pwd2" onblur="checkPwd2()"
-                       placeholder="请确认密码"><span
-                    id="userPwd2"></span><br/>
-                <input class="input" type="text" name="phone" id="phone" placeholder="请输入手机号"
-                       onkeyup="checkPhone()"><span
-                    id="userPhone"></span><br>
+                <table style="border: 1px solid gold;width: 200px;">
+                    <tr>
+               <td style="width: 83px"> <span class="zhushi"> 昵称：</span></td>
+                        <td width="256px"> <input class="input" type="text" name="nickName" placeholder="你的昵称"></td>
+                        <td width="100px"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="zhushi">用户名：</span></td>
+                        <td><input class="input" type="text" name="userName" id="userName" placeholder="请输入用户名"
+                                   onblur="checkName()"></td>
+                        <td><span id="userId"></span></td>
+                    </tr>
 
 
-                <input class="input" style="background-color: #6ce26c;margin-top: 20px" type="submit" value="注册"
-                       onclick="return checkAll()"/>
+                    <tr>
+                        <td><span class="zhushi">密码：</span></td>
+                        <td> <input class="input" type="password" name="pwd" id="pwd" onblur="checkPwd()" placeholder="请输入密码"></td>
+                        <td><span id="userPwd"></span></td>
+                    </tr>
+
+
+                    <tr>
+                        <td> <span class="zhushi">确认密码：</span></td>
+                        <td><input class="input" type="password" name="pwd2" id="pwd2" onblur="checkPwd2()"
+                                   placeholder="请确认密码"></td>
+                        <td><span id="userPwd2"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="zhushi">手机号</span></td>
+                        <td><input class="input" type="text" name="phone" id="phone" placeholder="请输入手机号"
+                                   onkeyup="checkPhone()"></td>
+                        <td><span id="userPhone"></span></td>
+                    </tr>
+
+
+                    <tr >
+                        <td align="center" colspan="3"><input class="input" style="background-color: #6ce26c;margin-top: 20px" type="submit" value="注册"
+                                   onclick="return checkAll()"/></td>
+
+                    </tr>
+
+                </table>
                 </form>
             </div>
         </div>

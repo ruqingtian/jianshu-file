@@ -61,6 +61,11 @@ public class JumpPageController {
             user = userService.selectUserById(userId);
             model.addAttribute("user", user);
             List<Article_collection> collections = collectionService.selectArticleCollectionByUserId(user.getId());
+            for(Article_collection collection:collections){
+                if(collection.getName().length()>4){
+                    collection.setName(collection.getName().substring(0,4)+"...");
+                }
+            }
             model.addAttribute("collectionList", collections);
         }
 
@@ -85,15 +90,10 @@ public class JumpPageController {
     }
     //文章详情
     @RequestMapping(value = "/article/With",method = RequestMethod.GET)
-    public String articleWith(Integer id,Model model,HttpServletResponse response,HttpServletRequest request){
+    public String articleWith(Integer id,Model model){
 
-        int cookieId = getCookieUserId(request, response);
-        if(cookieId!=-10){
-            Concern concern = concernService.selectRead(cookieId, id);
-            if(concern==null){
-                concernService.insertRead(cookieId,id );
-            }
-        }
+        articleService.updateReadNums(id);
+
 
         MoreArticle article = articleService.saveMoreArticle(id);
         MyPageUser myPageUser = userService.saveMyPageUser(article.getUserId());

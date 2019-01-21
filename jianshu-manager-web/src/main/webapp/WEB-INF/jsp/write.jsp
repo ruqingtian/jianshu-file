@@ -13,7 +13,8 @@
     <script type="text/javascript" src="/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" src="/ueditor/ueditor.all.js"></script>
     <script type="text/javascript" src="/ueditor/lang/zh-cn/zh-cn.js"></script>
-    <%--<script type="text/javascript" src="/js/write.js"></script>--%>
+    <script type="text/javascript" src="/js/commonjs.js"></script>
+
     <link rel="stylesheet" href="/css/write.css">
 
     <title>写文章</title>
@@ -37,17 +38,19 @@
         });
         // 获取文章标题
         function getCollection(obj) {
+
             $(".chooseCollection").removeClass("chooseCollection");
             $(obj).addClass("chooseCollection");
             var id=$(obj).attr("name");
-            console.log(id);
+
+
 
             var spanId=id;
 
             $("#collectionName").attr('name',id);
 
             $(".spanShow").removeClass("spanShow");
-            $(".textNewName").removeClass("textNewName");
+
 
             $("#"+spanId+"").addClass("spanShow");
 
@@ -94,12 +97,13 @@
                 url: "/write/content",
                 data: {id: aId},
                 success: function (data) {
-                    console.log(data);
+
                     var ue = UE.getEditor('container');
                     ue.setContent(data.content);
                     $("#articleTitle").val(data.title);
                     $("#articleId").attr("value", data.id);
                     $("#titleImg").attr("src", data.image);
+                    $("#articleStatus").attr("value",data.status);
 
                 },
                 dataType: "json"
@@ -141,47 +145,60 @@
         function updateCollectionName(obj) {
             var id=$(obj).parent().attr('id');
 
-            $(obj).next().addClass("textNewName");
+            $(obj).next().next().addClass(" textNewName");
+            //自动获取焦点
+            $(".textNewName").focus();
+
 
         }
 
         //失去焦点上传新name
         function updateName(obj) {
+
             var collectionName=$(obj).val();
 
-            var id=$(obj).parent().attr('id');
+            if(collectionName.trim()!="") {
+                console.log(collectionName);
+                var id = $(obj).parent().attr('id');
 
 
-            $.ajax({
-                type:"POST",
-                url:"/update/collectionName",
-                data:{articleId:id,newName:collectionName},
-                success:function (data) {
-                    location.reload(true);
-                },
-                dataType:"json"
-            })
+                $.ajax({
+                    type: "POST",
+                    url: "/update/collectionName",
+                    data: {articleId: id, newName: collectionName},
+                    success: function (data) {
+                        location.reload(true);
+                    },
+                    dataType: "json"
+                });
+
+            }
+            $(".textNewName").removeClass("textNewName");
+
 
         }
         //删除文集的单击事件
         function deleteCollection(obj) {
             var id=$(obj).parent().attr("id");
 
-            $.ajax({
-                type:"GET",
-                url:"/delete/collection",
-                data:{id:id},
-                success:function (data) {
+            if(confirm("确认是否删除此文集的所有文章")) {
+                $.ajax({
+                    type: "GET",
+                    url: "/delete/collection",
+                    data: {id: id},
+                    success: function (data) {
 
-                    location.reload(true);
-                },
-                dataType:"json"
-            })
+                        location.reload(true);
+                    },
+                    dataType: "json"
+                })
+            }
         }
         //提交文章
         function submitArticle() {
             var title=$("#articleTitle").val();
             var id=$("#articleId").attr("value");
+            var status=1;
             if(id==-100){
                 alert("请选择你要修改的文章");
             }
@@ -192,6 +209,7 @@
             formData.append('articleId',id);
             formData.append('title',title);
             formData.append('content',content);
+            formData.append('status',status);
 
             $.ajax({
                 type:"POST",
@@ -202,7 +220,7 @@
                 processData: false,
                 success:function (data) {
 
-                    $("#"+id+"").next().html("（已发布）");
+                    $(".chooseArticle span").html("（已发布）");
                     $("#"+id+"").val(data.title);
 
                     alert("发布成功");
@@ -214,11 +232,11 @@
         }
         //新建文章
         function saveArticle(obj) {
-            console.log(23);
+
             var userId=$(obj).attr('id');
-            console.log(userId);
+
             userId=parseInt(userId.substring(6,userId.length));
-            console.log(userId);
+
             var collectionId=$("#collectionName").attr("name");
 
 
@@ -247,31 +265,35 @@
         }
 
         //删除文章的单击事件
-        $("#deleteArticle").live('click',function () {
-            var articleId=$(this).prev().attr("id");
+        $(".deleteArticle").live('click',function () {
+            var articleId=$(this).attr("id");
+            articleId=articleId.substring(13);
+
             var collectionId=$(this).attr('name');
 
-            $.ajax({
-                type:"GET",
-                url:"/delete/article",
-                data:{id:articleId},
-                success:function (data) {
+            if(confirm("确认删除文章")) {
+                $.ajax({
+                    type: "GET",
+                    url: "/delete/article",
+                    data: {id: articleId},
+                    success: function (data) {
 
-                    $.ajax({
-                        async:false,
-                        type:"GET",
-                        url:"/write/article",
-                        data:{id:collectionId},
-                        dataType:"json",
-                        success:function (data) {
+                        $.ajax({
+                            async: false,
+                            type: "GET",
+                            url: "/write/article",
+                            data: {id: collectionId},
+                            dataType: "json",
+                            success: function (data) {
 
-                            articleForeach(data);
-                        }
+                                articleForeach(data);
+                            }
 
-                    })
-                },
-                dataType:"json"
-            })
+                        })
+                    },
+                    dataType: "json"
+                })
+            }
         });
 
         //文章显示
@@ -292,8 +314,10 @@
                 var   content="<div id='"+data[i].id+"' class='articleDiv' style='border: 1px solid #646464;padding-left: 10%;height: 60px'>" +
                     "<a style='color: black;font-size: 20px;line-height: 60px' href='javascript:void(0)'  class='articleName'  ><strong>"+title+"</strong></a>" +
                     "<span style='font-size: 20px'>("+sta+")</span>" +
-                    "<input id='deleteArticle"+data[i].id+"' name="+data[i].collectionId+" style='display:none;' type='button' value='删除'/>" +
+                    "<input class='deleteArticle' id='deleteArticle"+data[i].id+"' name="+data[i].collectionId+" style='display:none;' type='button' value='删除'/>" +
                     "</div>";
+
+
 
                 $("#collectionName").append(content);
             }
@@ -308,11 +332,64 @@
         }
 
 
+//输入文章弹起保存
+        var ue=UE.getEditor("container");
+        ue.addListener("keyup",function () {
+
+
+
+            setTimeout(function () {
+
+                document.getElementById("onKeyUpsaveArticle").innerText="保存中...";
+                var title=$("#articleTitle").val();
+                var id=$("#articleId").attr("value");
+                var status=$("#articleStatus").attr("value");
+                if(id==-100){
+                    alert("请选择你要修改的文章");
+                }
+                var ue = UE.getEditor('container');
+                var content=ue.getContent();
+                var formData=new FormData();
+                formData.append('titleImg',$("#fileImg")[0].files[0]);
+                formData.append('articleId',id);
+                formData.append('title',title);
+                formData.append('content',content);
+                formData.append('status',status);
+
+                $.ajax({
+                    type:"POST",
+                    url:"/write/saveArticle",
+                    data:formData,
+                    async: false,
+                    contentType: false,
+                    processData: false,
+                    success:function (data) {
+
+                        var str=data.title;
+                        $("#"+id+"").val(str);
+                        if(str.length>4){
+                            str=str.substring(0,4)+"...";
+                        }
+                       var node=$(".chooseArticle a").html("<Strong>"+str+"</strong>");
+
+                        document.getElementById("onKeyUpsaveArticle").innerText="已保存";
+
+
+                    },
+                    dataType:"json"
+
+                })
+
+
+            },2000)
+        })
+
 
     </script>
+
 </head>
 <body>
-<%--<h1>${user.nickName}</h1><br/>--%>
+
 <div style="overflow-y: auto;width: 200px;float: left;height: 100%;background-color:#404040 ">
     <div style="width: 80%;height: 60px;border: 1px solid #ec7259;border-radius: 40px;text-align: center;margin-left: 10%;margin-top: 50px">
         <a href="/" style="color: #ec7259;border-radius: 15px;font-size: 15px;line-height: 60px">返回首页</a>
@@ -337,13 +414,15 @@
 
     </div>
     <c:forEach items="${collectionList}" var="collection">
-        <div  class="articleCollection" style="width: 100%;height: 60px;" name=${collection.id}  onclick="getCollection(this)" >
-            <div style="margin-left: 10%">
-                <a href="javascript:void(0)" style="color: white;line-height: 50px;font-size: 25px"  >${collection.name}</a>
+        <div  class="articleCollection" style="width: 100%;height: auto;" name=${collection.id}   onclick="getCollection(this)"   >
+            <div style="margin-left: 10%" onblur="displayUpdateInput(this)"  >
+                <a href="javascript:void(0)" style="color: white;line-height: 50px;font-size: 16px"  >${collection.name}</a>
            <span  id=${collection.id} style="display:none">
-            <input type="button" onclick="updateCollectionName(this)" value="修改"/>
-               <input type="text" style="display:none" onblur="updateName(this)"/>
-            <input type="button" onclick="deleteCollection(this)" value="删除">
+                <input type="button" onclick="updateCollectionName(this)" value="修改"/>
+               <input type="button" onclick="deleteCollection(this)" value="删除"/>
+
+               <input  type="text" class="textOldName "   onblur="updateName(this)"/>
+
             </span>
             </div>
         </div>
@@ -357,27 +436,28 @@
     <div style=""  id="collectionName"></div>
 </div>
 <div style="float: right;height: 100%;width: 800px">
-    <script type="text/javascript">
-        var ue=UE.getEditor("container");
-    </script>
+
     <div  style="overflow-y: auto;height: 100%"  >
 
        <div style="padding-left: 10%">
-           <input style="border: none;font-size: 30px;color: #646464" type="text" name="title" value="无标题文章" id="articleTitle"/>
+           <input style="width: 100%;border: none;font-size: 30px;color: #646464" type="text" name="title" value="无标题文章" id="articleTitle"/>
        </div>
 
-       <div style="border: 3px solid #646464"> 封面图片：<img src="/" id="titleImg" width="130px" height="90px">
+       <div style="border: 3px solid #646464">
+           <div style="float: left">封面图片：<img src="/" id="titleImg" width="130px" height="90px"></div>
            <div style="float: left">
-               <a class="file">添加封面<input  class="file" id="fileImg" accept="image/*" type="file" onchange="imgChange(this)" /></a>
+               <a style="margin-top: 60px" class="file">添加封面<input  class="file" id="fileImg" accept="image/*" type="file" onchange="imgChange(this)" /></a>
            </div>
-           <div style="float: right;padding-top: 30px">
+           <div style="float: right;padding-top: 10px">
                <div onclick="submitArticle()" style="padding-top: 7px;margin-right:5px;padding-left:40px;height: 40px;width: 100px;border: 1px solid #42c02e;border-radius: 40px;color: #42c02e">
                    <a href="javascript:void(0)" style="font-size: 25px;color: #42c02e;" type="button"  >发布</a></div>
+               <div style="padding-left: 35px"><span id="onKeyUpsaveArticle" style="color: #646464;font-size: 20px">已保存</span></div>
         <input type="hidden" id="articleId" name="articleId" value="-100"   />
+               <input type="hidden" id="articleStatus"  value="0"   />
            </div>
            <div style="clear:both"></div>
        </div>
-        <script class="fuwenben" type="text/plain" id="container" name="content" >
+        <script  class="fuwenben" type="text/plain" id="container" name="content" >
             这里是初始化内容
         </script>
 

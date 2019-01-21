@@ -62,14 +62,13 @@ public class WriteController {
 
     @RequestMapping(value = "/write/saveArticle",method = RequestMethod.POST)
     @ResponseBody
-    public Article saveArticle( String title,MultipartFile titleImg,  Integer articleId, String content,HttpServletRequest request)  {
+    public Article saveArticle( String title,MultipartFile titleImg,  Integer articleId, String content,Integer status,HttpServletRequest request)  {
         String imgPath=articleService.selectArticleById(articleId).getImage();
         if(articleId!=-100) {
             if(titleImg!=null) {
                 imgPath = workImg(titleImg, request);
             }
-            content = content.substring(3, content.length() - 4);
-            articleService.updateArticleById(articleId, title, content,imgPath);
+            articleService.updateArticleById(articleId, title, content,imgPath,status);
             Article article = articleService.selectArticleById(articleId);
 
             return article;

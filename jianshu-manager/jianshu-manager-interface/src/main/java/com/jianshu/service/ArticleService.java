@@ -17,7 +17,7 @@ public interface ArticleService {
     public Article selectArticleById(int id);
 
     //根据文章id 修改文章
-    public void updateArticleById(int id, String title, String content,String titileImg);
+    public void updateArticleById(int id, String title, String content,String titileImg,int status);
     //新建文章
     public void saveArticle(int userId,int collectionId);
     //根据id删除文章
@@ -38,4 +38,8 @@ public interface ArticleService {
     public PageBean<MoreArticle> likeTitileLimit(String title ,int currentPage, int index, int currentCount);
     //根据userId 获得喜欢的文章
     public List<MoreArticle> getAllLikeArticle(int userId);
+//    查询阅读数
+    public  int selectReadNums(int articleId);
+//    阅读文章 阅读数加一
+    public void updateReadNums(int articleId);
 }
