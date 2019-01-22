@@ -17,7 +17,20 @@
     </style>
     <script type="text/javascript">
         $(function () {
-
+            var userId=$("#concernInput").attr("name");
+            if(userId!=null) {
+                $.ajax({
+                    type: "get",
+                    url: "/user/judgeConcern",
+                    data: {"userId": userId},
+                    success: function (data) {
+                        if(data.data=="已关注") {
+                            $("#concernInput").attr("value", data.data);
+                        }
+                    },
+                    dataType: "json"
+                });
+            }
             getAllArticle();
 
         });
@@ -45,10 +58,13 @@
                                 "<div>"+
                                 "<p style='width: 800px;color: #646464'><a href='/article/With?id="+data[i].id+"'> 阅读"+data[i].readNums+" 评论 "+data[i].reviewNums+" </a>喜欢"+data[i].likeNums+"   &nbsp; &nbsp;    "+data[i].showTime+"</p>" +
                                 "</div>" +
-                    "</div>"
+                    "</div><div style='clear:both'></div>"
 
                 $("#content").append(count);
 
+            }
+            if(data.length==0){
+                $("#content").append("<div style='color: #646464;font-size: 30px'>暂无发布的文章 </div>");
             }
         },
         dataType:"json"
@@ -87,6 +103,7 @@
     }
 
     function showMypageUser(data) {
+
         $("#content").html("");
         if(data.length==0){
             var content="<div style='color: #646464;font-size: 30px'>暂无粉丝 </div>";
@@ -163,14 +180,18 @@
             $(".addChooseClass").removeClass("addChooseClass");
             $(obj).addClass("addChooseClass");
             var userId=$(obj).parent().attr("name");
-            console.log(userId);
+
             $.ajax({
                 type:"GET",
                 url:"/article/dynamic",
                 data:{"userId":userId},
                 success:function (data) {
-
+                    console.log(data.length);
                     $("#content").html("");
+                    if(data.length==0){
+                        var content= "<div style='color: #646464;font-size: 30px'>暂无动态 </div>";
+                        $("#content").append(content);
+                    }
                     for(var i=0;i<data.length;i++) {
                         var content="";
                         if (data[i].dynamicContent=="喜欢了文章") {
@@ -202,7 +223,7 @@
                                 "<div style='float: right'><img class='articleImg' src='"+data[i].image+"'></div>" +
                                 "<div style='clear: both'></div>" +
                                 "<div> 阅读 " + data[i].readNums + "评论 "+data[i].reviewNums+" 喜欢 " + data[i].likeNums + "</div> " +
-                                "</div>";
+                                "</div><div style='clear:both'></div>";
 
                         }else if(data[i].dynamicContent=="发表了评论"){
                             console.log(data[i]);
@@ -242,6 +263,7 @@
                                         "</div>" +
                                     "</div>";
                         }
+
                         $("#content").append(content);
                     }
 
@@ -272,7 +294,7 @@
                     console.log(data);
                     $("#content").html("")
                     if(data.length==0){
-                        $("#content").html("没有你喜欢的文章")
+                        $("#content").html("<div style='color: #646464;font-size: 30px'>没有你喜欢的文章</div>")
                     }
                     for(var i=0;i<data.length;i++){
                         var articleContent=data[i].content;
@@ -349,8 +371,8 @@
             <div style="">
                 <c:choose>
                     <c:when test="${ not empty status}">
-                        <input class="yesAndNoConcern" name="${user.id}" type="button"
-                               style="background-color: #6ce26c;color: black;font-size: 25px;line-height:40px"
+                        <input id="concernInput" class="yesAndNoConcern" name="${user.id}" type="button"
+                               style="color: black;font-size: 25px;line-height:40px"
                                value="+关注"/>
                     </c:when>
                 </c:choose>

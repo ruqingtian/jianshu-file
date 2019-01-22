@@ -59,7 +59,7 @@ public class ArticleServiceImpl implements ArticleService {
         Article article1 = mapper.selectArticleById(id);
         mapper.updataArticleById(map);
         //插入动态
-        if(article1.getStatus()==0) {
+        if(article1.getStatus()==0&&status==1) {
             Article article = mapper.selectArticleById(id);
             Dynamic dynamic = new Dynamic();
             dynamic.setUserId(article.getUserId());
@@ -134,8 +134,8 @@ public class ArticleServiceImpl implements ArticleService {
             MoreArticle moreArticle=new MoreArticle();
             BeanUtils.copyProperties(articles.get(i),moreArticle );
             User user = userMapper.selectUserById(articles.get(i).getUserId());
-            if(moreArticle.getContent().length()>30) {
-                moreArticle.setContent(articles.get(i).getContent().substring(0,30)+"...");
+            if(moreArticle.getContent().length()>60) {
+                moreArticle.setContent(articles.get(i).getContent().substring(0,60)+"...");
             }
 
             moreArticle.setUserName(user.getNickName());
@@ -190,13 +190,14 @@ public class ArticleServiceImpl implements ArticleService {
                 MoreArticle article = new MoreArticle();
                 if (dynamic.getArticleId() != 0) {
                     Article article1 = mapper.selectArticleById(dynamic.getArticleId());
-                    BeanUtils.copyProperties(article1, article);
-                    if (article1.getContent().length() > 30) {
-                        article.setContent(article1.getContent().substring(0, 30) + "...");
-                    }
-                    User user1 = userMapper.selectUserById(article1.getUserId());
-                    article.setUserName(user1.getNickName());
-                    article.setReviewNums(reviewMapper.selectListByArticleId(article1.getId()).size());
+                        BeanUtils.copyProperties(article1, article);
+                        if (article1.getContent().length() > 30) {
+                            article.setContent(article1.getContent().substring(0, 30) + "...");
+                        }
+                        User user1 = userMapper.selectUserById(article1.getUserId());
+                        article.setUserName(user1.getNickName());
+                        article.setReviewNums(reviewMapper.selectListByArticleId(article1.getId()).size());
+
                 }
                 if (dynamic.getReviewId() != 0) {
                     article.setReviewContent(reviewMapper.selectReviewById(dynamic.getReviewId()).getContent());

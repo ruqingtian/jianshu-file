@@ -219,7 +219,12 @@
                 contentType: false,
                 processData: false,
                 success:function (data) {
-
+                    var str=data.title;
+                    $("#"+id+"").val(str);
+                    if(str.length>4){
+                        str=str.substring(0,4)+"...";
+                    }
+                    var node=$(".chooseArticle a").html("<Strong>"+str+"</strong>");
                     $(".chooseArticle span").html("（已发布）");
                     $("#"+id+"").val(data.title);
 

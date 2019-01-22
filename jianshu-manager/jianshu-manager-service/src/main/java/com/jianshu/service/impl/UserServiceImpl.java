@@ -132,7 +132,11 @@ public class UserServiceImpl implements UserService {
                 if(concern!=null){
                     homeUser.setStatus(1);
                 }else{
-                    homeUser.setStatus(0);
+                    if(cookieId==users.get(i).getId()){
+                        homeUser.setStatus(3);
+                    }else {
+                        homeUser.setStatus(0);
+                    }
                 }
             }
             homeUser.setId(users.get(i).getId());

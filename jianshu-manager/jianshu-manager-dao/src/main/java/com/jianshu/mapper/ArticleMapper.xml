@@ -45,7 +45,7 @@
     </select>
     <!--分页查询文章-->
     <select id="selectPageArticle" resultMap="BaseResultMap">
-        SELECT * FROM article where status=1 limit #{index},#{currentCount}
+        SELECT * FROM article where status=1 ORDER BY create_time desc limit #{index},#{currentCount} ;
     </select>
     <!--查询总条数-->
     <select id="selectCountArticle" resultType="Integer">

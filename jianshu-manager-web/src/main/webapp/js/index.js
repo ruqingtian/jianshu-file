@@ -22,12 +22,13 @@ window.onload=function () {
     });
 };
 function readMoreArticle(data) {
+    console.log(data);
     for(var i=0;i<data.showList.length;i++){
         var count=
-            "<div class='articleDiv' style=';width: 100%;margin-top:30px'>" +
-            "   <div class='articleShow' style='height:107px;float:left;'>" +
+            "<div class='articleDiv' style='height: 150px;width: 100%;margin-top:30px'>" +
+            "   <div class='articleShow' style='width: 500px;height:107px;float:left;'>" +
             "       <p style='width: 440px;margin-top:-2px;margin-bottom:3px;line-height:27px;font-weight:700;font-size: 22px;' ><a href='/article/With?id="+data.showList[i].id+"' target='_blank'><strong>"+data.showList[i].title+"</strong></a></p>" +
-            "       <p style='margin:0px;width: 460px;font-size:13px;line-height:24px;color:#999'>"+data.showList[i].content+"</p> " +
+            "       <span style='margin:0px;width: 460px;font-size:13px;line-height:24px;color:#999'>"+data.showList[i].content+"</span> " +
             "       <p style='margin: 5px 0px;width: 460px;font-size:13px;line-height:24px;color:#999'>"+data.showList[i].userName+"  评论 "+data.showList[i].reviewNums+" 喜欢"+data.showList[i].likeNums+"</p>" +
             "   </div>" +
             "   <div >" +
@@ -86,15 +87,17 @@ function indexShowUser(data) {
             sumNums=sumNums+"字";
         }
         var userId=data.showList[i].id;
-        var str="+关注";
+        var str="<input style='margin-left:100px;font-size: 19px' class='yesAndNoConcern' name="+userId+" type='button' value=+关注>";
         if(data.showList[i].status==1){
-            str="已关注";
+            str="<input style='margin-left:100px;font-size: 19px' class='yesAndNoConcern' name="+userId+" type='button' value=已关注>";
+        }else if(data.showList[i].status==3){
+            str="";
         }
         var count="<div style='margin-top:20px;width: 350px'>" +
             "           <div style='float:left;width: 50px;'><a  href='/user/myPage?userId="+userId+"'  target='_blank' > " +
                 "           <img  class='smallImg' src="+data.showList[i].img+"/>  </a>" +
             "           </div> " +
-            "           <div style='width:300px;'><a style='font-size: 17px' href='/user/myPage?userId="+userId+"'  target='_blank'>"+data.showList[i].nickName+" </a><input style='margin-left:100px;font-size: 19px' class='yesAndNoConcern' name="+userId+" type='button' value="+str+"><br/>" +
+            "           <div style='width:300px;'><a style='font-size: 17px' href='/user/myPage?userId="+userId+"'  target='_blank'>"+data.showList[i].nickName+" </a>"+str+"<br/>" +
                 "      <span style='color: #646464'>     写了"+sumNums+"  "+data.showList[i].likeNums+" 喜欢</span>" +
             "           </div>" +
             "      </div>" +

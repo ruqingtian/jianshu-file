@@ -245,7 +245,7 @@
              ${article.content}
 
     </div>
-    <div style="padding-bottom: 50px">
+    <div style="padding-bottom: 50px;margin-left:200px">
         <input name="${article.id}" onclick="yesAndNoLike(this)" type="button" style="border: 1px solid red; border-radius: 18px;;height: 70px;font-size: 30px;color: red"
                value="喜欢  :   ${article.likeNums}"/>
     </div>
