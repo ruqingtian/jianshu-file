@@ -47,7 +47,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void updateArticleById(int id, String title, String content,String titleImg,int status) {
+    public void updateArticleById(int id, String title, String content,int status) {
         Date updateTime=new Date();
         Map<String ,Object> map=new HashMap<>();
         map.put("id",id );
@@ -55,7 +55,6 @@ public class ArticleServiceImpl implements ArticleService {
         map.put("content",content );
         map.put("updateTime",updateTime );
         map.put("status",status);
-        map.put("image",titleImg );
         Article article1 = mapper.selectArticleById(id);
         mapper.updataArticleById(map);
         //插入动态
@@ -134,10 +133,6 @@ public class ArticleServiceImpl implements ArticleService {
             MoreArticle moreArticle=new MoreArticle();
             BeanUtils.copyProperties(articles.get(i),moreArticle );
             User user = userMapper.selectUserById(articles.get(i).getUserId());
-            if(moreArticle.getContent().length()>60) {
-                moreArticle.setContent(articles.get(i).getContent().substring(0,60)+"...");
-            }
-
             moreArticle.setUserName(user.getNickName());
             moreArticle.setReviewNums(reviewMapper.selectListByArticleId(moreArticle.getId()).size());
             moreArticle.setLikeNums(concernMapper.selectCountLike(moreArticle.getId()));

@@ -28,7 +28,7 @@
     </select>
     <!--根据文章id 修改文章-->
     <update id="updataArticleById" parameterType="map">
-        UPDATE article set title=#{title},content=#{content},update_time=#{updateTime},status=#{status},image=#{image} WHERE id=#{id}
+        UPDATE article set title=#{title},content=#{content},update_time=#{updateTime},status=#{status} WHERE id=#{id}
     </update>
     <!--新建文章-->
     <insert id="saveArticle" parameterType="map">

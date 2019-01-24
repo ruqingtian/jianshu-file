@@ -97,17 +97,25 @@
                 url: "/write/content",
                 data: {id: aId},
                 success: function (data) {
-
                     var ue = UE.getEditor('container');
                     ue.setContent(data.content);
                     $("#articleTitle").val(data.title);
                     $("#articleId").attr("value", data.id);
-                    $("#titleImg").attr("src", data.image);
                     $("#articleStatus").attr("value",data.status);
 
                 },
                 dataType: "json"
             });
+        }
+        //获取富文本编辑器的第一张图片
+        function getFristPicture(str) {
+            var imgReg=/<img.*?(?:>|\/>)/gi;
+            var srcReg=/src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+            var arr=data.content.match(imgReg);
+            console.log(arr[0])
+            var src=arr[0].match(srcReg);
+           return src;
+
         }
         //单击新建文集
         function saveCollection() {
@@ -205,7 +213,7 @@
             var ue = UE.getEditor('container');
             var content=ue.getContent();
             var formData=new FormData();
-            formData.append('titleImg',$("#fileImg")[0].files[0]);
+
             formData.append('articleId',id);
             formData.append('title',title);
             formData.append('content',content);
@@ -355,7 +363,7 @@
                 var ue = UE.getEditor('container');
                 var content=ue.getContent();
                 var formData=new FormData();
-                formData.append('titleImg',$("#fileImg")[0].files[0]);
+
                 formData.append('articleId',id);
                 formData.append('title',title);
                 formData.append('content',content);
@@ -443,28 +451,29 @@
 <div style="float: right;height: 100%;width: 800px">
 
     <div  style="overflow-y: auto;height: 100%"  >
-
-       <div style="padding-left: 10%">
-           <input style="width: 100%;border: none;font-size: 30px;color: #646464" type="text" name="title" value="无标题文章" id="articleTitle"/>
+        <div style="border: 3px solid #646464">
+       <div style="float:left;width: 72%;margin-top: 20px">
+           <input style="width: 100%;border: none;font-size: 35px;color: #646464" type="text" name="title" value="无标题文章" id="articleTitle"/>
        </div>
 
-       <div style="border: 3px solid #646464">
-           <div style="float: left">封面图片：<img src="/" id="titleImg" width="130px" height="90px"></div>
-           <div style="float: left">
-               <a style="margin-top: 60px" class="file">添加封面<input  class="file" id="fileImg" accept="image/*" type="file" onchange="imgChange(this)" /></a>
-           </div>
-           <div style="float: right;padding-top: 10px">
+       <div style="float:right;width:25%;">
+
+           <div style="padding-left: 30px;padding-top: 10px">
                <div onclick="submitArticle()" style="padding-top: 7px;margin-right:5px;padding-left:40px;height: 40px;width: 100px;border: 1px solid #42c02e;border-radius: 40px;color: #42c02e">
                    <a href="javascript:void(0)" style="font-size: 25px;color: #42c02e;" type="button"  >发布</a></div>
                <div style="padding-left: 35px"><span id="onKeyUpsaveArticle" style="color: #646464;font-size: 20px">已保存</span></div>
         <input type="hidden" id="articleId" name="articleId" value="-100"   />
                <input type="hidden" id="articleStatus"  value="0"   />
            </div>
-           <div style="clear:both"></div>
+       </div> <div style="clear:both"></div>
        </div>
+
+
+
         <script  class="fuwenben" type="text/plain" id="container" name="content" >
             这里是初始化内容
         </script>
+
 
 
     </div>

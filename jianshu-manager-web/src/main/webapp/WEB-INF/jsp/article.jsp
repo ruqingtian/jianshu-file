@@ -236,9 +236,7 @@
         </div>
         </div>
     </div>
-    <div style="text-align: center">
-        <img style="" class="articleImg" src="${article.image}"/>
-    </div>
+
 
 
     <div style="font-size: 20px" >

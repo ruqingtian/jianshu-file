@@ -24,16 +24,29 @@ window.onload=function () {
 function readMoreArticle(data) {
     console.log(data);
     for(var i=0;i<data.showList.length;i++){
+        var htmlContent=data.showList[i].content.replace(/<[^>]+>/g,"");
+        if(htmlContent.length>80){
+            var content=htmlContent.substring(0,80)+"...";
+        }
+        var src=getFristPicture(data.showList[i].content);
+        var divWidth=460;
+        if(src!=""){
+            var divStr="<div style='padding-top: 30px'>"+
+                             "<img class='articleImg' src='"+src[1]+"' style='width:150px;height:107px;'/>" +
+                       "</div>"
+        }else{
+            var divStr="";
+            divWidth=600;
+        }
+
         var count=
             "<div class='articleDiv' style='height: 150px;width: 100%;margin-top:30px'>" +
-            "   <div class='articleShow' style='width: 500px;height:107px;float:left;'>" +
+            "   <div class='articleShow' style='width: "+divWidth+"px;height:107px;float:left;'>" +
             "       <p style='width: 440px;margin-top:-2px;margin-bottom:3px;line-height:27px;font-weight:700;font-size: 22px;' ><a href='/article/With?id="+data.showList[i].id+"' target='_blank'><strong>"+data.showList[i].title+"</strong></a></p>" +
-            "       <span style='margin:0px;width: 460px;font-size:13px;line-height:24px;color:#999'>"+data.showList[i].content+"</span> " +
+            "       <span style='margin:0px;width: "+divWidth+"px;font-size:13px;line-height:24px;color:#999'>"+content+"</span> " +
             "       <p style='margin: 5px 0px;width: 460px;font-size:13px;line-height:24px;color:#999'>"+data.showList[i].userName+"  评论 "+data.showList[i].reviewNums+" 喜欢"+data.showList[i].likeNums+"</p>" +
             "   </div>" +
-            "   <div >" +
-            "       <img class='articleImg ' src="+data.showList[i].image+" style='width:150px;height:107px'/>" +
-            "   </div>" +
+            divStr +
             "</div><div style='clear:none'></div>";
 
         $("#articleShow").append(count);
@@ -210,4 +223,19 @@ $(".yesAndNoConcern ").live('click',function () {
 });
 function getAllUser() {
     window.open('/allUser');
+}
+//获取富文本编辑器的第一张图片
+function getFristPicture(str) {
+    var imgReg = /<img.*?(?:>|\/>)/gi;
+    var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+    var arr = str.match(imgReg);
+    var src = "";
+
+    if (arr!=null) {
+
+         var src = arr[0].match(srcReg);
+
+    }
+    return src;
+
 }
