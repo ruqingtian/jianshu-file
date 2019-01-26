@@ -98,7 +98,7 @@
 
             <input style="font-size: 20px;margin-top:50px;width: 100%" type="button" onclick="getAllUser()" value="查看全部"/>
         </div>
-    <a href="#topHtml" style="position:fixed;margin-right: 80px;margin-bottom: 50px"><img style="width: 50px" src="/image/back.png"></a>
+
         <%--分页--%>
         <%--<ul class="pagination" style="display: none">
             <li><a href="javascript:void(0)" onclick="beforePage()" aria-label="Previous"><span
@@ -111,9 +111,11 @@
             <li><a href="javascript:void(0)" onclick="nextPage()" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>
             </li>
         </ul>--%>
-
+    <div  style="position:fixed;float: right;margin-left: 95%;margin-top: 100px"><a href="#topHtml"><img style="width: 50px" src="/image/back.png"></a></div>
     </div>
+
 </div>
+
 
 
 </body>

@@ -42,7 +42,7 @@ function readMoreArticle(data) {
         var count=
             "<div class='articleDiv' style='height: 150px;width: 100%;margin-top:30px'>" +
             "   <div class='articleShow' style='width: "+divWidth+"px;height:107px;float:left;'>" +
-            "       <p style='width: 440px;margin-top:-2px;margin-bottom:3px;line-height:27px;font-weight:700;font-size: 22px;' ><a href='/article/With?id="+data.showList[i].id+"' target='_blank'><strong>"+data.showList[i].title+"</strong></a></p>" +
+            "       <p style='width: 440px;margin-top:-2px;margin-bottom:3px;line-height:27px;font-weight:700;font-size: 22px;' ><a onmouseenter='mouseEnter()' onmouseleave='mouseLeave()' class='titleArticle' href='/article/With?id="+data.showList[i].id+"' target='_blank'><strong>"+data.showList[i].title+"</strong></a></p>" +
             "       <span style='margin:0px;width: "+divWidth+"px;font-size:13px;line-height:24px;color:#999'>"+content+"</span> " +
             "       <p style='margin: 5px 0px;width: 460px;font-size:13px;line-height:24px;color:#999'>"+data.showList[i].userName+"  评论 "+data.showList[i].reviewNums+" 喜欢"+data.showList[i].likeNums+"</p>" +
             "   </div>" +
@@ -238,4 +238,10 @@ function getFristPicture(str) {
     }
     return src;
 
+}
+function mouseEnter() {
+    $(".titleArticle").addClass("articleTitle");
+}
+function mouseLeave() {
+    $(".titleArticle").removeClass("articleTitle");
 }

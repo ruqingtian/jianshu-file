@@ -19,6 +19,9 @@
 
             height: 270px;
         }
+        .concernBackcolor{
+            background-color: #6ce26c
+        }
     </style>
     <title>文章详情</title>
     <script type="text/javascript">
@@ -52,8 +55,10 @@
                 success:function (data) {
                     if(data.data=="未关注"){
                         node.attr("value","+关注");
+                        $(".yesAndNoConcern").addClass("concernBackcolor");
                     }else if(data.data=="已关注"){
                         node.attr("value","已关注");
+                        $(".yesAndNoConcern").removeClass("concernBackcolor");
                     }
                 },
                 dataType:"json"
@@ -70,6 +75,7 @@
             var count=$(this).attr("value");
             if(count=="取消关注"){
                 $(this).attr("value","已关注");
+                $(".yesAndNoConcern").removeClass("concernBackcolor");
             }
         });
         $(".yesAndNoConcern").live('click',function () {
@@ -84,6 +90,8 @@
                     success:function (data) {
                         if(data.status==200) {
                             node.attr("value", "+关注");
+                            $(".yesAndNoConcern").addClass("concernBackcolor");
+
                         }
                     },
                     dataType:"json"
@@ -97,6 +105,7 @@
 
                         if(data.status==200){
                             node.attr("value","已关注");
+                            $(".yesAndNoConcern").removeClass("concernBackcolor");
                         }
                         if(data.msg=="请先登录"){
                             location.href="/login";
@@ -206,6 +215,9 @@
 
            })
         })
+        function cleanReview() {
+            $("#reviewText").val("");
+        }
     </script>
 </head>
 <body >
@@ -224,10 +236,10 @@
             <img class="smallImg" src="${user.img}"/>
         </div>
         <div  >
-            <div name="${user.id}"  style="text-align: left"><span style="padding-left: 10px;padding-right:10px;font-size: 25px">${user.nickName}</span><input class="yesAndNoConcern"
+            <div name="${user.id}"  style="text-align: left"><span style="padding-left: 10px;padding-right:10px;font-size: 25px">${user.nickName}</span><input class="yesAndNoConcern concernBackcolor"
                                         name="${article.userId}" type="button"
                                         value="+关注"
-                                        style="font-size: 20px; color: black;background-color: #6ce26c"/>
+                                        style="font-size: 20px; color: black;"/>
             </div>
             <div style="color: #646464;text-align: left;font-size: 15px">${article.showTime} 字数 ${article.number} 阅读 ${article.readNums} 评论 ${article.reviewNums}
                 喜欢 ${article.likeNums}
@@ -250,7 +262,7 @@
     <div>
         <img id="reviewTouXiangImg" class="smallImg" src="/"/><textarea name="${article.id}" id="reviewText" placeholder="写下你的评论" style="width: 500px" rows="5" cols="20"></textarea><br/>
         <input type="button" onclick="submitReview()" value="提交"/>
-        <input type="button" onclick="cleanReview()" value="取消"/>
+        <input type="button" onclick="cleanReview()" value="清空"/>
 
     </div>
 

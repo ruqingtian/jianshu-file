@@ -123,11 +123,6 @@ public class WriteController {
     @ResponseBody
     public List<MoreArticle> getAllByUserId(int userId){
         List<MoreArticle> list = articleService.getAllByUserId(userId);
-        for(MoreArticle article:list){
-            if(article.getContent().length()>30){
-                article.setContent(article.getContent().substring(0,30 )+"...");
-            }
-        }
         return list;
     }
 

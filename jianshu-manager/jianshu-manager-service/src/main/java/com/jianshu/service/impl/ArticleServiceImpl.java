@@ -186,9 +186,7 @@ public class ArticleServiceImpl implements ArticleService {
                 if (dynamic.getArticleId() != 0) {
                     Article article1 = mapper.selectArticleById(dynamic.getArticleId());
                         BeanUtils.copyProperties(article1, article);
-                        if (article1.getContent().length() > 30) {
-                            article.setContent(article1.getContent().substring(0, 30) + "...");
-                        }
+
                         User user1 = userMapper.selectUserById(article1.getUserId());
                         article.setUserName(user1.getNickName());
                         article.setReviewNums(reviewMapper.selectListByArticleId(article1.getId()).size());
@@ -204,6 +202,7 @@ public class ArticleServiceImpl implements ArticleService {
                 article.setDynamicDate(changeDate(dynamic.getCreateTime()));
 
                 article.setLikeNums(concernMapper.selectCountLike(article.getId()));
+                article.setWorkerId(cookieId);
                 list.add(article);
             }else{
                 MyPageUser myPageUser=new MyPageUser();
@@ -279,9 +278,7 @@ public class ArticleServiceImpl implements ArticleService {
         List<MoreArticle> list=new ArrayList<>();
         for(Integer s:integers){
             Article article = mapper.selectArticleById(s);
-            if (article.getContent().length() > 200) {
-                article.setContent(article.getContent().substring(0, 200) + "...");
-            }
+
             MoreArticle moreArticle=new MoreArticle();
             BeanUtils.copyProperties(article,moreArticle );
             User user = userMapper.selectUserById(article.getUserId());

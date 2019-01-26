@@ -59,5 +59,7 @@
 .currentPage{
     background-color: #6ce26c !important;
 }
-
+.articleTitle:hover{
+    text-decoration: underline;
+}
 

@@ -348,9 +348,6 @@
 //输入文章弹起保存
         var ue=UE.getEditor("container");
         ue.addListener("keyup",function () {
-
-
-
             setTimeout(function () {
 
                 document.getElementById("onKeyUpsaveArticle").innerText="保存中...";
@@ -396,7 +393,52 @@
 
             },2000)
         })
+function keyUpAdd() {
+    setTimeout(function () {
 
+        document.getElementById("onKeyUpsaveArticle").innerText="保存中...";
+        var title=$("#articleTitle").val();
+        var id=$("#articleId").attr("value");
+        var status=$("#articleStatus").attr("value");
+        if(id==-100){
+            alert("请选择你要修改的文章");
+        }
+        var ue = UE.getEditor('container');
+        var content=ue.getContent();
+        var formData=new FormData();
+
+        formData.append('articleId',id);
+        formData.append('title',title);
+        formData.append('content',content);
+        formData.append('status',status);
+
+        $.ajax({
+            type:"POST",
+            url:"/write/saveArticle",
+            data:formData,
+            async: false,
+            contentType: false,
+            processData: false,
+            success:function (data) {
+
+                var str=data.title;
+                $("#"+id+"").val(str);
+                if(str.length>4){
+                    str=str.substring(0,4)+"...";
+                }
+                var node=$(".chooseArticle a").html("<Strong>"+str+"</strong>");
+
+                document.getElementById("onKeyUpsaveArticle").innerText="已保存";
+
+
+            },
+            dataType:"json"
+
+        })
+
+
+    },2000)
+}
 
     </script>
 
@@ -453,7 +495,7 @@
     <div  style="overflow-y: auto;height: 100%"  >
         <div style="border: 3px solid #646464">
        <div style="float:left;width: 72%;margin-top: 20px">
-           <input style="width: 100%;border: none;font-size: 35px;color: #646464" type="text" name="title" value="无标题文章" id="articleTitle"/>
+           <input style="width: 100%;border: none;font-size: 35px;color: #646464" type="text" name="title" value="无标题文章" id="articleTitle" onkeyup="keyUpAdd()"/>
        </div>
 
        <div style="float:right;width:25%;">

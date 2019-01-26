@@ -44,15 +44,23 @@
         url:"/article/userArticle",
         data:{"userId":userId},
         success:function (data) {
-            console.log(data);
+
             $("#content").html("");
             for(var i=0;i<data.length;i++){
 
+                var src=getFristPicture(data[i].content);
+
+                //文章的内容去掉所有的标签
+                var htmlContent=data[i].content.replace(/<[^>]+>/g,"");
+                if(htmlContent.length>80){
+                    htmlContent=htmlContent.substring(0,80)+"...";
+                }
+
                 var count="<div  class='articleShow' style='margin-top: 50px ;border:1px solid red;'>" +
-                                "<div style='float:left;width: 70%'><div><strong><a style='font-size: 20px' class='articleTitle' href='/article/With?id="+data[i].id+"' target='_blank'>"+data[i].title+"</a></strong></div><div style='color: #646464;padding-top: 10px'>"+data[i].content+"</div>"+
+                                "<div style='float:left;width: "+src[1]+"'><div><strong><a style='font-size: 20px' class='articleTitle' href='/article/With?id="+data[i].id+"' target='_blank'>"+data[i].title+"</a></strong></div><div style='color: #646464;height:97px ;padding-top: 10px'>"+htmlContent+"</div>"+
                                 " </div>" +
                                 "<div style='float:right'>" +
-                                "   <img class='articleImg' src="+data[i].image+" />" +
+                                src[0] +
                                 "</div>" +
                                 "<div style='clear:both'></div>" +
                                 "<div>"+
@@ -114,6 +122,13 @@
             if(data[i].concernStatus==1){
                 var status="已关注"
             }
+            if(data[i].count>1000){
+                var articleCount= data[i].count/1000;
+                articleCount=articleCount.toFixed(1)+"千";
+
+            }else{
+                var articleCount= data[i].count;
+            }
 
 
                 var content = "<div class='articleShow' style='border: 1px solid red;margin-top: 30px'>" +
@@ -121,7 +136,7 @@
                     "<div style='color: #646464;float: left'>" +
                     " <div><a href='/user/myPage?userId="+data[i].id+"'  target='_blank'><strong><span style='font-size: 20px'>" + data[i].nickName + "</span></strong></a></div>" +
                     "<div> 关注" + data[i].concernNums + "| 粉丝" + data[i].fansNums + " | 文章" + data[i].articleNums + "</div>" +
-                    "<div>| 字数" + data[i].count + "  | 获得了" + data[i].likeNums + "个喜欢</div> " +
+                    "<div>| 字数" + articleCount + "  | 获得了" + data[i].likeNums + "个喜欢</div> " +
                     "</div>" +
                     " <div style='float: right;padding-top: 15px'><input class='yesAndNoConcern' style='font-size: 25px' name=" + data[i].id + " type='button' value=" + status + "></div><div style='clear: both'></div>" +
                     "</div>";
@@ -186,26 +201,34 @@
                 url:"/article/dynamic",
                 data:{"userId":userId},
                 success:function (data) {
-                    console.log(data.length);
+
                     $("#content").html("");
+
                     if(data.length==0){
                         var content= "<div style='color: #646464;font-size: 30px'>暂无动态 </div>";
                         $("#content").append(content);
                     }
                     for(var i=0;i<data.length;i++) {
+
                         var content="";
                         if (data[i].dynamicContent=="喜欢了文章") {
+                            var src=getFristPicture(data[i].content);
+                            //文章的内容去掉所有的标签
+                            var htmlContent=data[i].content.replace(/<[^>]+>/g,"");
+                            if(htmlContent.length>80){
+                                htmlContent=htmlContent.substring(0,80)+"...";
+                            }
                             content = "<div class='articleShow' style='border:1px solid red;margin-top:30px'>" +
                                             "<div>" +
-                                "               <a   href='/user/myPage?userId="+data[i].userId+"'><img class='userImg' src=" + data[i].img + "><span style='color: black'> "+data[i].nickName+"</span></a> <span style='color: #646464'> " + data[i].dynamicContent + "    " + data[i].dynamicDate + "</span>" +
+                                "               <a   href='/user/myPage?userId="+data[i].workerId+"'><img class='userImg' src=" + data[i].img + "><span style='color: black'> "+data[i].nickName+"</span></a> <span style='color: #646464'> " + data[i].dynamicContent + "    " + data[i].dynamicDate + "</span>" +
                                 "            </div>" +
                                             "<div >" +
-                                                "<div style='float:left'>" +
+                                                "<div style='float:left;width: "+src[1]+"'>" +
                                     "               <div style='color: #646464'><strong  ><a  style='font-size: 20px'  class='articleTitle A_css' href=/article/With?id=" + data[i].id + ">" + data[i].title + "</a></strong></div>"+
-                                                   "<div style='padding-top: 10px;color: #646464'>" + data[i].content +"</div>"+
+                                                   "<div style='padding-top: 10px;color: #646464;'>" + htmlContent +"</div>"+
                                                 "</div>" +
                                                 "<div style='float: right'>" +
-                                    "               <img class='articleImg' src="+data[i].image+" />" +
+                                                  src[0]  +
                                     "           </div> " +
                                         "  </div><div style='clear:both'></div>" +
                                         " <div>" +
@@ -214,29 +237,41 @@
                                     "</div></div>";
 
                          }else if(data[i].dynamicContent=="发表了文章"){
+                            var src=getFristPicture(data[i].content);
+                            //文章的内容去掉所有的标签
+                            var htmlContent=data[i].content.replace(/<[^>]+>/g,"");
+                            if(htmlContent.length>80){
+                                htmlContent=htmlContent.substring(0,80)+"...";
+                            }
                             content = "<div class='articleShow' style='margin-top:30px;color: #646464;border: 1px solid red;'>" +
                                 "<div><img class='userImg' src=" + data[i].img + "> <span style='color: black'>"+data[i].nickName+"</span>   " + data[i].dynamicContent + "    " + data[i].dynamicDate + "</div>" +
-                                "<div style='float: left'>" +
+                                "<div style='float: left;width: "+src[1]+"'>" +
                                 "   <div style='padding-top: 10px;padding-bottom: 10px'><strong><a class='articleTitle' href=/article/With?id=" + data[i].id + "><span style='font-size: 20px'>" + data[i].title + "</a></strong></div> " +
-                                "   <div style='padding-top: 5px;padding-bottom: 10px'>" + data[i].content + "</div>" +
+                                "   <div style='padding-top: 5px;padding-bottom: 10px;'>" + htmlContent + "</div>" +
                                 "</div>" +
-                                "<div style='float: right'><img class='articleImg' src='"+data[i].image+"'></div>" +
+                                "<div style='float: right'>"+src[0]+"</div>" +
                                 "<div style='clear: both'></div>" +
                                 "<div> 阅读 " + data[i].readNums + "评论 "+data[i].reviewNums+" 喜欢 " + data[i].likeNums + "</div> " +
                                 "</div><div style='clear:both'></div>";
 
                         }else if(data[i].dynamicContent=="发表了评论"){
-                            console.log(data[i]);
+                            var src=getFristPicture(data[i].content);
+                            //文章的内容去掉所有的标签
+                            var htmlContent=data[i].content.replace(/<[^>]+>/g,"");
+                            if(htmlContent.length>80){
+                                htmlContent=htmlContent.substring(0,80)+"...";
+                            }
+
                             content = "<div class='articleShow' style='border: 1px solid red;margin-top: 30px'>" +
-                                "<div><a   href='/user/myPage?userId="+data[i].userId+"'><img class='userImg' src=" + data[i].img + "><span style='color: black'> "+data[i].nickName+" </span></a> <span style='color: #646464'>" + data[i].dynamicContent + "    " + data[i].dynamicDate + "</span></div>" +
+                                "<div><a   href='/user/myPage?userId="+data[i].workerId+"'><img class='userImg' src=" + data[i].img + "><span style='color: black'> "+data[i].nickName+" </span></a> <span style='color: #646464'>" + data[i].dynamicContent + "    " + data[i].dynamicDate + "</span></div>" +
                                     "<div>"+data[i].reviewContent+"</div>"+
-                                      "<div style='color: #646464;border-left: 5px solid #646464;float:left'>" +
+                                      "<div style='color: #646464;border-left: 5px solid #646464;float:left;width: "+src[1]+"'>" +
                                             "<div><strong><a style='font-size: 20px' class='articleTitle' href=/article/With?id=" + data[i].id + ">" + data[i].title + "</a></strong></div> " +
-                                             "<div style='padding-top: 10px;width: 100%'>" + data[i].content + "</div>" +
+                                             "<div style='padding-top: 10px;'>" + htmlContent + "</div>" +
                                        "" +
                                 "       " +
                                 "<div style='padding-top: 30px'> <a href='/user/myPage?userId="+data[i].userId+"'>" + data[i].userName + "</a><a class='A_css' href='/article/With?id="+data[i].id+"'>   阅读 " + data[i].readNums + "评论 "+data[i].reviewNums+"</a> 喜欢 " + data[i].likeNums + " </div></div>" +
-                                "<div style='float:right'><img class='articleImg' src='"+data[i].image+"'></div><div style='clear:both'></div>" +
+                                "<div style='float:right'>"+src[0]+"</div><div style='clear:both'></div>" +
                                 "</div>";
 
                         }else if(data[i].dynamicContent=="关注了作者"){
@@ -244,7 +279,14 @@
                             if(data[i].concernStatus==1){
                                 status="已关注";
                             }
-                            console.log(data[i]);
+                            if(data[i].count>1000){
+                                var articleCount= data[i].count/1000;
+                                articleCount=articleCount.toFixed(1)+"千字"
+
+                            }else{
+                                var articleCount= data[i].count+"字"
+                            }
+
                             content="<div class='articleShow'  style='border: 1px solid red;margin-top:30px'>" +
                                          "<div style='border: 1px solid #646464'>" +
                                               "<div>" +
@@ -255,7 +297,7 @@
                                                         "<a href='/user/myPage?userId="+data[i].id+"'><img class='smallImg' src="+data[i].img+"/></a>" +
                                                     "</div>"+
                                                      "<div style='float: left;margin-left: 20px'><div><a   href='/user/myPage?userId="+data[i].id+"'  target='_blank' ><span style='font-size: 20px ;color: black'>"+data[i].nickName+"</a> </div>" +
-                                                         "<div style='margin-top: 5px'>写了  "+data[i].count+"字，被"+data[i].concernNums+"人关注，获得了"+data[i].likeNums+"个喜欢</div>" +
+                                                         "<div style='margin-top: 5px'>写了  "+articleCount+"，被"+data[i].concernNums+"人关注，获得了"+data[i].likeNums+"个喜欢</div>" +
                                                      "</div>" +
                                                   "<div style='float: right;margin-right: 70px'><input class='yesAndNoConcern' name="+data[i].id+" style='font-size:25px;border-radius:9px' type='button' value="+status+"></div>" +
                                                     "<div style='clear:both;padding: 10px 0' ><hr/></div><div style='padding-bottom: 10px;padding-left: 20px'>   "+data[i].desc+"</div>" +
@@ -291,25 +333,36 @@
                 url:"/article/showLike",
                 data:{"userId":userId},
                 success:function (data) {
-                    console.log(data);
+
                     $("#content").html("")
+
                     if(data.length==0){
                         $("#content").html("<div style='color: #646464;font-size: 30px'>没有你喜欢的文章</div>")
                     }
                     for(var i=0;i<data.length;i++){
                         var articleContent=data[i].content;
+                        var src=getFristPicture(articleContent);
+
+                        //文章的内容去掉所有的标签
+                        articleContent=articleContent.replace(/<[^>]+>/g,"");
                         if(data[i].content.length>100){
-                             articleContent=data[i].content.substring(0,100)+"...";
+                             articleContent=articleContent.substring(0,100)+"...";
 
                         }
                         var content="<div class='articleShow likeArticleDiv ' style='border: 1px solid red;color: #646464;margin-top: 30px' name="+data[i].workerId+">" +
-                            "<div><a href='/user/myPage?userId="+data[i].userId+"'><img class='userImg' src="+data[i].img+"/><span style='color: black'>"+data[i].nickName+"</span></a>   "+data[i].dynamicDate+"</div>" +
-                            " <div style='float: left;width: 70%'>" +
-                            "   <div style='padding-top: 10px;padding-bottom: 5px'><strong><a style='font-size: 20px' class='articleTitle' href=/article/With?id=" + data[i].id + ">"+data[i].title+"</a></strong></div>" +
-                            " <div>"+articleContent+"</div>" +
-                            "</div>" +
-                            "<div style='float: right' ><img class='articleImg' src='"+data[i].image+"'></div><div style='clear: both'></div>" +
-                            "<div><a  href='/article/With?id="+data[i].id+"'>阅读 "+data[i].readNums+"  评论  "+data[i].reviewNums+"</a>  喜欢  "+data[i].likeNums+"    <input class='noLikeArticle'  style='display:none' type='button' name="+data[i].id+" class='deleteLikeArticle' value='取消喜欢'/></div></div>";
+                                         "<div><a href='/user/myPage?userId="+data[i].userId+"'><img class='userImg' src="+data[i].img+"/><span style='color: black'>"+data[i].nickName+"</span></a>   "+data[i].dynamicDate+"</div>" +
+                                         " <div style='float: left;width: 500px'>" +
+                                             "   <div style='padding-top: 10px;padding-bottom: 5px'><strong><a style='font-size: 20px' class='articleTitle' href=/article/With?id=" + data[i].id + ">"+data[i].title+"</a></strong></div>" +
+                                              " <div style='width: "+src[1]+"'>"+articleContent+"</div>" +
+                                         "</div>" +
+                                         "<div style='float: right' >"+src[0]+"</div>" +
+                                         "<div style='clear: both'></div>" +
+                                         "<div>" +
+                                            "<div><a  href='/article/With?id="+data[i].id+"'>阅读 "+data[i].readNums+"  评论  "+data[i].reviewNums+"</a>  喜欢  "+data[i].likeNums+"    <input class='noLikeArticle'  style='display:none' type='button' name="+data[i].id+" class='deleteLikeArticle' value='取消喜欢'/></div>" +
+                                            "<div style='clear: both'></div>" +
+                                        "</div> " +
+                                    "</div>" +
+                                    "<div style='clear: both'></div>";
                         $("#content").append(content);
                     }
                 },
@@ -320,7 +373,7 @@
             if(confirm("确定取消喜欢该文章")) {
                 var articleId = $(this).attr('name');
                 var userId = $(this).parent().attr('name');
-                console.log(userId);
+
                 $.ajax({
                     type: "GET",
                     data: {"articleId": articleId},
@@ -331,6 +384,30 @@
                 })
             }
         })
+        //获取富文本编辑器的第一张图片
+        function getFristPicture(str) {
+            var imgReg = /<img.*?(?:>|\/>)/gi;
+            var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+            var arr = str.match(imgReg);
+            var src = "";
+
+            if (arr!=null) {
+
+                var src = arr[0].match(srcReg);
+
+            }
+            var divWidth=460;
+            if(src!=""){
+                var divStr="<div style='padding-top: 30px'>"+
+                    "<img class='articleImg' src='"+src[1]+"' style='width:150px;height:107px;'/>" +
+                    "</div>"
+            }else{
+                var divStr="";
+                divWidth=600;
+            }
+            return [divStr,divWidth];
+
+        }
     </script>
 </head>
 <body>

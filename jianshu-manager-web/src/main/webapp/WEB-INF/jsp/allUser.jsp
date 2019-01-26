@@ -76,7 +76,11 @@
                         }
                         var articleTitles="";
                         for(var j=0;j<data.showList[i].articleTitle.length;j++){
-                            var title="<p><a href='/article/With?id="+data.showList[i].articleTitle[j].id+"'>"+data.showList[i].articleTitle[j].title+"</a></p>";
+                            var title=data.showList[i].articleTitle[j].title;
+                            if(data.showList[i].articleTitle[j].title.length>=18){
+                                 title=title.substring(0,18)+"...";
+                            }
+                             title="<p><a href='/article/With?id="+data.showList[i].articleTitle[j].id+"'>"+title+"</a></p>";
                             articleTitles=articleTitles+title;
                         }
                         if(data.showList[i].articleTitle.length==0){
