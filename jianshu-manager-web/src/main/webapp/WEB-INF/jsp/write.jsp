@@ -23,18 +23,20 @@
     </style>
     <script type="text/javascript">
         $(function () {
-            $(".articleCollection")[0].click();
+
 
             $.ajax({
                 type:"GET",
                 url:"/user/isUserLogin",
                 success:function (data) {
+                    console.log(data);
                     if(data.userName==null){
                         location.href="/login";
                     }
                 },
                 dataType:"json"
             })
+            $(".articleCollection")[0].click();
         });
         // 获取文章标题
         function getCollection(obj) {
